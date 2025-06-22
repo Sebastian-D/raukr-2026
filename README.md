@@ -1,2 +1,7 @@
-# raukr-2026
-Raukr 2026 • NBIS Summer School • R Beyond the Basics 
+# Raukr 2026 • Workshop Website  
+**NBIS Summer School • R Beyond the Basics**  
+
+---
+
+**2026** • NBIS • SciLifeLab
+

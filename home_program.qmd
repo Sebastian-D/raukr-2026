@@ -1,0 +1,39 @@
+---
+title: "Program"
+pagetitle: "RaukR 2026 • Program"
+date: ""
+sidebar: false
+format:
+  html:
+    number-sections: false
+---
+
+## Syllabus
+
+We will be covering a number of topics in R programming with focus on R features helpful in bioinformatics and computational biology data analyses workflow. These typically include:
+
+- Literate programming with Quarto
+- R code style guide & best practices
+- Code debugging, optimization and profiling
+- Parallelization and vectorization in R
+- Crafting your own functions
+- Object oriented programming and R classes: S3, S4, R6 and RC
+- Anatomy of an R package: Creating your own package from scratch
+- Tidy data flow using tidyverse
+- Data visualization in R
+- Developing web applications using Shiny
+- R and Python integration using reticulate
+- Team project work - developing data analyses workflow in R using acquired skills
+- Collaborative work using Git and GitHub
+
+## Course materials
+
+Course materials will be made available at the beginning of the workshop and will remain open and publicly accessible online for at least a year. You can check out the materials from [2025](https://nbisweden.github.io/raukr-2025/home_contents.html).
+
+## Sessions
+
+Our daily schedule begins with a morning session from 09:00 to 12:30, starting with breakfast coffee from 08:30 to 09:00. There will be a 30-minute break at 10:30. Lunch is scheduled for 12:30 to 13:30, followed by the afternoon session from 13:30 to 17:00, which includes another 30-minute break at 15:00.
+
+Please be aware that online guest lectures may take place after 17:00 due to differing time zones.
+
+During most sessions, our instructors and teaching assistants will be available to support you with practical exercises and to answer any questions you may have.

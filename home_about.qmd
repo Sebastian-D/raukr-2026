@@ -1,0 +1,60 @@
+---
+title: "About"
+pagetitle: "RaukR 2026 • About"
+toc: false
+date: ""
+sidebar: false
+format:
+  html:
+    number-sections: false
+---
+
+## Organizers
+
+::: {.profile-parent}
+::: {.profile-child}
+
+![](assets/images/profile/marcin-kierczak.webp){.nolightbox}
+
+[Marcin Kierczak](http://www.kierczak.pl/)  
+Bioinformatics Data Scientist, NBIS  
+Associate Professor in Bioinformatics, Uppsala university
+
+:::
+::: {.profile-child}
+
+![](assets/images/profile/sebastian-dilorenzo.webp){.nolightbox}
+
+[Sebastian DiLorenzo](https://www.katalog.uu.se/profile?id=N11-2322)  
+Bioinformatics Data Scientist, NBIS
+
+:::
+::: {.profile-child}
+
+![](assets/images/profile/roy-francis.webp){.nolightbox}
+
+[Roy Francis](https://www.katalog.uu.se/empinfo/?id=N14-525)  
+Bioinformatics Data Scientist, NBIS
+
+:::
+::: {.profile-child}
+
+![](assets/images/profile/annika-kollstedt.webp){.nolightbox}
+
+[Annika Kollstedt](https://www.katalog.uu.se/empinfo/?id=N1-816)  
+Administrator, NBIS
+
+:::
+:::
+
+## Contact
+
+[NBIS](https://nbis.se) is a platform of the Science for Life Laboratory ([SciLifeLab](https://www.scilifelab.se/)) and the Swedish node of [Elixir](https://elixir-europe.org/). This event is organised in co-operation with Campus Gotland Uppsala University, Lund University and Stockholm University, Sweden.
+
+For queries, write to us at **raukr[at]nbis.se**.  
+
+---
+
+<p class="small"><a href="https://nbisweden.github.io/raukr-2026">RaukR • R Beyond the Basics</a>, a workshop created by <a href="https://nbis.se/">NBIS</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;"></p>
+
+![](assets/logos/raukr.svg){height="1.2em" style="margin-bottom:-3px;"} &nbsp; ![](assets/logos/nbis-scilifelab.svg){height="1.1em"} &nbsp; [{{< fa brands instagram >}}](https://www.instagram.com/raukr_nbis/) &nbsp; [{{< fa brands bluesky >}}](https://bsky.app/profile/nbis.se) &nbsp; [{{< fa brands linkedin >}}](https://www.linkedin.com/company/nbisweden) &nbsp; [{{< fa brands github >}}](https://github.com/NBISweden/raukr-2026)  
