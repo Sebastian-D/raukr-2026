@@ -41,7 +41,7 @@ website:
   announcement:
     icon: info-circle
     dismissable: true
-    content: "Registration for RaukR 2026 is not yet open but you can sign up to express interest and to be notified."
+    content: "Registration for RaukR 2026 isn't open yet, but you can sign up to express interest and get notified."
     type: primary
     position: above-navbar
 
