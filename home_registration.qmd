@@ -40,7 +40,7 @@ This workshop is not intended for beginners. If you have just started using R, t
 
 ## Selection
 
-We can accomodate around 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.
+We can accommodate around 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.
 
 Once the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing.
 
@@ -150,7 +150,7 @@ The workshop takes place in the city of Visby nestled on the island of Gotland, 
 
 Visby is accessible from mainland Sweden by flight or ferry. See [Gotland tourism](https://gotland.com/resa-hit-runt/) website for information.
 
-Ferry connections are available from Stockholm (Nynäshamn) or Oskarshamn to Visby through [Destination Gotland](https://www.destinationgotland.se/) or [Vikingline](https://www.vikingline.se). The journey time from Nynäshamn to Visby is about 3 hours. The ferry terminal in Visby is walking distance from Uppsala University Campus Gotland (800m) and our suggested accomodations.
+Ferry connections are available from Stockholm (Nynäshamn) or Oskarshamn to Visby through [Destination Gotland](https://www.destinationgotland.se/) or [Vikingline](https://www.vikingline.se). The journey time from Nynäshamn to Visby is about 3 hours. The ferry terminal in Visby is walking distance from Uppsala University Campus Gotland (800m) and our suggested accommodations.
 
 ![](assets/images/visby/destination-gotland.webp)  
 [Source: [DestinationGotland](https://www.destinationgotland.se/)]{.small}
@@ -192,7 +192,7 @@ The classroom windows may be left open in case the room gets warm. If you are ea
 
 For photographs from previous workshops, visit our [Gallery](home_gallery.html).
 
-## Accomodation
+## Accommodation
 
 Participants are responsible for arranging their own accommodation. When booking accommodation, we recommend that it is located at a walking/biking distance from Campus Gotland. Here are a few suggestions below where participants have previously stayed at. These are also marked on the map.
 

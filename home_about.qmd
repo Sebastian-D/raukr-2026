@@ -49,7 +49,7 @@ Administrator, NBIS
 
 ## Contact
 
-[NBIS](https://nbis.se) is a platform of the Science for Life Laboratory ([SciLifeLab](https://www.scilifelab.se/)) and the Swedish node of [Elixir](https://elixir-europe.org/). This event is organised in co-operation with Campus Gotland Uppsala University, Lund University and Stockholm University, Sweden.
+[NBIS](https://nbis.se) is a platform of the Science for Life Laboratory ([SciLifeLab](https://www.scilifelab.se/)) and the Swedish node of [Elixir](https://elixir-europe.org/). This event is organized in co-operation with Campus Gotland Uppsala University, Lund University and Stockholm University, Sweden.
 
 For queries, write to us at **raukr[at]nbis.se**.  
 
