@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -31,15 +31,16 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./assets/favicon.svg" rel="icon" type="image/svg+xml">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0c2eaa6ffb690e086d13980ab971e091.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-53ed2f718b5024f6a24f08669924a204.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c2a806c93e56162c7eec8610bb6c36e5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-e68e6fcf62f3a84f9885d7371281976b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
@@ -104,7 +105,7 @@ background-size: cover;
 <meta property="og:image" content="https://nbisweden.github.io/raukr-2026/assets/images/visby/visby.webp">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -208,9 +209,12 @@ background-size: cover;
 <h2 class="anchored" data-anchor-id="entry-requirements">Entry requirements</h2>
 <p>This workshop is aimed at both Ph.D.&nbsp;students and researchers within life sciences who are already using R for bioinformatics data analyses and who would like to start using R at a more advanced level. Participants from the public sector, companies and other relevant stakeholders are warmly welcome as well. In order for you and other participants to benefit the most, you should <em>consider yourself eligible</em> if you are comfortable with:</p>
 <ul>
-<li>Reading and transforming data,</li>
-<li>Installing and using third-party packages and</li>
-<li>Plotting using standard R graphics.</li>
+<li>Reading, writing and transforming data</li>
+<li>Installing and using third-party packages</li>
+<li>Plotting using base and/or ggplot2</li>
+<li>Understanding of R data types (strings, vectors, data.frames, lists etc.)</li>
+<li>Writing functions and using control structures (if, for, while)</li>
+<li>Basic understanding of R Markdown and/or quarto</li>
 </ul>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -222,31 +226,49 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This course is not intended for beginners.</p>
+<p>This workshop is not intended for beginners. If you have just started using R, this is not for you.</p>
 </div>
 </div>
 </section>
 <section id="selection" class="level2">
 <h2 class="anchored" data-anchor-id="selection">Selection</h2>
-<p>We can accomodate ~42 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.</p>
-<p>Once the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have <span class="badge">five working days</span> to notify us if you cannot participate and want to decline the acceptance. Failure to do so would imply your inability to attend, and we will proceed accordingly. Once you confirmed, our course administrator will proceed with invoicing.</p>
+<p>We can accomodate around 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.</p>
+<p>Once the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing.</p>
 </section>
 <section id="fee" class="level2">
 <h2 class="anchored" data-anchor-id="fee">Fee</h2>
-<p>The fee for academic participants is <span class="badge badge-primary">9500 SEK</span> subsidized by academic grants. Fee for non-academic participants is <strong>19000 SEK</strong>.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>The following fee structure applies:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Academic</th>
+<th>Non-academic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Early bird rate</td>
+<td>8500 SEK</td>
+<td>17000 SEK</td>
+</tr>
+<tr class="even">
+<td>Regular rate</td>
+<td>10500 SEK</td>
+<td>21000 SEK</td>
+</tr>
+</tbody>
+</table>
+<div class="small">
+<p>The fee is charged in Swedish Kroner (SEK). Academic fee applies to universities, hospitals and most government institutions. Non-academic fee applies to private companies and industry. If unsure, write to us at raukr[at]nbis.se.</p>
 </div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you register and are admitted but fail to attend without a valid reason (sickness or urgent family matter), you will still be liable for the entire fee.</p>
-</div>
-</div>
+<p>For the deadlines, please refer to the <a href="#key-dates">Key dates</a> section below. Some of the key benefits of early registration include:</p>
+<ul>
+<li>About 20% discount on the regular fee</li>
+<li>Early notification of acceptance</li>
+<li>Opportunity to book early accommodation</li>
+<li>Deals with selected hotels in Visby</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -264,13 +286,28 @@ More info about the fee
 <li>Daily breakfast/coffee, lunch and afternoon coffee during the workshop</li>
 <li>One official course dinner</li>
 <li>Surprise social activities</li>
+<li>RaukR goodies (t-shirt, stickers, etc.)</li>
 </ul>
 <p><strong>Not included in the fee</strong></p>
 <ul>
 <li>Accommodation</li>
 <li>Travel to and from Visby</li>
 <li>Daily dinners</li>
+<li>Food over the weekend</li>
 </ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you register and are admitted, but fail to attend without a valid reason (typically sickness or urgent family matter), you will still be liable for the entire fee.</p>
 </div>
 </div>
 </section>
@@ -332,17 +369,17 @@ More info about the fee
 <section id="travel" class="level2">
 <h2 class="anchored" data-anchor-id="travel">Travel</h2>
 <p>Visby is accessible from mainland Sweden by flight or ferry. See <a href="https://gotland.com/resa-hit-runt/">Gotland tourism</a> website for information.</p>
-<p><a href="https://www.swedavia.com/visby/">Visby airport</a> provides connections to Stockholm, Malmö, and Gothenburg, with a flying time of approximately 1 hour from Stockholm. <a href="https://www.swedavia.com/visby/bus/">Bus connection</a> from the airport to the city centre takes about 10 min. Alternatively, there are airport taxis as well.</p>
-<p>Ferry connections are available from Stockholm (Nynäshamn) to Visby through <a href="https://www.destinationgotland.se/">Destination Gotland</a> or <a href="https://www.vikingline.se">Vikingline</a>. The journey time from Nynäshamn to Visby is about 3 hours. The ferry terminal in Visby is walking distance from Uppsala University Campus Gotland (800m) and our suggested accomodations.</p>
+<p>Ferry connections are available from Stockholm (Nynäshamn) or Oskarshamn to Visby through <a href="https://www.destinationgotland.se/">Destination Gotland</a> or <a href="https://www.vikingline.se">Vikingline</a>. The journey time from Nynäshamn to Visby is about 3 hours. The ferry terminal in Visby is walking distance from Uppsala University Campus Gotland (800m) and our suggested accomodations.</p>
 <p><img src="assets/images/visby/destination-gotland.webp" class="img-fluid"><br>
 <span class="small">Source: <a href="https://www.destinationgotland.se/">DestinationGotland</a></span></p>
+<p><a href="https://www.swedavia.com/visby/">Visby airport</a> provides connections to Stockholm, Malmö, and Gothenburg, with a flying time of approximately 1 hour from Stockholm. <a href="https://www.swedavia.com/visby/bus/">Bus connection</a> from the airport to the city centre takes about 10 min. Alternatively, there are airport taxis as well.</p>
 </section>
 <section id="venue" class="level2">
 <h2 class="anchored" data-anchor-id="venue">Venue</h2>
 <div class="cell">
 <div class="cell-output-display">
 <div id="leaflet-raukr" style="width:auto;height:450px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="leaflet-raukr">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addAwesomeMarkers","args":[[57.6394006989332,57.6418222910998,57.6386489348324,57.6431496715119,57.6320705322625,57.6364820625953,57.6258703549948,57.6554010828628,57.6386907756162,57.634235891617,57.6607926854904,57.641785617709],[18.2886166637887,18.2924924826879,18.2909058341587,18.2959276710474,18.28036866919,18.2894577665854,18.2820583121987,18.3079058678692,18.2951541327037,18.2812459933587,18.33859496282,18.2960642268324],{"icon":["briefcase","bed","bed","bed","bed","bed","bed","bed","bed","ship","plane","cutlery"],"markerColor":["red","blue","blue","blue","blue","blue","blue","blue","blue","purple","purple","green"],"iconColor":"#FFFFFF","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["<a target='_blank' href='http://www.campusgotland.uu.se/'>Workshop Venue<\/a><br>Cram<U+00E9>rgatan 3<br> 621 57 Visby","<a target='_blank' href='http://www.strandhotel.se/'>BW Strand Hotel<\/a><br>Strandgatan 34<br> 621 56 Visby (8 min walk<br> 2 min bike)","<a target='_blank' href='https://www.strawberryhotels.com/hotels/sweden/visby/clarion-hotel-wisby/'>Clarion Hotel Visby<\/a><br>Strandgatan 6<br> 621 57 Visby<br> 260m (3 min walk)","<a target='_blank' href='http://www.clemenshotell.se/'>Hotel St. Clemens<\/a><br>Smedjegatan 3<br> 621 55 Visby (11 min walk<br> 4 min bike)","<a target='_blank' href='https://www.scandichotels.com/en/hotels/scandic-visby'>Scandic Visby<\/a><br>F<U+00E4>rjeleden 3<br> 621 58 Visby<br> 950m (13 min walk<br> 3 min bike)","<a target='_blank' href='http://hotellslottsbacken.se/'>Hotell Slottsbacken<\/a><br>Visborgsgatan 1<br> 621 57 Visby<br> 450m (6 min walk)","<a target='_blank' href='https://www.firsthotels.se/hotell/sverige/gotland/first-hotel-kokoloko/'>First Hotel Kokoloko<\/a><br>S<U+00F6>derv<U+00E4>g 56 A<br> 621 58 Visby<br> 1.7km (25 min walk<br> 8 min bike)","<a target='_blank' href='http://www.visbystrandby.se/'>Visby Strandby<\/a><br>Sn<U+00E4>ckg<U+00E4>rdsv<U+00E4>gen 32<br> 621 55 Visby<br> 2.3km (31 min walk<br> 7 min bike)","<a target='_blank' href='http://www.visbylogi.se/'>Visby Logi & Vandrarhem<\/a><br>H<U+00E4>stgatan 14<br> 621 56 Visby<br> 450m (6 min walk)","<a target='_blank' href='http://www.destinationgotland.se/'>Ferry terminal<\/a><br>F<U+00E4>rjeleden 14<br> 621 58 Visby","<a target='_blank' href='https://www.swedavia.com/visby/'>Airport<\/a><br>621 41 Visby","<a target='_blank' href='http://www.kapitelhusgarden.se/'>Kapitelhusg<U+00E5>rden<\/a><br>S:t Drottensgatan 8<br> 621 56 Visby"],null,null,null,["Workshop Venue","BW Strand Hotel","Clarion Hotel Visby","Hotel St. Clemens","Scandic Visby","Hotell Slottsbacken","First Hotel Kokoloko","Visby Strandby","Visby Logi &amp; Vandrarhem","Ferry terminal","Airport","Kapitelhusg<U+00E5>rden"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[57.6258703549948,57.6607926854904],"lng":[18.28036866919,18.33859496282]},"setView":[[57.6394006989332,18.2886166637887],15,[]]},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="leaflet-raukr">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addAwesomeMarkers","args":[[57.6394006989332,57.6418222910998,57.6386489348324,57.6431496715119,57.6320705322625,57.6364820625953,57.6258703549948,57.6554010828628,57.6386907756162,57.634235891617,57.6607926854904,57.641785617709],[18.2886166637887,18.2924924826879,18.2909058341587,18.2959276710474,18.28036866919,18.2894577665854,18.2820583121987,18.3079058678692,18.2951541327037,18.2812459933587,18.33859496282,18.2960642268324],{"icon":["briefcase","bed","bed","bed","bed","bed","bed","bed","bed","ship","plane","cutlery"],"markerColor":["red","blue","blue","blue","blue","blue","blue","blue","blue","purple","purple","green"],"iconColor":"#FFFFFF","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["<a target='_blank' href='http://www.campusgotland.uu.se/'>Workshop Venue<\/a><br>Cramérgatan 3<br> 621 57 Visby","<a target='_blank' href='http://www.strandhotel.se/'>BW Strand Hotel<\/a><br>Strandgatan 34<br> 621 56 Visby (8 min walk<br> 2 min bike)","<a target='_blank' href='https://www.strawberryhotels.com/hotels/sweden/visby/clarion-hotel-wisby/'>Clarion Hotel Visby<\/a><br>Strandgatan 6<br> 621 57 Visby<br> 260m (3 min walk)","<a target='_blank' href='http://www.clemenshotell.se/'>Hotel St. Clemens<\/a><br>Smedjegatan 3<br> 621 55 Visby (11 min walk<br> 4 min bike)","<a target='_blank' href='https://www.scandichotels.com/en/hotels/scandic-visby'>Scandic Visby<\/a><br>Färjeleden 3<br> 621 58 Visby<br> 950m (13 min walk<br> 3 min bike)","<a target='_blank' href='http://hotellslottsbacken.se/'>Hotell Slottsbacken<\/a><br>Visborgsgatan 1<br> 621 57 Visby<br> 450m (6 min walk)","<a target='_blank' href='https://www.firsthotels.se/hotell/sverige/gotland/first-hotel-kokoloko/'>First Hotel Kokoloko<\/a><br>Söderväg 56 A<br> 621 58 Visby<br> 1.7km (25 min walk<br> 8 min bike)","<a target='_blank' href='http://www.visbystrandby.se/'>Visby Strandby<\/a><br>Snäckgärdsvägen 32<br> 621 55 Visby<br> 2.3km (31 min walk<br> 7 min bike)","<a target='_blank' href='http://www.visbylogi.se/'>Visby Logi & Vandrarhem<\/a><br>Hästgatan 14<br> 621 56 Visby<br> 450m (6 min walk)","<a target='_blank' href='http://www.destinationgotland.se/'>Ferry terminal<\/a><br>Färjeleden 14<br> 621 58 Visby","<a target='_blank' href='https://www.swedavia.com/visby/'>Airport<\/a><br>621 41 Visby","<a target='_blank' href='http://www.kapitelhusgarden.se/'>Kapitelhusgården<\/a><br>S:t Drottensgatan 8<br> 621 56 Visby"],null,null,null,["Workshop Venue","BW Strand Hotel","Clarion Hotel Visby","Hotel St. Clemens","Scandic Visby","Hotell Slottsbacken","First Hotel Kokoloko","Visby Strandby","Visby Logi &amp; Vandrarhem","Ferry terminal","Airport","Kapitelhusgården"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[57.6258703549948,57.6607926854904],"lng":[18.28036866919,18.33859496282]},"setView":[[57.6394006989332,18.2886166637887],15,[]]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p><br></p>
@@ -377,23 +414,23 @@ Note
 <div class="g-col-10">
 <div class="cell">
 <div class="cell-output-display">
-<div id="csfprsthjz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#csfprsthjz table {
+<div id="bkjdhvafqb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bkjdhvafqb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#csfprsthjz thead, #csfprsthjz tbody, #csfprsthjz tfoot, #csfprsthjz tr, #csfprsthjz td, #csfprsthjz th {
+#bkjdhvafqb thead, #bkjdhvafqb tbody, #bkjdhvafqb tfoot, #bkjdhvafqb tr, #bkjdhvafqb td, #bkjdhvafqb th {
   border-style: none;
 }
 
-#csfprsthjz p {
+#bkjdhvafqb p {
   margin: 0;
   padding: 0;
 }
 
-#csfprsthjz .gt_table {
+#bkjdhvafqb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -419,12 +456,12 @@ Note
   border-left-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_caption {
+#bkjdhvafqb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#csfprsthjz .gt_title {
+#bkjdhvafqb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -436,7 +473,7 @@ Note
   border-bottom-width: 0;
 }
 
-#csfprsthjz .gt_subtitle {
+#bkjdhvafqb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -448,7 +485,7 @@ Note
   border-top-width: 0;
 }
 
-#csfprsthjz .gt_heading {
+#bkjdhvafqb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -460,13 +497,13 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_bottom_border {
+#bkjdhvafqb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_col_headings {
+#bkjdhvafqb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -481,7 +518,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_col_heading {
+#bkjdhvafqb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -501,7 +538,7 @@ Note
   overflow-x: hidden;
 }
 
-#csfprsthjz .gt_column_spanner_outer {
+#bkjdhvafqb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -513,15 +550,15 @@ Note
   padding-right: 4px;
 }
 
-#csfprsthjz .gt_column_spanner_outer:first-child {
+#bkjdhvafqb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#csfprsthjz .gt_column_spanner_outer:last-child {
+#bkjdhvafqb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#csfprsthjz .gt_column_spanner {
+#bkjdhvafqb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -533,11 +570,11 @@ Note
   width: 100%;
 }
 
-#csfprsthjz .gt_spanner_row {
+#bkjdhvafqb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#csfprsthjz .gt_group_heading {
+#bkjdhvafqb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -563,7 +600,7 @@ Note
   text-align: left;
 }
 
-#csfprsthjz .gt_empty_group_heading {
+#bkjdhvafqb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -578,15 +615,15 @@ Note
   vertical-align: middle;
 }
 
-#csfprsthjz .gt_from_md > :first-child {
+#bkjdhvafqb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#csfprsthjz .gt_from_md > :last-child {
+#bkjdhvafqb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#csfprsthjz .gt_row {
+#bkjdhvafqb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -605,7 +642,7 @@ Note
   overflow-x: hidden;
 }
 
-#csfprsthjz .gt_stub {
+#bkjdhvafqb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -618,7 +655,7 @@ Note
   padding-right: 5px;
 }
 
-#csfprsthjz .gt_stub_row_group {
+#bkjdhvafqb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -632,15 +669,15 @@ Note
   vertical-align: top;
 }
 
-#csfprsthjz .gt_row_group_first td {
+#bkjdhvafqb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#csfprsthjz .gt_row_group_first th {
+#bkjdhvafqb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#csfprsthjz .gt_summary_row {
+#bkjdhvafqb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -650,16 +687,16 @@ Note
   padding-right: 5px;
 }
 
-#csfprsthjz .gt_first_summary_row {
+#bkjdhvafqb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_first_summary_row.thick {
+#bkjdhvafqb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#csfprsthjz .gt_last_summary_row {
+#bkjdhvafqb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -669,7 +706,7 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_grand_summary_row {
+#bkjdhvafqb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -679,7 +716,7 @@ Note
   padding-right: 5px;
 }
 
-#csfprsthjz .gt_first_grand_summary_row {
+#bkjdhvafqb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -689,7 +726,7 @@ Note
   border-top-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_last_grand_summary_row_top {
+#bkjdhvafqb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -699,11 +736,11 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_striped {
+#bkjdhvafqb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#csfprsthjz .gt_table_body {
+#bkjdhvafqb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -712,7 +749,7 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_footnotes {
+#bkjdhvafqb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -726,7 +763,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_footnote {
+#bkjdhvafqb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -735,7 +772,7 @@ Note
   padding-right: 5px;
 }
 
-#csfprsthjz .gt_sourcenotes {
+#bkjdhvafqb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -749,7 +786,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#csfprsthjz .gt_sourcenote {
+#bkjdhvafqb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -757,72 +794,72 @@ Note
   padding-right: 5px;
 }
 
-#csfprsthjz .gt_left {
+#bkjdhvafqb .gt_left {
   text-align: left;
 }
 
-#csfprsthjz .gt_center {
+#bkjdhvafqb .gt_center {
   text-align: center;
 }
 
-#csfprsthjz .gt_right {
+#bkjdhvafqb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#csfprsthjz .gt_font_normal {
+#bkjdhvafqb .gt_font_normal {
   font-weight: normal;
 }
 
-#csfprsthjz .gt_font_bold {
+#bkjdhvafqb .gt_font_bold {
   font-weight: bold;
 }
 
-#csfprsthjz .gt_font_italic {
+#bkjdhvafqb .gt_font_italic {
   font-style: italic;
 }
 
-#csfprsthjz .gt_super {
+#bkjdhvafqb .gt_super {
   font-size: 65%;
 }
 
-#csfprsthjz .gt_footnote_marks {
+#bkjdhvafqb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#csfprsthjz .gt_asterisk {
+#bkjdhvafqb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#csfprsthjz .gt_indent_1 {
+#bkjdhvafqb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#csfprsthjz .gt_indent_2 {
+#bkjdhvafqb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#csfprsthjz .gt_indent_3 {
+#bkjdhvafqb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#csfprsthjz .gt_indent_4 {
+#bkjdhvafqb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#csfprsthjz .gt_indent_5 {
+#bkjdhvafqb .gt_indent_5 {
   text-indent: 25px;
 }
 
-#csfprsthjz .katex-display {
+#bkjdhvafqb .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#csfprsthjz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#bkjdhvafqb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -878,7 +915,7 @@ Note
 </section>
 <section id="meals" class="level2">
 <h2 class="anchored" data-anchor-id="meals">Meals</h2>
-<p>A cafeteria is available onsite just outside the lecture hall for breakfast and lunches as well as coffee and snacks. Dinners are not included. Breakfast is not included on Weekends. For further information, see <a href="home_faq.html">FAQs</a>.</p>
+<p>A cafeteria is available onsite just outside the lecture hall for breakfast and lunches as well as coffee and snacks. Dinners are not included. Breakfast is not included on weekends. For further information, see <a href="home_faq.html">FAQs</a>.</p>
 </section>
 <section id="key-dates" class="level2">
 <h2 class="anchored" data-anchor-id="key-dates">Key dates</h2>
@@ -886,23 +923,23 @@ Note
 <div class="g-col-10">
 <div class="cell">
 <div class="cell-output-display">
-<div id="tckycdfsrb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#tckycdfsrb table {
+<div id="aqqulrcnyq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#aqqulrcnyq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#tckycdfsrb thead, #tckycdfsrb tbody, #tckycdfsrb tfoot, #tckycdfsrb tr, #tckycdfsrb td, #tckycdfsrb th {
+#aqqulrcnyq thead, #aqqulrcnyq tbody, #aqqulrcnyq tfoot, #aqqulrcnyq tr, #aqqulrcnyq td, #aqqulrcnyq th {
   border-style: none;
 }
 
-#tckycdfsrb p {
+#aqqulrcnyq p {
   margin: 0;
   padding: 0;
 }
 
-#tckycdfsrb .gt_table {
+#aqqulrcnyq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -928,12 +965,12 @@ Note
   border-left-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_caption {
+#aqqulrcnyq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#tckycdfsrb .gt_title {
+#aqqulrcnyq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -945,7 +982,7 @@ Note
   border-bottom-width: 0;
 }
 
-#tckycdfsrb .gt_subtitle {
+#aqqulrcnyq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -957,7 +994,7 @@ Note
   border-top-width: 0;
 }
 
-#tckycdfsrb .gt_heading {
+#aqqulrcnyq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -969,13 +1006,13 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_bottom_border {
+#aqqulrcnyq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_col_headings {
+#aqqulrcnyq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -990,7 +1027,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_col_heading {
+#aqqulrcnyq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1010,7 +1047,7 @@ Note
   overflow-x: hidden;
 }
 
-#tckycdfsrb .gt_column_spanner_outer {
+#aqqulrcnyq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1022,15 +1059,15 @@ Note
   padding-right: 4px;
 }
 
-#tckycdfsrb .gt_column_spanner_outer:first-child {
+#aqqulrcnyq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tckycdfsrb .gt_column_spanner_outer:last-child {
+#aqqulrcnyq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tckycdfsrb .gt_column_spanner {
+#aqqulrcnyq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1042,11 +1079,11 @@ Note
   width: 100%;
 }
 
-#tckycdfsrb .gt_spanner_row {
+#aqqulrcnyq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#tckycdfsrb .gt_group_heading {
+#aqqulrcnyq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1072,7 +1109,7 @@ Note
   text-align: left;
 }
 
-#tckycdfsrb .gt_empty_group_heading {
+#aqqulrcnyq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1087,15 +1124,15 @@ Note
   vertical-align: middle;
 }
 
-#tckycdfsrb .gt_from_md > :first-child {
+#aqqulrcnyq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tckycdfsrb .gt_from_md > :last-child {
+#aqqulrcnyq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tckycdfsrb .gt_row {
+#aqqulrcnyq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1114,7 +1151,7 @@ Note
   overflow-x: hidden;
 }
 
-#tckycdfsrb .gt_stub {
+#aqqulrcnyq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1127,7 +1164,7 @@ Note
   padding-right: 5px;
 }
 
-#tckycdfsrb .gt_stub_row_group {
+#aqqulrcnyq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1141,15 +1178,15 @@ Note
   vertical-align: top;
 }
 
-#tckycdfsrb .gt_row_group_first td {
+#aqqulrcnyq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tckycdfsrb .gt_row_group_first th {
+#aqqulrcnyq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#tckycdfsrb .gt_summary_row {
+#aqqulrcnyq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1159,16 +1196,16 @@ Note
   padding-right: 5px;
 }
 
-#tckycdfsrb .gt_first_summary_row {
+#aqqulrcnyq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_first_summary_row.thick {
+#aqqulrcnyq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tckycdfsrb .gt_last_summary_row {
+#aqqulrcnyq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1178,7 +1215,7 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_grand_summary_row {
+#aqqulrcnyq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1188,7 +1225,7 @@ Note
   padding-right: 5px;
 }
 
-#tckycdfsrb .gt_first_grand_summary_row {
+#aqqulrcnyq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1198,7 +1235,7 @@ Note
   border-top-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_last_grand_summary_row_top {
+#aqqulrcnyq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1208,11 +1245,11 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_striped {
+#aqqulrcnyq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tckycdfsrb .gt_table_body {
+#aqqulrcnyq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1221,7 +1258,7 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_footnotes {
+#aqqulrcnyq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1235,7 +1272,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_footnote {
+#aqqulrcnyq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1244,7 +1281,7 @@ Note
   padding-right: 5px;
 }
 
-#tckycdfsrb .gt_sourcenotes {
+#aqqulrcnyq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1258,7 +1295,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#tckycdfsrb .gt_sourcenote {
+#aqqulrcnyq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1266,72 +1303,72 @@ Note
   padding-right: 5px;
 }
 
-#tckycdfsrb .gt_left {
+#aqqulrcnyq .gt_left {
   text-align: left;
 }
 
-#tckycdfsrb .gt_center {
+#aqqulrcnyq .gt_center {
   text-align: center;
 }
 
-#tckycdfsrb .gt_right {
+#aqqulrcnyq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tckycdfsrb .gt_font_normal {
+#aqqulrcnyq .gt_font_normal {
   font-weight: normal;
 }
 
-#tckycdfsrb .gt_font_bold {
+#aqqulrcnyq .gt_font_bold {
   font-weight: bold;
 }
 
-#tckycdfsrb .gt_font_italic {
+#aqqulrcnyq .gt_font_italic {
   font-style: italic;
 }
 
-#tckycdfsrb .gt_super {
+#aqqulrcnyq .gt_super {
   font-size: 65%;
 }
 
-#tckycdfsrb .gt_footnote_marks {
+#aqqulrcnyq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#tckycdfsrb .gt_asterisk {
+#aqqulrcnyq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tckycdfsrb .gt_indent_1 {
+#aqqulrcnyq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#tckycdfsrb .gt_indent_2 {
+#aqqulrcnyq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#tckycdfsrb .gt_indent_3 {
+#aqqulrcnyq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#tckycdfsrb .gt_indent_4 {
+#aqqulrcnyq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#tckycdfsrb .gt_indent_5 {
+#aqqulrcnyq .gt_indent_5 {
   text-indent: 25px;
 }
 
-#tckycdfsrb .katex-display {
+#aqqulrcnyq .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#tckycdfsrb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#aqqulrcnyq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1345,22 +1382,26 @@ Note
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_left" headers="Date">01-Oct-2025</td>
+<td class="gt_row gt_left" headers="Date">15-Sep-2025</td>
 <td class="gt_row gt_left" headers="Milestone">Application opens</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Date"><strong>23-Mar-2026 23:59</strong></td>
-<td class="gt_row gt_left" headers="Milestone">Application deadline</td>
+<td class="gt_row gt_left" headers="Date"><strong>24-Nov-2025 23:59</strong></td>
+<td class="gt_row gt_left" headers="Milestone">Early bird rate ends</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Date"><strong>30-Mar-2026 23:59</strong></td>
+<td class="gt_row gt_left" headers="Milestone">Application deadline</td>
+</tr>
+<tr class="even">
 <td class="gt_row gt_left" headers="Date">07-Jun-2026</td>
 <td class="gt_row gt_left" headers="Milestone">Arrival to Visby, mingle in the evening</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td class="gt_row gt_left" headers="Date">08-Jun-2026 - 18-Jun-2026</td>
 <td class="gt_row gt_left" headers="Milestone">Workshop</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td class="gt_row gt_left" headers="Date">18-Jun-2026</td>
 <td class="gt_row gt_left" headers="Milestone">Project presentations, certificates issued, lunch included</td>
 </tr>
@@ -1375,248 +1416,250 @@ Note
 </section>
 <section id="register" class="level2">
 <h2 class="anchored" data-anchor-id="register">Register</h2>
-<p>Registration is not yet open.</p>
-<!--
-Before proceeding, please ensure you have read all the information on this page as well as our [FAQs](home_faq.html). Click below to access the online registration form.
-
-[[**Registration Form**](https://nbis.typeform.com/to/zZ87A6Tg) ]{.btn .btn-primary .large}
--->
+<p>Before proceeding, please ensure you have read all the information on this page as well as our <a href="home_faq.html">FAQs</a>. Click below to access the online registration form.</p>
+<p><span class="btn btn-primary large"><a href="https://nbis.typeform.com/to/H2GFk5K4"><strong>Registration Form</strong></a> <i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i></span></p>
 
 
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/nbisweden\.github\.io\/raukr-2026\/");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
       }
+      return false;
     }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/nbisweden\.github\.io\/raukr-2026\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
         }
-        return container.innerHTML
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1624,185 +1667,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
@@ -1813,7 +1832,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p>Published with <a href="https://quarto.org/">Quarto</a> v1.6.42
+<p>Published with <a href="https://quarto.org/">Quarto</a> v1.7.32
 </p>
 </div>
   </div>

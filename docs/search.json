@@ -4,28 +4,28 @@
     "href": "home_registration.html",
     "title": "Registration",
     "section": "",
-    "text": "This workshop is aimed at both Ph.D. students and researchers within life sciences who are already using R for bioinformatics data analyses and who would like to start using R at a more advanced level. Participants from the public sector, companies and other relevant stakeholders are warmly welcome as well. In order for you and other participants to benefit the most, you should consider yourself eligible if you are comfortable with:\n\nReading and transforming data,\nInstalling and using third-party packages and\nPlotting using standard R graphics.\n\n\n\n\n\n\n\nWarning\n\n\n\nThis course is not intended for beginners."
+    "text": "This workshop is aimed at both Ph.D. students and researchers within life sciences who are already using R for bioinformatics data analyses and who would like to start using R at a more advanced level. Participants from the public sector, companies and other relevant stakeholders are warmly welcome as well. In order for you and other participants to benefit the most, you should consider yourself eligible if you are comfortable with:\n\nReading, writing and transforming data\nInstalling and using third-party packages\nPlotting using base and/or ggplot2\nUnderstanding of R data types (strings, vectors, data.frames, lists etc.)\nWriting functions and using control structures (if, for, while)\nBasic understanding of R Markdown and/or quarto\n\n\n\n\n\n\n\nWarning\n\n\n\nThis workshop is not intended for beginners. If you have just started using R, this is not for you."
   },
   {
     "objectID": "home_registration.html#entry-requirements",
     "href": "home_registration.html#entry-requirements",
     "title": "Registration",
     "section": "",
-    "text": "This workshop is aimed at both Ph.D. students and researchers within life sciences who are already using R for bioinformatics data analyses and who would like to start using R at a more advanced level. Participants from the public sector, companies and other relevant stakeholders are warmly welcome as well. In order for you and other participants to benefit the most, you should consider yourself eligible if you are comfortable with:\n\nReading and transforming data,\nInstalling and using third-party packages and\nPlotting using standard R graphics.\n\n\n\n\n\n\n\nWarning\n\n\n\nThis course is not intended for beginners."
+    "text": "This workshop is aimed at both Ph.D. students and researchers within life sciences who are already using R for bioinformatics data analyses and who would like to start using R at a more advanced level. Participants from the public sector, companies and other relevant stakeholders are warmly welcome as well. In order for you and other participants to benefit the most, you should consider yourself eligible if you are comfortable with:\n\nReading, writing and transforming data\nInstalling and using third-party packages\nPlotting using base and/or ggplot2\nUnderstanding of R data types (strings, vectors, data.frames, lists etc.)\nWriting functions and using control structures (if, for, while)\nBasic understanding of R Markdown and/or quarto\n\n\n\n\n\n\n\nWarning\n\n\n\nThis workshop is not intended for beginners. If you have just started using R, this is not for you."
   },
   {
     "objectID": "home_registration.html#selection",
     "href": "home_registration.html#selection",
     "title": "Registration",
     "section": "Selection",
-    "text": "Selection\nWe can accomodate ~42 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.\nOnce the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have five working days to notify us if you cannot participate and want to decline the acceptance. Failure to do so would imply your inability to attend, and we will proceed accordingly. Once you confirmed, our course administrator will proceed with invoicing."
+    "text": "Selection\nWe can accomodate around 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.\nOnce the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing."
   },
   {
     "objectID": "home_registration.html#fee",
     "href": "home_registration.html#fee",
     "title": "Registration",
     "section": "Fee",
-    "text": "Fee\nThe fee for academic participants is 9500 SEK subsidized by academic grants. Fee for non-academic participants is 19000 SEK.\n\n\n\n\n\n\nWarning\n\n\n\nIf you register and are admitted but fail to attend without a valid reason (sickness or urgent family matter), you will still be liable for the entire fee.\n\n\n\n\n\n\n\n\nMore info about the fee\n\n\n\nIncluded in the fee\n\nParticipation in lectures and workshops\nMingle reception with snacks and drinks\nDaily breakfast/coffee, lunch and afternoon coffee during the workshop\nOne official course dinner\nSurprise social activities\n\nNot included in the fee\n\nAccommodation\nTravel to and from Visby\nDaily dinners"
+    "text": "Fee\nThe following fee structure applies:\n\n\n\n\nAcademic\nNon-academic\n\n\n\n\nEarly bird rate\n8500 SEK\n17000 SEK\n\n\nRegular rate\n10500 SEK\n21000 SEK\n\n\n\n\nThe fee is charged in Swedish Kroner (SEK). Academic fee applies to universities, hospitals and most government institutions. Non-academic fee applies to private companies and industry. If unsure, write to us at raukr[at]nbis.se.\n\nFor the deadlines, please refer to the Key dates section below. Some of the key benefits of early registration include:\n\nAbout 20% discount on the regular fee\nEarly notification of acceptance\nOpportunity to book early accommodation\nDeals with selected hotels in Visby\n\n\n\n\n\n\n\nMore info about the fee\n\n\n\nIncluded in the fee\n\nParticipation in lectures and workshops\nMingle reception with snacks and drinks\nDaily breakfast/coffee, lunch and afternoon coffee during the workshop\nOne official course dinner\nSurprise social activities\nRaukR goodies (t-shirt, stickers, etc.)\n\nNot included in the fee\n\nAccommodation\nTravel to and from Visby\nDaily dinners\nFood over the weekend\n\n\n\n\n\n\n\n\n\nWarning\n\n\n\nIf you register and are admitted, but fail to attend without a valid reason (typically sickness or urgent family matter), you will still be liable for the entire fee."
   },
   {
     "objectID": "home_registration.html#certification-credits",
@@ -46,7 +46,7 @@
     "href": "home_registration.html#travel",
     "title": "Registration",
     "section": "Travel",
-    "text": "Travel\nVisby is accessible from mainland Sweden by flight or ferry. See Gotland tourism website for information.\nVisby airport provides connections to Stockholm, Malmö, and Gothenburg, with a flying time of approximately 1 hour from Stockholm. Bus connection from the airport to the city centre takes about 10 min. Alternatively, there are airport taxis as well.\nFerry connections are available from Stockholm (Nynäshamn) to Visby through Destination Gotland or Vikingline. The journey time from Nynäshamn to Visby is about 3 hours. The ferry terminal in Visby is walking distance from Uppsala University Campus Gotland (800m) and our suggested accomodations.\n\nSource: DestinationGotland"
+    "text": "Travel\nVisby is accessible from mainland Sweden by flight or ferry. See Gotland tourism website for information.\nFerry connections are available from Stockholm (Nynäshamn) or Oskarshamn to Visby through Destination Gotland or Vikingline. The journey time from Nynäshamn to Visby is about 3 hours. The ferry terminal in Visby is walking distance from Uppsala University Campus Gotland (800m) and our suggested accomodations.\n\nSource: DestinationGotland\nVisby airport provides connections to Stockholm, Malmö, and Gothenburg, with a flying time of approximately 1 hour from Stockholm. Bus connection from the airport to the city centre takes about 10 min. Alternatively, there are airport taxis as well."
   },
   {
     "objectID": "home_registration.html#venue",
@@ -67,21 +67,21 @@
     "href": "home_registration.html#meals",
     "title": "Registration",
     "section": "Meals",
-    "text": "Meals\nA cafeteria is available onsite just outside the lecture hall for breakfast and lunches as well as coffee and snacks. Dinners are not included. Breakfast is not included on Weekends. For further information, see FAQs."
+    "text": "Meals\nA cafeteria is available onsite just outside the lecture hall for breakfast and lunches as well as coffee and snacks. Dinners are not included. Breakfast is not included on weekends. For further information, see FAQs."
   },
   {
     "objectID": "home_registration.html#key-dates",
     "href": "home_registration.html#key-dates",
     "title": "Registration",
     "section": "Key dates",
-    "text": "Key dates\n\n\n\n\n\n\n\n\n\n\nDate\nMilestone\n\n\n\n\n01-Oct-2025\nApplication opens\n\n\n23-Mar-2026 23:59\nApplication deadline\n\n\n07-Jun-2026\nArrival to Visby, mingle in the evening\n\n\n08-Jun-2026 - 18-Jun-2026\nWorkshop\n\n\n18-Jun-2026\nProject presentations, certificates issued, lunch included"
+    "text": "Key dates\n\n\n\n\n\n\n\n\n\n\nDate\nMilestone\n\n\n\n\n15-Sep-2025\nApplication opens\n\n\n24-Nov-2025 23:59\nEarly bird rate ends\n\n\n30-Mar-2026 23:59\nApplication deadline\n\n\n07-Jun-2026\nArrival to Visby, mingle in the evening\n\n\n08-Jun-2026 - 18-Jun-2026\nWorkshop\n\n\n18-Jun-2026\nProject presentations, certificates issued, lunch included"
   },
   {
     "objectID": "home_registration.html#register",
     "href": "home_registration.html#register",
     "title": "Registration",
     "section": "Register",
-    "text": "Register\nRegistration is not yet open."
+    "text": "Register\nBefore proceeding, please ensure you have read all the information on this page as well as our FAQs. Click below to access the online registration form.\nRegistration Form"
   },
   {
     "objectID": "home_gallery.html#raukr-2024",
@@ -158,13 +158,13 @@
     "href": "index.html",
     "title": "",
     "section": "",
-    "text": "In Life Sciences and Bioinformatics, the R programming language is pivotal for data transformation, statistical analyses, and crafting publication-ready visualizations. This workshop goes beyond the basics, offering participants a comprehensive understanding of the R ecosystem. We explore best coding practices, code profiling, data wrangling, generating reports from notebooks and development of web apps using R.\n   \n\n\nUpdated: 23-06-2025 at 13:57:29."
+    "text": "In Life Sciences and Bioinformatics, the R programming language is pivotal for data transformation, statistical analyses, and crafting publication-ready visualizations. This workshop goes beyond the basics, offering participants a comprehensive understanding of the R ecosystem. We explore best coding practices, code profiling, data wrangling, generating reports from notebooks and development of web apps using R.\n   \n\n\nUpdated: 02-07-2025 at 18:39:28."
   },
   {
     "objectID": "index.html#raukr-r-beyond-the-basics",
     "href": "index.html#raukr-r-beyond-the-basics",
     "title": "",
     "section": "",
-    "text": "In Life Sciences and Bioinformatics, the R programming language is pivotal for data transformation, statistical analyses, and crafting publication-ready visualizations. This workshop goes beyond the basics, offering participants a comprehensive understanding of the R ecosystem. We explore best coding practices, code profiling, data wrangling, generating reports from notebooks and development of web apps using R.\n   \n\n\nUpdated: 23-06-2025 at 13:57:29."
+    "text": "In Life Sciences and Bioinformatics, the R programming language is pivotal for data transformation, statistical analyses, and crafting publication-ready visualizations. This workshop goes beyond the basics, offering participants a comprehensive understanding of the R ecosystem. We explore best coding practices, code profiling, data wrangling, generating reports from notebooks and development of web apps using R.\n   \n\n\nUpdated: 02-07-2025 at 18:39:28."
   }
 ]
