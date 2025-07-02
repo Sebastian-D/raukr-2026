@@ -12,6 +12,8 @@ format:
 #| eval: true
 #| include: false
 
+Sys.setlocale("LC_ALL", "en_US.UTF-8")
+
 library(dplyr)
 library(leaflet)
 library(readxl)
@@ -25,32 +27,46 @@ dfr <- readxl::read_xlsx("map.xlsx")
 
 This workshop is aimed at both Ph.D. students and researchers within life sciences who are already using R for bioinformatics data analyses and who would like to start using R at a more advanced level. Participants from the public sector, companies and other relevant stakeholders are warmly welcome as well. In order for you and other participants to benefit the most, you should *consider yourself eligible* if you are comfortable with:
 
-- Reading and transforming data, 
-- Installing and using third-party packages and 
-- Plotting using standard R graphics.
+- Reading, writing and transforming data
+- Installing and using third-party packages
+- Plotting using base and/or ggplot2
+- Understanding of R data types (strings, vectors, data.frames, lists etc.)
+- Writing functions and using control structures (if, for, while)
+- Basic understanding of R Markdown and/or quarto
 
 ::: {.callout-warning}
-This course is not intended for beginners.
+This workshop is not intended for beginners. If you have just started using R, this is not for you.
 :::
 
 ## Selection
 
-We can accomodate ~42 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.
+We can accomodate around 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.
 
-Once the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have [five working days]{.badge} to notify us if you cannot participate and want to decline the acceptance. Failure to do so would imply your inability to attend, and we will proceed accordingly. Once you confirmed, our course administrator will proceed with invoicing.
+Once the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing.
 
 ## Fee
 
-The fee for academic participants is [9500 SEK]{.badge .badge-primary} subsidized by academic grants. Fee for non-academic participants is **19000 SEK**.
+The following fee structure applies:
 
-::: {.callout-warning}
-If you register and are admitted but fail to attend without a valid reason (sickness or urgent family matter), you will still be liable for the entire fee.
+||Academic|Non-academic|
+|---|---|---|
+|Early bird rate|8500 SEK|17000 SEK|
+|Regular rate|10500 SEK|21000 SEK|
+
+::: {.small}
+The fee is charged in Swedish Kroner (SEK). Academic fee applies to universities, hospitals and most government institutions. Non-academic fee applies to private companies and industry. If unsure, write to us at raukr[at]nbis.se.
 :::
+
+For the deadlines, please refer to the [Key dates](#key-dates) section below. Some of the key benefits of early registration include:
+
+- About 20% discount on the regular fee
+- Early notification of acceptance
+- Opportunity to book early accommodation
+- Deals with selected hotels in Visby
 
 ::: {.callout-note}
 
 ## More info about the fee
-
 **Included in the fee**
 
 - Participation in lectures and workshops
@@ -58,13 +74,18 @@ If you register and are admitted but fail to attend without a valid reason (sick
 - Daily breakfast/coffee, lunch and afternoon coffee during the workshop
 - One official course dinner
 - Surprise social activities
+- RaukR goodies (t-shirt, stickers, etc.)
 
 **Not included in the fee**
 
 - Accommodation
 - Travel to and from Visby
 - Daily dinners
+- Food over the weekend
+:::
 
+::: {.callout-warning}
+If you register and are admitted, but fail to attend without a valid reason (typically sickness or urgent family matter), you will still be liable for the entire fee.
 :::
 
 ## Certification & Credits
@@ -129,12 +150,12 @@ The workshop takes place in the city of Visby nestled on the island of Gotland, 
 
 Visby is accessible from mainland Sweden by flight or ferry. See [Gotland tourism](https://gotland.com/resa-hit-runt/) website for information.
 
-[Visby airport](https://www.swedavia.com/visby/) provides connections to Stockholm, Malmö, and Gothenburg, with a flying time of approximately 1 hour from Stockholm. [Bus connection](https://www.swedavia.com/visby/bus/) from the airport to the city centre takes about 10 min. Alternatively, there are airport taxis as well.
-
-Ferry connections are available from Stockholm (Nynäshamn) to Visby through [Destination Gotland](https://www.destinationgotland.se/) or [Vikingline](https://www.vikingline.se). The journey time from Nynäshamn to Visby is about 3 hours. The ferry terminal in Visby is walking distance from Uppsala University Campus Gotland (800m) and our suggested accomodations.
+Ferry connections are available from Stockholm (Nynäshamn) or Oskarshamn to Visby through [Destination Gotland](https://www.destinationgotland.se/) or [Vikingline](https://www.vikingline.se). The journey time from Nynäshamn to Visby is about 3 hours. The ferry terminal in Visby is walking distance from Uppsala University Campus Gotland (800m) and our suggested accomodations.
 
 ![](assets/images/visby/destination-gotland.webp)  
 [Source: [DestinationGotland](https://www.destinationgotland.se/)]{.small}
+
+[Visby airport](https://www.swedavia.com/visby/) provides connections to Stockholm, Malmö, and Gothenburg, with a flying time of approximately 1 hour from Stockholm. [Bus connection](https://www.swedavia.com/visby/bus/) from the airport to the city centre takes about 10 min. Alternatively, there are airport taxis as well.
 
 ## Venue
 
@@ -201,7 +222,7 @@ readxl::read_xlsx("map.xlsx") %>%
 
 ## Meals
 
-A cafeteria is available onsite just outside the lecture hall for breakfast and lunches as well as coffee and snacks. Dinners are not included. Breakfast is not included on Weekends. For further information, see [FAQs](home_faq.html).
+A cafeteria is available onsite just outside the lecture hall for breakfast and lunches as well as coffee and snacks. Dinners are not included. Breakfast is not included on weekends. For further information, see [FAQs](home_faq.html).
 
 ## Key dates
 
@@ -213,8 +234,9 @@ A cafeteria is available onsite just outside the lecture hall for breakfast and 
 
 tibble::tribble(
   ~Date, ~Milestone,
-  "01-Oct-2025", "Application opens",
-  "**23-Mar-2026 23:59**", "Application deadline",
+  "15-Sep-2025", "Application opens",
+  "**24-Nov-2025 23:59**", "Early bird rate ends",
+  "**30-Mar-2026 23:59**", "Application deadline",
   "07-Jun-2026", "Arrival to Visby, mingle in the evening",
   "08-Jun-2026 - 18-Jun-2026", "Workshop",
   "18-Jun-2026", "Project presentations, certificates issued, lunch included",
@@ -234,10 +256,6 @@ tibble::tribble(
 
 ## Register
 
-Registration is not yet open.
-
-<!--
 Before proceeding, please ensure you have read all the information on this page as well as our [FAQs](home_faq.html). Click below to access the online registration form.
 
-[[**Registration Form**](https://nbis.typeform.com/to/zZ87A6Tg) {{< fa arrow-up-right-from-square >}}]{.btn .btn-primary .large}
--->
+[[**Registration Form**](https://nbis.typeform.com/to/H2GFk5K4) {{< fa arrow-up-right-from-square >}}]{.btn .btn-primary .large}
