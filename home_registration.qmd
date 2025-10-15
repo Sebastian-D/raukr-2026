@@ -258,4 +258,4 @@ tibble::tribble(
 
 Before proceeding, please ensure you have read all the information on this page as well as our [FAQs](home_faq.html). Click below to access the online registration form.
 
-[[**Registration Form**](https://nbis.typeform.com/to/H2GFk5K4) {{< fa arrow-up-right-from-square >}}]{.btn .btn-primary .large}
+[[**Registration Form**](https://nbis.typeform.com/raukr-2026) {{< fa arrow-up-right-from-square >}}]{.btn .btn-primary .large}
