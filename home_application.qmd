@@ -1,6 +1,6 @@
 ---
-title: "Registration"
-pagetitle: "RaukR 2026 • Registration"
+title: "Application"
+pagetitle: "RaukR 2026 • Application"
 date: ""
 sidebar: false
 format:
@@ -42,7 +42,7 @@ This workshop is not intended for beginners. If you have just started using R, t
 
 We can accommodate around 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.
 
-Once the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing.
+Once the application period concludes, we will review your submission and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing.
 
 ## Fee
 
@@ -234,11 +234,11 @@ A cafeteria is available onsite just outside the lecture hall for breakfast and 
 
 tibble::tribble(
   ~Date, ~Milestone,
-  "15-Sep-2025", "Application opens",
-  "**24-Nov-2025 23:59**", "Early bird rate ends",
-  "**30-Mar-2026 23:59**", "Application deadline",
-  "07-Jun-2026", "Arrival to Visby, mingle in the evening",
-  "08-Jun-2026 - 18-Jun-2026", "Workshop",
+  "27-Oct-2025", "Application opens",
+  "**01-Jan-2026 00:00**", "Early bird rate ends",
+  "**01-May-2026 23:59**", "Application deadline",
+  "09-Aug-2026", "Arrival to Visby, mingle in the evening",
+  "10-Aug-2026 - 20-Jun-2026", "Workshop",
   "18-Jun-2026", "Project presentations, certificates issued, lunch included",
 ) %>%
   gt() %>%
@@ -256,6 +256,6 @@ tibble::tribble(
 
 ## Register
 
-Before proceeding, please ensure you have read all the information on this page as well as our [FAQs](home_faq.html). Click below to access the online registration form.
+Before proceeding, please ensure you have read all the information on this page as well as our [FAQs](home_faq.html). Click below to access the online application form.
 
-[[**Registration Form**](https://nbis.typeform.com/raukr-2026) {{< fa arrow-up-right-from-square >}}]{.btn .btn-primary .large}
+[[**Application Form**](https://nbis.typeform.com/raukr-2026) {{< fa arrow-up-right-from-square >}}]{.btn .btn-primary .large}

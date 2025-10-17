@@ -23,7 +23,7 @@ execute:
 ## [RaukR • R Beyond the Basics]{.large}
 ### Summer School 2026
 :::{style="margin-bottom:1em;"}
-##### June 2026, Visby, Gotland, Sweden
+##### 10-20 August 2026, Visby, Gotland, Sweden
 :::
 
 In Life Sciences and Bioinformatics, the R programming language is pivotal for data transformation, statistical analyses, and crafting publication-ready visualizations. This workshop goes beyond the basics, offering participants a comprehensive understanding of the R ecosystem. We explore best coding practices, code profiling, data wrangling, generating reports from notebooks and development of web apps using R.
@@ -44,6 +44,3 @@ Updated: {{< meta current_date >}} at {{< meta current_time >}}.
 :::
 :::
 :::
-
-<div data-tf-live="01JY9F9HH8P1CB05DEQ52XGDCN"></div>  
-<script src="//embed.typeform.com/next/embed.js"></script>  

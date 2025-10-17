@@ -9,7 +9,7 @@ project:
 website:
   site-url: "https://nbisweden.github.io/raukr-2026/"
   open-graph: true
-  description: "A 2 week intensive workshop covering the R ecosystem including best coding practices, code profiling, data wrangling, quarto notebooks, shiny apps and more."
+  description: "An intensive workshop covering the R ecosystem including best coding practices, code profiling, data wrangling, quarto notebooks, shiny apps and more."
   image: "assets/images/seo.webp"
   favicon: "assets/favicon.svg"
   navbar:
@@ -22,6 +22,9 @@ website:
       - text: "Program"
         href: "home_program.html"
         aria-label: "Program"
+      - text: "Application"
+        href: "home_application.html"
+        aria-label: "Application"
       - text: Gallery
         href: "home_gallery.html"
         aria-label: "Gallery"
