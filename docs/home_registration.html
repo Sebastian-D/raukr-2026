@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,14 +33,15 @@ ul.task-list li input[type="checkbox"] {
 <link href="./assets/favicon.svg" rel="icon" type="image/svg+xml">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-53ed2f718b5024f6a24f08669924a204.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-c94e984d087a54f90c1ea05b2becf813.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e68e6fcf62f3a84f9885d7371281976b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8e0a310dd59655d35ccf8effdd9a4e19.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
@@ -109,14 +110,12 @@ background-size: cover;
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <div id="quarto-announcement" data-announcement-id="88684261399a8fd67715b281970a300d" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p>Registration for RaukR 2026 isn’t open yet, but you can sign up to express interest and get notified.</p>
-</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./assets/logos/raukr.png" alt="RaukR" class="navbar-logo">
+    <img src="./assets/logos/raukr.png" alt="RaukR" class="navbar-logo light-content">
+    <img src="./assets/logos/raukr.png" alt="RaukR" class="navbar-logo dark-content">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -132,6 +131,10 @@ background-size: cover;
   <li class="nav-item">
     <a class="nav-link" href="./home_program.html"> 
 <span class="menu-text">Program</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./home_registration.html" aria-current="page"> 
+<span class="menu-text">Registration</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./home_gallery.html"> 
@@ -214,7 +217,7 @@ background-size: cover;
 <li>Plotting using base and/or ggplot2</li>
 <li>Understanding of R data types (strings, vectors, data.frames, lists etc.)</li>
 <li>Writing functions and using control structures (if, for, while)</li>
-<li>Basic understanding of R Markdown and/or quarto</li>
+<li>Basic understanding of RMarkdown and/or Quarto</li>
 </ul>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -233,7 +236,7 @@ Warning
 <section id="selection" class="level2">
 <h2 class="anchored" data-anchor-id="selection">Selection</h2>
 <p>We can accommodate around 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.</p>
-<p>Once the registration period concludes, we will review your application and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing.</p>
+<p>Once the application period concludes, we will review your submission and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing.</p>
 </section>
 <section id="fee" class="level2">
 <h2 class="anchored" data-anchor-id="fee">Fee</h2>
@@ -275,7 +278,7 @@ Warning
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-More info about the fee
+<span class="screen-reader-only">Note</span>More info about the fee
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -320,6 +323,7 @@ Warning
 <p><img src="assets/images/visby/visby.webp" class="img-fluid"><br>
 <span class="small">Source: <a href="https://visitsweden.com/where-to-go/southern-sweden/gotland/visby/">VisitSweden</a></span></p>
 <p>The workshop takes place in the city of Visby nestled on the island of Gotland, Sweden. This medieval town, dating back to the 12th century, is a UNESCO world heritage site. For more information, visit <a href="https://visitsweden.com/where-to-go/southern-sweden/gotland/visby/">Visit Sweden</a> and <a href="https://gotland.com/">Gotland Tourism</a>.</p>
+<p>The Medieval week (<a href="https://gotland.com/events/medeltidsveckan-2026/">Medeltidsveckan</a>), organized since 1984 is Sweden’s largest historical festival held annually in Visby during August. This event attracts thousands of visitors who come to experience medieval-themed activities, markets, and reenactments. As our workshop begins at the end of this event, participants have the opportunity to arrive earlier if they are interested in joining the festival.</p>
 <div class="raukr-gallery-parent">
 <div class="raukr-gallery-child">
 <p><a href="assets/images/gotland/a.webp" class="lightbox" data-gallery="gotland"><img src="assets/images/gotland/a.webp" class="img-fluid"></a></p>
@@ -414,23 +418,23 @@ Note
 <div class="g-col-10">
 <div class="cell">
 <div class="cell-output-display">
-<div id="ykntmgjwii" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ykntmgjwii table {
+<div id="lvoezodqzh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lvoezodqzh table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ykntmgjwii thead, #ykntmgjwii tbody, #ykntmgjwii tfoot, #ykntmgjwii tr, #ykntmgjwii td, #ykntmgjwii th {
+#lvoezodqzh thead, #lvoezodqzh tbody, #lvoezodqzh tfoot, #lvoezodqzh tr, #lvoezodqzh td, #lvoezodqzh th {
   border-style: none;
 }
 
-#ykntmgjwii p {
+#lvoezodqzh p {
   margin: 0;
   padding: 0;
 }
 
-#ykntmgjwii .gt_table {
+#lvoezodqzh .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -456,12 +460,12 @@ Note
   border-left-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_caption {
+#lvoezodqzh .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ykntmgjwii .gt_title {
+#lvoezodqzh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -473,7 +477,7 @@ Note
   border-bottom-width: 0;
 }
 
-#ykntmgjwii .gt_subtitle {
+#lvoezodqzh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -485,7 +489,7 @@ Note
   border-top-width: 0;
 }
 
-#ykntmgjwii .gt_heading {
+#lvoezodqzh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -497,13 +501,13 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_bottom_border {
+#lvoezodqzh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_col_headings {
+#lvoezodqzh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -518,7 +522,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_col_heading {
+#lvoezodqzh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -538,7 +542,7 @@ Note
   overflow-x: hidden;
 }
 
-#ykntmgjwii .gt_column_spanner_outer {
+#lvoezodqzh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -550,15 +554,15 @@ Note
   padding-right: 4px;
 }
 
-#ykntmgjwii .gt_column_spanner_outer:first-child {
+#lvoezodqzh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ykntmgjwii .gt_column_spanner_outer:last-child {
+#lvoezodqzh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ykntmgjwii .gt_column_spanner {
+#lvoezodqzh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -570,11 +574,11 @@ Note
   width: 100%;
 }
 
-#ykntmgjwii .gt_spanner_row {
+#lvoezodqzh .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ykntmgjwii .gt_group_heading {
+#lvoezodqzh .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -600,7 +604,7 @@ Note
   text-align: left;
 }
 
-#ykntmgjwii .gt_empty_group_heading {
+#lvoezodqzh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -615,15 +619,15 @@ Note
   vertical-align: middle;
 }
 
-#ykntmgjwii .gt_from_md > :first-child {
+#lvoezodqzh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ykntmgjwii .gt_from_md > :last-child {
+#lvoezodqzh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ykntmgjwii .gt_row {
+#lvoezodqzh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -642,7 +646,7 @@ Note
   overflow-x: hidden;
 }
 
-#ykntmgjwii .gt_stub {
+#lvoezodqzh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -655,7 +659,7 @@ Note
   padding-right: 5px;
 }
 
-#ykntmgjwii .gt_stub_row_group {
+#lvoezodqzh .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -669,15 +673,15 @@ Note
   vertical-align: top;
 }
 
-#ykntmgjwii .gt_row_group_first td {
+#lvoezodqzh .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ykntmgjwii .gt_row_group_first th {
+#lvoezodqzh .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ykntmgjwii .gt_summary_row {
+#lvoezodqzh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -687,16 +691,16 @@ Note
   padding-right: 5px;
 }
 
-#ykntmgjwii .gt_first_summary_row {
+#lvoezodqzh .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_first_summary_row.thick {
+#lvoezodqzh .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ykntmgjwii .gt_last_summary_row {
+#lvoezodqzh .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -706,7 +710,7 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_grand_summary_row {
+#lvoezodqzh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -716,7 +720,7 @@ Note
   padding-right: 5px;
 }
 
-#ykntmgjwii .gt_first_grand_summary_row {
+#lvoezodqzh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -726,7 +730,7 @@ Note
   border-top-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_last_grand_summary_row_top {
+#lvoezodqzh .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -736,11 +740,11 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_striped {
+#lvoezodqzh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ykntmgjwii .gt_table_body {
+#lvoezodqzh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -749,7 +753,7 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_footnotes {
+#lvoezodqzh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -763,7 +767,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_footnote {
+#lvoezodqzh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -772,7 +776,7 @@ Note
   padding-right: 5px;
 }
 
-#ykntmgjwii .gt_sourcenotes {
+#lvoezodqzh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -786,7 +790,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#ykntmgjwii .gt_sourcenote {
+#lvoezodqzh .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -794,77 +798,77 @@ Note
   padding-right: 5px;
 }
 
-#ykntmgjwii .gt_left {
+#lvoezodqzh .gt_left {
   text-align: left;
 }
 
-#ykntmgjwii .gt_center {
+#lvoezodqzh .gt_center {
   text-align: center;
 }
 
-#ykntmgjwii .gt_right {
+#lvoezodqzh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ykntmgjwii .gt_font_normal {
+#lvoezodqzh .gt_font_normal {
   font-weight: normal;
 }
 
-#ykntmgjwii .gt_font_bold {
+#lvoezodqzh .gt_font_bold {
   font-weight: bold;
 }
 
-#ykntmgjwii .gt_font_italic {
+#lvoezodqzh .gt_font_italic {
   font-style: italic;
 }
 
-#ykntmgjwii .gt_super {
+#lvoezodqzh .gt_super {
   font-size: 65%;
 }
 
-#ykntmgjwii .gt_footnote_marks {
+#lvoezodqzh .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ykntmgjwii .gt_asterisk {
+#lvoezodqzh .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ykntmgjwii .gt_indent_1 {
+#lvoezodqzh .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ykntmgjwii .gt_indent_2 {
+#lvoezodqzh .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ykntmgjwii .gt_indent_3 {
+#lvoezodqzh .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ykntmgjwii .gt_indent_4 {
+#lvoezodqzh .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ykntmgjwii .gt_indent_5 {
+#lvoezodqzh .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ykntmgjwii .katex-display {
+#lvoezodqzh .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ykntmgjwii div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#lvoezodqzh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="Name" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Name</th>
@@ -923,23 +927,23 @@ Note
 <div class="g-col-10">
 <div class="cell">
 <div class="cell-output-display">
-<div id="amzxlkkojc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#amzxlkkojc table {
+<div id="kskiplbpsv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kskiplbpsv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#amzxlkkojc thead, #amzxlkkojc tbody, #amzxlkkojc tfoot, #amzxlkkojc tr, #amzxlkkojc td, #amzxlkkojc th {
+#kskiplbpsv thead, #kskiplbpsv tbody, #kskiplbpsv tfoot, #kskiplbpsv tr, #kskiplbpsv td, #kskiplbpsv th {
   border-style: none;
 }
 
-#amzxlkkojc p {
+#kskiplbpsv p {
   margin: 0;
   padding: 0;
 }
 
-#amzxlkkojc .gt_table {
+#kskiplbpsv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -965,12 +969,12 @@ Note
   border-left-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_caption {
+#kskiplbpsv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#amzxlkkojc .gt_title {
+#kskiplbpsv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -982,7 +986,7 @@ Note
   border-bottom-width: 0;
 }
 
-#amzxlkkojc .gt_subtitle {
+#kskiplbpsv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -994,7 +998,7 @@ Note
   border-top-width: 0;
 }
 
-#amzxlkkojc .gt_heading {
+#kskiplbpsv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1006,13 +1010,13 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_bottom_border {
+#kskiplbpsv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_col_headings {
+#kskiplbpsv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1027,7 +1031,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_col_heading {
+#kskiplbpsv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1047,7 +1051,7 @@ Note
   overflow-x: hidden;
 }
 
-#amzxlkkojc .gt_column_spanner_outer {
+#kskiplbpsv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1059,15 +1063,15 @@ Note
   padding-right: 4px;
 }
 
-#amzxlkkojc .gt_column_spanner_outer:first-child {
+#kskiplbpsv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#amzxlkkojc .gt_column_spanner_outer:last-child {
+#kskiplbpsv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#amzxlkkojc .gt_column_spanner {
+#kskiplbpsv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1079,11 +1083,11 @@ Note
   width: 100%;
 }
 
-#amzxlkkojc .gt_spanner_row {
+#kskiplbpsv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#amzxlkkojc .gt_group_heading {
+#kskiplbpsv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1109,7 +1113,7 @@ Note
   text-align: left;
 }
 
-#amzxlkkojc .gt_empty_group_heading {
+#kskiplbpsv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1124,15 +1128,15 @@ Note
   vertical-align: middle;
 }
 
-#amzxlkkojc .gt_from_md > :first-child {
+#kskiplbpsv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#amzxlkkojc .gt_from_md > :last-child {
+#kskiplbpsv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#amzxlkkojc .gt_row {
+#kskiplbpsv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1151,7 +1155,7 @@ Note
   overflow-x: hidden;
 }
 
-#amzxlkkojc .gt_stub {
+#kskiplbpsv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1164,7 +1168,7 @@ Note
   padding-right: 5px;
 }
 
-#amzxlkkojc .gt_stub_row_group {
+#kskiplbpsv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1178,15 +1182,15 @@ Note
   vertical-align: top;
 }
 
-#amzxlkkojc .gt_row_group_first td {
+#kskiplbpsv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#amzxlkkojc .gt_row_group_first th {
+#kskiplbpsv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#amzxlkkojc .gt_summary_row {
+#kskiplbpsv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1196,16 +1200,16 @@ Note
   padding-right: 5px;
 }
 
-#amzxlkkojc .gt_first_summary_row {
+#kskiplbpsv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_first_summary_row.thick {
+#kskiplbpsv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#amzxlkkojc .gt_last_summary_row {
+#kskiplbpsv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1215,7 +1219,7 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_grand_summary_row {
+#kskiplbpsv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1225,7 +1229,7 @@ Note
   padding-right: 5px;
 }
 
-#amzxlkkojc .gt_first_grand_summary_row {
+#kskiplbpsv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1235,7 +1239,7 @@ Note
   border-top-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_last_grand_summary_row_top {
+#kskiplbpsv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1245,11 +1249,11 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_striped {
+#kskiplbpsv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#amzxlkkojc .gt_table_body {
+#kskiplbpsv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1258,7 +1262,7 @@ Note
   border-bottom-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_footnotes {
+#kskiplbpsv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1272,7 +1276,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_footnote {
+#kskiplbpsv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1281,7 +1285,7 @@ Note
   padding-right: 5px;
 }
 
-#amzxlkkojc .gt_sourcenotes {
+#kskiplbpsv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1295,7 +1299,7 @@ Note
   border-right-color: #D3D3D3;
 }
 
-#amzxlkkojc .gt_sourcenote {
+#kskiplbpsv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1303,77 +1307,77 @@ Note
   padding-right: 5px;
 }
 
-#amzxlkkojc .gt_left {
+#kskiplbpsv .gt_left {
   text-align: left;
 }
 
-#amzxlkkojc .gt_center {
+#kskiplbpsv .gt_center {
   text-align: center;
 }
 
-#amzxlkkojc .gt_right {
+#kskiplbpsv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#amzxlkkojc .gt_font_normal {
+#kskiplbpsv .gt_font_normal {
   font-weight: normal;
 }
 
-#amzxlkkojc .gt_font_bold {
+#kskiplbpsv .gt_font_bold {
   font-weight: bold;
 }
 
-#amzxlkkojc .gt_font_italic {
+#kskiplbpsv .gt_font_italic {
   font-style: italic;
 }
 
-#amzxlkkojc .gt_super {
+#kskiplbpsv .gt_super {
   font-size: 65%;
 }
 
-#amzxlkkojc .gt_footnote_marks {
+#kskiplbpsv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#amzxlkkojc .gt_asterisk {
+#kskiplbpsv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#amzxlkkojc .gt_indent_1 {
+#kskiplbpsv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#amzxlkkojc .gt_indent_2 {
+#kskiplbpsv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#amzxlkkojc .gt_indent_3 {
+#kskiplbpsv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#amzxlkkojc .gt_indent_4 {
+#kskiplbpsv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#amzxlkkojc .gt_indent_5 {
+#kskiplbpsv .gt_indent_5 {
   text-indent: 25px;
 }
 
-#amzxlkkojc .katex-display {
+#kskiplbpsv .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#amzxlkkojc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#kskiplbpsv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="Date" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Date</th>
@@ -1382,27 +1386,27 @@ Note
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_left" headers="Date">15-Sep-2025</td>
+<td class="gt_row gt_left" headers="Date">27-Oct-2025</td>
 <td class="gt_row gt_left" headers="Milestone">Application opens</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Date"><strong>24-Nov-2025 23:59</strong></td>
+<td class="gt_row gt_left" headers="Date"><strong>01-Jan-2026 00:00</strong></td>
 <td class="gt_row gt_left" headers="Milestone">Early bird rate ends</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Date"><strong>30-Mar-2026 23:59</strong></td>
+<td class="gt_row gt_left" headers="Date"><strong>01-May-2026 23:59</strong></td>
 <td class="gt_row gt_left" headers="Milestone">Application deadline</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Date">07-Jun-2026</td>
+<td class="gt_row gt_left" headers="Date">09-Aug-2026</td>
 <td class="gt_row gt_left" headers="Milestone">Arrival to Visby, mingle in the evening</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Date">08-Jun-2026 - 18-Jun-2026</td>
+<td class="gt_row gt_left" headers="Date">10-Aug-2026 - 20-Aug-2026</td>
 <td class="gt_row gt_left" headers="Milestone">Workshop</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Date">18-Jun-2026</td>
+<td class="gt_row gt_left" headers="Date">20-Aug-2026</td>
 <td class="gt_row gt_left" headers="Milestone">Project presentations, certificates issued, lunch included</td>
 </tr>
 </tbody>
@@ -1416,8 +1420,8 @@ Note
 </section>
 <section id="register" class="level2">
 <h2 class="anchored" data-anchor-id="register">Register</h2>
-<p>Before proceeding, please ensure you have read all the information on this page as well as our <a href="home_faq.html">FAQs</a>. Click below to access the online registration form.</p>
-<p><span class="btn btn-primary large"><a href="https://nbis.typeform.com/to/H2GFk5K4"><strong>Registration Form</strong></a> <i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i></span></p>
+<p>Before proceeding, please ensure you have read all the information on this page as well as our <a href="home_faq.html">FAQs</a>. Click below to access the online application form.</p>
+<p><span class="btn btn-primary large"><a href="https://nbis.typeform.com/raukr-2026"><strong>Application Form</strong></a> <i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i></span></p>
 
 
 </section>
@@ -1474,13 +1478,14 @@ Note
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1832,7 +1837,7 @@ Note
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p>Published with <a href="https://quarto.org/">Quarto</a> v1.7.32
+<p>Published with <a href="https://quarto.org/">Quarto</a> v1.8.25
 </p>
 </div>
   </div>

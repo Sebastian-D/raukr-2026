@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,14 +33,15 @@ ul.task-list li input[type="checkbox"] {
 <link href="./assets/favicon.svg" rel="icon" type="image/svg+xml">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-53ed2f718b5024f6a24f08669924a204.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-c94e984d087a54f90c1ea05b2becf813.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e68e6fcf62f3a84f9885d7371281976b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-346aef1c68d7155ce44551eb6505ff8d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -83,21 +84,19 @@ background-size: cover;
 
 <meta property="og:title" content="RaukR 2026 • Program">
 <meta property="og:description" content="RaukR 2026 • R Beyond the Basics">
-<meta property="og:image" content="https://nbisweden.github.io/raukr-2026/assets/images/seo.webp">
+<meta property="og:image" content="https://nbisweden.github.io/raukr-2026/assets/images/profile/jenny-bryan.webp">
 </head>
 
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <div id="quarto-announcement" data-announcement-id="88684261399a8fd67715b281970a300d" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p>Registration for RaukR 2026 isn’t open yet, but you can sign up to express interest and get notified.</p>
-</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./assets/logos/raukr.png" alt="RaukR" class="navbar-logo">
+    <img src="./assets/logos/raukr.png" alt="RaukR" class="navbar-logo light-content">
+    <img src="./assets/logos/raukr.png" alt="RaukR" class="navbar-logo dark-content">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -113,6 +112,10 @@ background-size: cover;
   <li class="nav-item">
     <a class="nav-link active" href="./home_program.html" aria-current="page"> 
 <span class="menu-text">Program</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./home_registration.html"> 
+<span class="menu-text">Registration</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./home_gallery.html"> 
@@ -164,7 +167,8 @@ background-size: cover;
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#syllabus" id="toc-syllabus" class="nav-link active" data-scroll-target="#syllabus">Syllabus</a></li>
+  <li><a href="#guest-instructors" id="toc-guest-instructors" class="nav-link active" data-scroll-target="#guest-instructors">Guest instructors</a></li>
+  <li><a href="#syllabus" id="toc-syllabus" class="nav-link" data-scroll-target="#syllabus">Syllabus</a></li>
   <li><a href="#course-materials" id="toc-course-materials" class="nav-link" data-scroll-target="#course-materials">Course materials</a></li>
   <li><a href="#sessions" id="toc-sessions" class="nav-link" data-scroll-target="#sessions">Sessions</a></li>
   </ul>
@@ -178,6 +182,19 @@ background-size: cover;
 
 
 
+<section id="guest-instructors" class="level2">
+<h2 class="anchored" data-anchor-id="guest-instructors">Guest instructors</h2>
+<div class="guest-parent">
+<div class="guest-child">
+<p><img src="assets/images/profile/jenny-bryan.webp" class="nolightbox img-fluid"></p>
+<p><a href="https://jennybryan.org/">Jennifer Bryan</a></p>
+<p>Software engineer at <a href="https://posit.co/">Posit</a><br>
+Data science professor<br>
+<a href="https://www.stat.ubc.ca/jenny-bryan">University of British Columbia</a><br>
+Vancouver, Canada</p>
+</div>
+</div>
+</section>
 <section id="syllabus" class="level2">
 <h2 class="anchored" data-anchor-id="syllabus">Syllabus</h2>
 <p>We will be covering a number of topics in R programming with focus on R features helpful in bioinformatics and computational biology data analyses workflow. These typically include:</p>
@@ -196,10 +213,23 @@ background-size: cover;
 <li>Team project work - developing data analyses workflow in R using acquired skills</li>
 <li>Collaborative work using Git and GitHub</li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that the exact topics covered may vary slightly from year to year based on participant feedback, instructors and emerging trends in R programming.</p>
+</div>
+</div>
 </section>
 <section id="course-materials" class="level2">
 <h2 class="anchored" data-anchor-id="course-materials">Course materials</h2>
-<p>Course materials will be made available at the beginning of the workshop and will remain open and publicly accessible online for at least a year. You can check out the materials from <a href="https://nbisweden.github.io/raukr-2025/home_contents.html">2025</a>.</p>
+<p>Course materials will be made available at the beginning of the workshop and will remain open and publicly accessible online for at least a year. You can check out the materials from the <a href="https://nbisweden.github.io/raukr-2025/home_contents.html">previous year</a>.</p>
 </section>
 <section id="sessions" class="level2">
 <h2 class="anchored" data-anchor-id="sessions">Sessions</h2>
@@ -262,13 +292,14 @@ background-size: cover;
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -620,7 +651,7 @@ background-size: cover;
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p>Published with <a href="https://quarto.org/">Quarto</a> v1.7.32
+<p>Published with <a href="https://quarto.org/">Quarto</a> v1.8.25
 </p>
 </div>
   </div>
