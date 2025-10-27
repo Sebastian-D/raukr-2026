@@ -8,6 +8,23 @@ format:
     number-sections: false
 ---
 
+## Guest instructors
+
+::: {.guest-parent}
+::: {.guest-child}
+
+![](assets/images/profile/jenny-bryan.webp){.nolightbox}
+
+[Jennifer Bryan](https://jennybryan.org/)
+
+Software engineer at [Posit](https://posit.co/)  
+Data science professor  
+[University of British Columbia](https://www.stat.ubc.ca/jenny-bryan)  
+Vancouver, Canada
+
+:::
+:::
+
 ## Syllabus
 
 We will be covering a number of topics in R programming with focus on R features helpful in bioinformatics and computational biology data analyses workflow. These typically include:
@@ -26,9 +43,13 @@ We will be covering a number of topics in R programming with focus on R features
 - Team project work - developing data analyses workflow in R using acquired skills
 - Collaborative work using Git and GitHub
 
+::: {.callout-note}
+Note that the exact topics covered may vary slightly from year to year based on participant feedback, instructors and emerging trends in R programming.
+:::
+
 ## Course materials
 
-Course materials will be made available at the beginning of the workshop and will remain open and publicly accessible online for at least a year. You can check out the materials from [2025](https://nbisweden.github.io/raukr-2025/home_contents.html).
+Course materials will be made available at the beginning of the workshop and will remain open and publicly accessible online for at least a year. You can check out the materials from the [previous year](https://nbisweden.github.io/raukr-2025/home_contents.html).
 
 ## Sessions
 
