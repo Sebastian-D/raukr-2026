@@ -13,3 +13,5 @@ labs/**/*_files
 todo.txt
 **/.quarto/
 .Rproj.user
+.vscode/
+**/*.quarto_ipynb

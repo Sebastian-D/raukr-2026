@@ -22,9 +22,9 @@ website:
       - text: "Program"
         href: "home_program.html"
         aria-label: "Program"
-      - text: "Application"
-        href: "home_application.html"
-        aria-label: "Application"
+      - text: "Registration"
+        href: "home_registration.html"
+        aria-label: "Registration"
       - text: Gallery
         href: "home_gallery.html"
         aria-label: "Gallery"
@@ -41,12 +41,12 @@ website:
     border: false
     left: '{{< meta current_year >}} NBIS • [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)'
     right: "Published with [Quarto](https://quarto.org/) v{{< meta quarto_version >}}"
-  announcement:
-    icon: info-circle
-    dismissable: true
-    content: "Registration for RaukR 2026 isn't open yet, but you can sign up to express interest and get notified."
-    type: primary
-    position: above-navbar
+  # announcement:
+  #   icon: info-circle
+  #   dismissable: true
+  #   content: "Registration for RaukR 2026 isn't open yet, but you can sign up to express interest and get notified."
+  #   type: primary
+  #   position: above-navbar
 
 format:
   html:
