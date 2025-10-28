@@ -17,7 +17,7 @@ format:
 ![](assets/images/profile/marcin-kierczak.webp){.nolightbox}
 
 [Marcin Kierczak](http://www.kierczak.pl/)  
-Bioinformatics Data Scientist, NBIS  
+Bioinformatics Data Scientist, NBIS,  
 Associate Professor in Bioinformatics, Uppsala university
 
 :::
@@ -26,7 +26,7 @@ Associate Professor in Bioinformatics, Uppsala university
 ![](assets/images/profile/sebastian-dilorenzo.webp){.nolightbox}
 
 [Sebastian DiLorenzo](https://www.katalog.uu.se/profile?id=N11-2322)  
-Bioinformatics Data Scientist, NBIS
+Bioinformatics Data Scientist, NBIS, Uppsala university
 
 :::
 ::: {.profile-child}
@@ -34,7 +34,7 @@ Bioinformatics Data Scientist, NBIS
 ![](assets/images/profile/roy-francis.webp){.nolightbox}
 
 [Roy Francis](https://www.katalog.uu.se/empinfo/?id=N14-525)  
-Bioinformatics Data Scientist, NBIS
+Bioinformatics Data Scientist, NBIS, Uppsala university
 
 :::
 ::: {.profile-child}
@@ -42,14 +42,14 @@ Bioinformatics Data Scientist, NBIS
 ![](assets/images/profile/annika-kollstedt.webp){.nolightbox}
 
 [Annika Kollstedt](https://www.katalog.uu.se/empinfo/?id=N1-816)  
-Administrator, NBIS
+Administrator, NBIS, Uppsala university
 
 :::
 :::
 
 ## Contact
 
-[NBIS](https://nbis.se) is a platform of the Science for Life Laboratory ([SciLifeLab](https://www.scilifelab.se/)) and the Swedish node of [Elixir](https://elixir-europe.org/). This event is organized in co-operation with Campus Gotland Uppsala University, Lund University and Stockholm University, Sweden.
+[NBIS](https://nbis.se) is a platform of the Science for Life Laboratory ([SciLifeLab](https://www.scilifelab.se/)) and the Swedish node of [ELIXIR](https://elixir-europe.org/). This event is organized in co-operation between Uppsala University and Campus Gotland Uppsala University, Sweden.
 
 For queries, write to us at **raukr[at]nbis.se**.  
 

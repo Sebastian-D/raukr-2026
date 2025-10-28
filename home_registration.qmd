@@ -40,7 +40,7 @@ This workshop is not intended for beginners. If you have just started using R, t
 
 ## Selection
 
-We can accommodate around 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We do accept international applicants, but applicants affiliated to a Swedish institution are prioritized.
+We can accommodate approximately 40 participants. Selection criteria include correct entry requirements, motivation to attend the workshop as well as gender and geographical balance. We accept international applicants, but applicants affiliated to a Swedish institution are prioritized.
 
 Once the application period concludes, we will review your submission and notify you of our decision. If and when accepted, you will have to notify us if you still wish to participate. Failure to do so would imply that you are unable to attend, and we will decline your application. Once you have confirmed, our course administrator will proceed with invoicing.
 
@@ -157,7 +157,7 @@ Ferry connections are available from Stockholm (Nynäshamn) or Oskarshamn to Vis
 ![](assets/images/visby/destination-gotland.webp)  
 [Source: [DestinationGotland](https://www.destinationgotland.se/)]{.small}
 
-[Visby airport](https://www.swedavia.com/visby/) provides connections to Stockholm, Malmö, and Gothenburg, with a flying time of approximately 1 hour from Stockholm. [Bus connection](https://www.swedavia.com/visby/bus/) from the airport to the city centre takes about 10 min. Alternatively, there are airport taxis as well.
+[Visby airport](https://www.swedavia.com/visby/) provides connections to Stockholm, Malmö, and Gothenburg, with a flying time of approximately 1 hour from Stockholm. [Bus connection](https://www.swedavia.com/visby/bus/) from the airport to the city centre takes about 10 min. There are airport taxis as well.
 
 ## Venue
 
@@ -188,9 +188,11 @@ Gotland, Sweden
 
 :::
 
+<!-- I commented this note out as I think it is too negative :). /Sebastian
 ::: {.callout-note}
 The classroom windows may be left open in case the room gets warm. If you are easily disturbed by external noise, it might a good idea to bring noise cancelling headphones for practical labs (we are close to Visby harbor). If it's a wet summer, it might be cold in the classroom, so it's good to carry couple of pieces of warm clothing.
 :::
+-->
 
 For photographs from previous workshops, visit our [Gallery](home_gallery.html).
 
