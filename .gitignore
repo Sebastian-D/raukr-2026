@@ -17,4 +17,4 @@ todo.txt
 **/*.quarto_ipynb
 *.fastq
 to-do.txt
-docs
+docs/
