@@ -1,4 +1,4 @@
-# RaukR 2026 • Workshop Website  
+# RaukR 2026 • Workshop Website  [![ci_badge](https://github.com/nbisweden/raukr-2026/workflows/deploy/badge.svg)](https://github.com/nbisweden/raukr-2026/actions?workflow=deploy)  
 **NBIS Summer School • Data Science With R**  
 
 ## Environment
