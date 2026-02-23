@@ -3,13 +3,21 @@
 
 ## Environment
 
-To edit, preview and render documents, you need one or more of the following requirements:
+To edit, preview, and render documents, you need the following prerequisites:
 
 - [Quarto\>=1.8.27](https://quarto.org/docs/download/)
 - RStudio [v2025.09.2 or newer](https://posit.co/download/rstudio-desktop/) or [Positron](https://positron.posit.co/) or [VS Code](https://arinbasu.medium.com/why-quarto-with-vscode-is-a-great-data-science-tool-f0a259d28702)
 - You need to install the R packages necessary for your topic/document
 
-## Adding/Modifying topics
+## Quick start
+
+- Fork/clone the repository
+- Install Quarto and required R packages
+- Preview: `quarto preview`
+- Render: `quarto render`
+- Commit changes and send a pull request
+
+## Adding or Modifying Topics
 
 - Fork/Clone the repository
 - If your topic doesn't exist, create a branch from `develop` branch and add your topic
@@ -36,21 +44,19 @@ To edit, preview and render documents, you need one or more of the following req
 :bulb: The document can be live previewed to view changes. Preview is automatically updated on saving the document. Sometimes, the preview can look a bit wonky, in which case, cancel and rerun.
 
 - To preview, run in terminal
-  - `quarto preview slides/topic/index.qmd`
   - `quarto preview`
   - Saving the file updates the preview
 
 - To render, run in terminal
-  - `quarto render slides/topic/index.qmd`
-  - `quarto render labs/topic/index.qmd`
+  - `quarto render`
   - Rendered files are written to **/docs**
   - To view in browser, open
     - **docs/slides/topic/index.html**
     - **docs/labs/topic/index.html**
-    
-:warning: Do not run `quarto render` as it will remove everything from **docs/** and attempt to render all the files. This might overwrite someone else's materials and also break since you won't have their R packages installed. So, only render your files.
 
-- Finally commit changes (both source qmd files, rendered html files in **docs/** and **_freeze/**)
+:tip: Rendered documents in **docs/** are only for local preview and are excluded from git. The HTML files for the website are rendered by GitHub Actions. Make sure to commit the **_freeze/** folder. We use freeze to cache chunks so rendering works without the original environment on GitHub Actions.
+
+- Finally commit changes
 
 ```
 git add .
@@ -126,7 +132,7 @@ Contents
 
 - To view a demo report, click [here](https://nbisweden.github.io/raukr-2026/labs/demo/)
 
-### RevealJS
+### Reveal.js (Slides)
 
 These are slide specific info. Comparisons here are to xaringan used previously for RaukR.
 
@@ -142,9 +148,7 @@ Contents
 :::
 ```
 
-- To view a demo presentation, click [here](https://nbisweden.github.io/raukr-2026/slides/demo/) 
-
-- When running `quarto preview`, it might try to render other files. If you are in the container, it would just render, otherwise break due to missing packages. If `_freeze` folder is present, it might help. The last resort is to temporarly delete the qmd files that it's trying to render.
+- To view a demo presentation, click [here](https://nbisweden.github.io/raukr-2026/slides/demo/)
 
 ## Quarto extensions
 
