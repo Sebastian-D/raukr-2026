@@ -50,10 +50,10 @@ website:
 
 format:
   html:
-    quarto-required: ">=1.4.5"
+    quarto-required: ">=1.8.25"
     include-in-header: "assets/include_head.html"
     include-before-body: "assets/include_body_before.html"
-    include_after_body: "assets/include_body_after.html"
+    include-after-body: "assets/include_body_after.html"
     theme: "assets/css/styles.scss"
     smooth-scroll: true
     toc: true
@@ -65,7 +65,7 @@ format:
     code-tools: false
     code-copy: true
     code-overflow: wrap
-    df-print: paged
+    df-print: kable
     standalone: false
     fig-align: left
     title-block-banner: "assets/images/binary.svg"
@@ -76,10 +76,10 @@ format:
     image: "assets/images/featured.webp"
     lightbox: auto
   revealjs:
-    quarto-required: ">=1.4.5"
+    quarto-required: ">=1.8.25"
     include-in-header: "assets/include_head.html"
     include-before-body: "assets/include_body_before.html"
-    include_after_body: "assets/include_body_after.html"
+    include-after-body: "assets/include_body_after.html"
     theme: ["default", "assets/css/slides.scss"]
     df-print: kable
     width: 1280
