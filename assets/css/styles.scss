@@ -64,8 +64,24 @@ body {
   background-size: 13px 13px;
 }
 
-.contents-table table {
-  line-height: 1;
+/* navbar  and footer */
+
+.navbar-brand {
+  padding-top: 0;
+}
+
+.navbar-nav {
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+}
+
+.nav-footer {
+  background-color: $footer-bg;
+  color: $footer-fg;
+}
+
+.nav-footer p {
+  margin-bottom: 0;
 }
 
 /* listing */
@@ -85,24 +101,19 @@ body {
   object-fit: cover;
 }
 
-/* navbar  and footer */
+/* table */
 
-.navbar-brand {
-  padding-top: 0;
+table th,
+table td {
+  vertical-align: middle;
 }
 
-.navbar-nav {
+table, .Reactable {
   font-size: 0.85em;
-  letter-spacing: 0.1em;
 }
 
-.nav-footer {
-  background-color: $footer-bg;
-  color: $footer-fg;
-}
-
-.nav-footer p {
-  margin-bottom: 0;
+.contents-table table {
+  line-height: 1;
 }
 
 /* buttons and badges */
@@ -155,12 +166,55 @@ body {
 
 .observablehq .btn {
   @extend .btn-sm;
+  border-radius: 0;
 }
 
 .observablehq select {
   @extend .form-select;
+  border-radius: 0;
 }
 
+.observablehq input:not([type]),
+.observablehq input[type="text"],
+.observablehq input[type="email"],
+.observablehq input[type="password"],
+.observablehq input[type="search"],
+.observablehq input[type="tel"],
+.observablehq input[type="url"],
+.observablehq input[type="number"],
+.observablehq input[type="file"],
+.observablehq input[type="date"],
+.observablehq input[type="datetime-local"],
+.observablehq input[type="month"],
+.observablehq input[type="time"],
+.observablehq input[type="week"],
+.observablehq textarea {
+  @extend .form-control;
+  border-radius: 0;
+}
+
+.observablehq input[type="button"],
+.observablehq input[type="submit"],
+.observablehq input[type="reset"] {
+  @extend .btn;
+  border-radius: 0;
+}
+
+.observablehq input[type="checkbox"],
+.observablehq input[type="radio"] {
+  @extend .form-check-input;
+  border-radius: 0;
+}
+
+.observablehq input[type="range"] {
+  @extend .form-range;
+  border-radius: 0;
+}
+
+.observablehq input[type="color"] {
+  @extend .form-control-color;
+  border-radius: 0;
+}
 
 /* alert */
 
