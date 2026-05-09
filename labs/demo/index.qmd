@@ -3,6 +3,10 @@ title: "Demo Lab"
 author: "Roy Francis"
 description: "This is a demo quarto lab document to showcase the theme, style and usage."
 format: html
+accordion:
+  - ac-1:
+    - header: "**This is a header**"
+      body: "This is **bold** and *italic* text"
 ---
 
 ```{r}
@@ -707,6 +711,49 @@ This is a call-out.
 ::: {.callout-note appearance="minimal"}
 This is a call-out.
 :::
+
+## Accordions
+
+Accordion support is provided through the [accordion](https://github.com/royfrancis/accordion) extension.
+
+Accordion contents can be defined in the YAML header as shown below.
+
+```yaml
+accordion:
+  - ac-1:
+    - header: "**This is a header**"
+      body: "This is **bold** and *italic* text"
+```
+
+and then called in the body using the shortcode.
+
+```lua
+{{{< accordion ac-1 >}}}
+```
+
+{{< accordion ac-1 >}}
+
+Alternatively, an accordion can be defined inline as shown below.
+
+```lua
+{{{< accordion label="my-accordion" header="Click to expand" body="This is the content of the accordion." >}}}
+```
+
+{{< accordion label="my-accordion" header="Click to expand" body="This is the content of the accordion." >}}
+
+Multiple inline items are defined using JSON.
+
+```
+{{{< accordion label="inline-multi" items='[
+  { "header": "Inline Item 1", "body": "Content for inline item 1." },
+  { "header": "Inline Item 2", "body": "Content for inline item 2." }
+]' >}}}
+```
+
+{{< accordion label="inline-multi" items='[
+  { "header": "Inline Item 1", "body": "Content for inline item 1." },
+  { "header": "Inline Item 2", "body": "Content for inline item 2." }
+]' >}}
 
 ## Alerts
 

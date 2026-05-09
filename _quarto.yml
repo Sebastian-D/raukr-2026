@@ -128,7 +128,7 @@ knitr:
 
 filters:
   - assets/custom.lua
-  - assets/fold-results.lua
+  - collapse-output
   - reveal-logo
   - fontawesome
   - accordion
