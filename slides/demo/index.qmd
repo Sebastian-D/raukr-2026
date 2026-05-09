@@ -3,6 +3,10 @@ title: "Demo Slides"
 author: "Roy Francis"
 image: "assets/featured.webp"
 format: revealjs
+accordion:
+  - ac-1:
+    - header: "**This is a header**"
+      body: "This is **bold** and *italic* text"
 ---
 
 ## Packages {visibility="hidden"}
@@ -224,7 +228,7 @@ Content for `Tab B`
 
 :::
 
-## Text Formatting
+## Text formatting
 
 Rendering of normal text, numbers and symbols.
 
@@ -578,6 +582,51 @@ Sys.Date()
 ```
 
 :::
+
+## Accordions
+
+Accordion support is provided through the [accordion](https://github.com/royfrancis/accordion) extension.
+
+Accordion contents can be defined in the YAML header as shown below.
+
+```yaml
+accordion:
+  - ac-1:
+    - header: "**This is a header**"
+      body: "This is **bold** and *italic* text"
+```
+
+and then called in the body using the shortcode.
+
+```lua
+{{{< accordion ac-1 >}}}
+```
+
+{{< accordion ac-1 >}}
+
+## Inline Accordions
+
+An accordion can also be defined inline as shown below.
+
+```lua
+{{{< accordion label="my-accordion" header="Click to expand" body="This is the content of the accordion." >}}}
+```
+
+{{< accordion label="my-accordion" header="Click to expand" body="This is the content of the accordion." >}}
+
+Multiple inline items are defined using JSON.
+
+```
+{{{< accordion label="inline-multi" items='[
+  { "header": "Inline Item 1", "body": "Content for inline item 1." },
+  { "header": "Inline Item 2", "body": "Content for inline item 2." }
+]' >}}}
+```
+
+{{< accordion label="inline-multi" items='[
+  { "header": "Inline Item 1", "body": "Content for inline item 1." },
+  { "header": "Inline Item 2", "body": "Content for inline item 2." }
+]' >}}
 
 ## Code formatting
 
