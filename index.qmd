@@ -38,8 +38,6 @@ filters:
 
 The R programming language is a powerful tool for data transformation, statistical analysis, and creating publication-ready visualizations. This workshop goes beyond the basics, giving participants a comprehensive understanding of the R ecosystem. We cover best coding practices, code profiling, data wrangling, generating reports from notebooks, and developing web applications using R.
 
-[Apply Now »](home_registration.html){.btn .btn-primary}
-
 ![](assets/logos/logo.svg){height="1.2em" style="margin-bottom:-3px;"} &nbsp; ![](assets/logos/nbis-scilifelab.svg){height="1.1em"}
 
 ---
