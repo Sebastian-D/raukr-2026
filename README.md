@@ -5,7 +5,7 @@
 
 To edit, preview, and render documents, you need the following prerequisites:
 
-- [Quarto\>=1.8.27](https://quarto.org/docs/download/)
+- [Quarto\>=1.8.25](https://quarto.org/docs/download/)
 - RStudio [v2025.09.2 or newer](https://posit.co/download/rstudio-desktop/) or [Positron](https://positron.posit.co/) or [VS Code](https://arinbasu.medium.com/why-quarto-with-vscode-is-a-great-data-science-tool-f0a259d28702)
 - You need to install the R packages necessary for your topic/document
 
@@ -15,17 +15,18 @@ To edit, preview, and render documents, you need the following prerequisites:
 - Install Quarto and required R packages
 - Preview: `quarto preview`
 - Render: `quarto render`
-- Commit changes and send a pull request
+- Commit changes in source and _freeze and send a pull request
+- Rendered `docs` are not commited
 
 ## Adding or Modifying Topics
 
 - Fork/Clone the repository
-- If your topic doesn't exist, create a branch from `develop` branch and add your topic
+- If your topic doesn't exist, create a branch from `main` branch and add your topic
 - Keep the topic name simple, preferably one word
 - To add a **topic**, create
   - **slides/topic/index.qmd**
   - **labs/topic/index.qmd**
-  - The YAML metadata should minimally look like this:
+  - The YAML metadata should minimally look like this for labs:
 
     ```         
     ---
@@ -37,6 +38,17 @@ To edit, preview, and render documents, you need the following prerequisites:
     ```
 
 - `format` must be `html` for reports and `revealjs` for presentations
+- The YAML metadata should minimally look like this for slides:
+
+    ```         
+    ---
+    title: "Topic"
+    author: "Author"
+    description: "This topic covers this and that."
+    format: revealjs
+    ---
+    ```
+
 - For assets relating to the document (figures, files etc), create an **assets** folder
   - **slides/topic/assets/**
   - **labs/topic/assets/**
@@ -64,22 +76,16 @@ git commit -m "Added topic"
 ```
 
 - Pull latest changes from the repo or from main branch to your branch
-- Optionally, merge your branch to develop branch
 - Resolve conflicts as needed
-- Push your branch or the develop branch and send a pull request like one of the options below
+- Push your changes to your fork or branch and send a pull request like one of the options below
 
 ```
 nbisweden/raukr-2026:main <- nbisweden/raukr-2026:your-branch
+nbisweden/raukr-2026:main <- you/raukr-2026:main
 nbisweden/raukr-2026:main <- you/raukr-2026:your-branch
-nbisweden/raukr-2026:main <- nbisweden/raukr-2026:develop
-nbisweden/raukr-2026:main <- you/raukr-2026:develop
 ```
 
-## Branches
-
-- `main` - Finalized material for the workshop website
-- `develop` - Work in progress including above and working slides and labs
-- `<topic>` - Individual topic branches for development
+- Note that qmd rendering can be selectively disabled in _quarto.yml
 
 ## Tips & Conventions
 
@@ -157,6 +163,8 @@ Quarto extensions in use:
 ```bash
 # Fontawesome icons
 quarto add quarto-ext/fontawesome
+# Support for collapsible output in code chunks
+quarto add mcanouil/quarto-collapse-output
 # Accordion layout
 quarto add royfrancis/quarto-accordion
 # Top logos in revealjs slides
