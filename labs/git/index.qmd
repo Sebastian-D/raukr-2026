@@ -1,16 +1,588 @@
 ---
-title: "git and R"
-author: "Sebastian DiLorenzo"
+title: "Version control with git"
+author: "Nina Norgren"
 description: "Work reproducibly and together"
 image: "assets/featured.webp"
 format: html
 ---
 
-```{r}
-#| include: false
-library(usethis)
-library(gitcreds)
+## Install git
+
+If you don't have git installed on your computer, go here and follow the installation instructions:
+
+
+
+![](assets/git-install.png)
+
+
+## Configure git
+
+Before your first commit, git needs to know who you are. It stamps every commit
+with a name and email — this is *not* a login, just the author label baked into
+the commit. Set it once, globally:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.org"
 ```
+
+If you prefer to do it the R way, there's of course a package for this: `usethis` 
+
+```{r eval=F}
+usethis::use_git_config(
+  user.name  = "Your Name",
+  user.email = "you@example.org"
+)
+```
+
+
+::: {.callout-tip}
+Use the same email you use (or will use) on GitHub — it's how GitHub links your
+commits to your account later.
+:::
+
+If you want, you can also update your default branch name. Git uses `master` as default name, while GitHub has switched to `main`,
+
+```bash
+git config --global init.defaultBranch main
+```
+
+Check what you've set at any time with:
+
+```bash
+git config --list
+```
+
+There are different ways to use git locally on your computer. Below we will introduce two ways, the command line or through Positron. Try either or both. You can also mix using them. Alls settings you have configured are global, and are applied regardless if you interact with git through the commandline or through Positron.
+
+
+
+# The basics - Command line
+
+## Initiate an empty git repository
+
+```bash
+git init
+```
+
+You can see that git has added a hidden folder called .git in the root folder where you initiated the git repository. To check on the status of the repository, you can run:
+
+```bash
+git status
+```
+
+As we have no files in this folder yet, git will just tell you something like this:
+
+```no-highlight
+On branch main
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)
+```
+
+::: {.callout-tip}
+If you try to run `git status` in a non-Git directory, it will say
+that it is _not a git repository_. Git looks for the hidden directory 
+`.git/` where all information is stored. This hidden directory contains
+all information and settings Git needs in order to run and version
+track your files. This also means that your Git-tracked directory
+is self-contained, _i.e._ you can simply delete it and everything that
+has to do with Git in connection to that directory will be gone.
+:::
+
+## Create a file
+
+Create a file with some random content, either in an editor or just using the command line:
+
+```bash
+echo "Content to my file" > random.txt
+```
+
+Once you have done that, run `git status` again. It will tell you that there
+are files in the directory that are not version tracked by Git.
+
+## Add and commit changes
+
+We will now commit the untracked files. A commit is essentially a set of
+changes to a set of files. Preferably, the changes making out a commit should
+be related to something, _e.g._ a specific bug fix or a new feature.
+
+- Our first commit will be to add the copied files to the repository. Run the
+  following (as suggested by `git status`):
+
+```bash
+git add random.txt
+```
+
+- Run `git status` again! See that we have added `random.txt` to our upcoming
+  commit (listed under "_Changes to be committed_"). This is called the _staging
+  area_, and the files there are staged to be committed.
+
+- We are now ready to commit! Run the following:
+
+```bash
+git commit -m "Add random file"
+```
+
+The `-m` option adds a commit message. This should be a short description of
+what the commit contains. If you omit the -m flag it will open a text editor 
+where you can write the message in.
+
+- Run `git status` again. It should tell you _"nothing to commit, working
+  directory clean"_.
+
+
+## Change a file
+
+Let's repeat this process by editing a file!
+
+- Open up `random.txt` in your favourite editor and add a bit more text to the file.
+
+- Run `git status`. It will tell you that there are modifications in one file
+  (`random.txt`) compared to the previous commit. This is nice! We don't have to
+  keep track of which files we have edited, Git will do that for us.
+
+- Run `git diff random.txt`. This will show you the changes made to the file. A
+  `-` means a deleted line, a `+` means an added line. A few lines before and
+  after the changes are also shown for context.
+
+- Now let's add and commit the changes to this file.
+
+You can track all changes made to files that are version controlled using `git log`:
+
+```bash
+git log
+```
+
+::: {.callout-note title="Quick recap"}
+These are the `git` commands we have used this far:
+
+- `git init` tells Git to track the current directory.
+- `git status` is a command you should use _a lot_. It will tell you,
+  amongst other things, what files are changed, if they are staged or commit.
+- `git add <file>` adds a file to the staging area.
+- `git commit` commits the file to git.
+- `git diff <file>` shows the difference between the commited file and unstaged file.
+- `git log` show a log of all commit details.
+:::
+
+# The basics - Positron
+
+## Start a new project in Positron
+
+Click on Initialize Git repository.
+Creates a hidden .git folder in your project and a README.md file.
+
+## Create a file
+
+Add a new file to the folder and write something in it.
+
+## Add and commit changes
+
+Now you want to first add your changes to the staging area. Do this by going to the Source Control tab in on the left hand side in Positron. There you will see a list of all files with or without changes. The small U to the right of the file means the changes have not been staged.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](assets/source-control-positron.png)
+:::
+
+::: {.column width="50%"}
+![](assets/unstaged.png)
+:::
+
+::::
+
+Click on the small plus next to the file to stage the file. Do this with all the files you want to later commit. Once it's staged it will be marked with a small A. Now you can add a short but informative commit message, and commit your changes. They are now saved in git.
+
+![](assets/staged.png)
+
+## Change a file
+
+Try adding a few more files and change some existing ones. If you change a file you can click on the file in the source control tab, and see the difference to the file that is already committed, and the new changes.
+
+![](assets/positron-diff.png)
+
+Stage and commit the changes. Now, let's look at the history. In Positron you can look at the git graph and see all changes made to files at certain commits:
+
+![](assets/git-graph.png)
+
+All those files are now version controlled!
+
+
+# Keeping order
+
+So far we've only added things. Now let's practise taking them back.
+
+## Unstage a file (but keep the edit)
+
+- Open `random.txt`, add a line, and stage it:
+
+```bash
+git add random.txt
+```
+
+- Run `git status` and confirm it's listed under "_Changes to be committed_".
+
+- Now unstage it:
+
+```bash
+git restore --staged random.txt
+```
+
+- **Predict before you run:** is your new line gone, or just unstaged? Run
+  `git status` to check.
+
+The line is still there, the file is simply back to "modified but not staged".
+`git restore --staged` restored the *staging area* from the last commit; it
+never touched your working file.
+
+::: {.callout-tip title="In Positron"}
+Hover the staged file in the Source Control panel and click the `−` (minus) to
+unstage it — same as `git restore --staged`. Your edit stays put.
+:::
+
+## Discard an unstaged change (this one bites)
+
+- With that edit still unstaged, discard it:
+
+```bash
+git restore random.txt
+```
+
+- Run `git status`, then open the file.
+
+This time the edit is **gone**. The bare `git restore` restored the *working
+file* from the staging area and there was nothing staged, so it reverted to
+the last commit.
+
+::: {.callout-important}
+Same command, two trees. `git restore --staged <file>` rewinds the **staging
+area** (your edit survives in the file). `git restore <file>` rewinds the
+**working file** (your edit is discarded). The flag decides which one you're
+undoing. There's no undo for the second one, the change wasn't committed, so
+git has nothing to bring back.
+:::
+
+::: {.callout-tip title="In Positron"}
+Hover the file and click the **Discard Changes** (revert) icon to throw the
+edit away, same as `git restore`. Positron asks you to confirm, because, as on
+the command line, there's no getting it back.
+:::
+
+
+# Telling git what to ignore
+
+Some files should never be tracked: editor junk, rendered output, large data,
+secrets, etc. Git keeps a full copy of every version of every tracked file, so
+ignoring the right things keeps your history clean and your repo small.
+
+## Create some junk, then ignore it
+
+- Make a couple of files you would never want in version control:
+
+```bash
+echo "old session" > .Rhistory
+echo "rendered" > report.html
+```
+
+- Run `git status`. Git wants to track both.
+
+- Create a file called `.gitignore` in the repository if you don't already have it, with these contents:
+
+```no-highlight
+# R session junk
+.Rhistory
+.RData
+.Rproj.user/
+
+# Rendered output
+*.html
+```
+
+- Run `git status` again.
+
+The junk has vanished from the list. Git now ignores anything matching those
+patterns. (Note: you *do* want to commit `.gitignore` itself, it's part of the
+project.)
+
+
+# Working on parallel lines: branches
+
+A branch lets you work on something without disturbing your main line of work.
+The mental model that makes everything else click: **a branch is just a movable
+pointer to a commit.** Making a commit moves the current pointer forward one
+step. That's why branching is instant — git writes a tiny pointer, it doesn't
+copy your files.
+
+## See where you are now
+
+- Draw the current history:
+
+```bash
+git log --oneline --graph --all
+```
+
+Note the labels — `main` and `HEAD` are both pointing at your latest commit.
+`HEAD` means "the branch I'm currently on".
+
+## Make a branch and commit on it
+
+- Create a branch and move onto it in one step:
+
+```bash
+git switch -c experiment
+```
+
+- Run `git status` (it tells you which branch you're on) and `git branch` (the
+  `*` marks the current one).
+
+- Make a change to `random.txt` and commit it.
+
+- Draw the graph again:
+
+```bash
+git log --oneline --graph --all
+```
+
+**Watch what moved:** `experiment` advanced to the new commit, `main` stayed
+put. You just saw the pointer move.
+
+## Switch back and merge
+
+- Go back to `main`:
+
+```bash
+git switch main
+```
+
+- Open `random.txt`. Your `experiment` change isn't here — `main` never moved.
+
+- Merge the branch in:
+
+```bash
+git merge experiment
+```
+
+- Draw the graph once more.
+
+Because `main` hadn't moved on its own, git just slid its pointer forward to
+catch up with `experiment` — this is a **fast-forward** merge, no new commit
+needed.
+
+::: {.callout-tip title="In Positron"}
+The current branch name sits in the status bar (bottom of the window). Click it
+to create or switch branches. The Git Graph view shows the same picture as
+`git log --graph`. Everything in this block works through those — but doing it
+on the command line first makes it obvious what the buttons are doing.
+:::
+
+
+# When git can't decide: merge conflicts
+
+A conflict isn't an error. It's git refusing to *guess* when two branches changed
+the same lines. You — not git — decide which version wins. This is the single
+most useful thing to have done once in a safe sandbox before it happens for real.
+
+We'll do this one on the command line regardless of whether you've been using
+Positron, because seeing the raw conflict markers is the whole point.
+
+## Set up two conflicting edits
+
+- Make sure you're on `main` and that `random.txt` has a known first line.
+  Commit if needed so you have a clean starting point.
+
+- Create a branch, change the first line one way, and commit:
+
+```bash
+git switch -c feature
+# edit random.txt — change the first line to, say, "Hello from feature"
+git commit -am "Change greeting on feature"
+```
+
+- Switch back to `main` and change the *same line* differently:
+
+```bash
+git switch main
+# edit random.txt — change the same first line to "Hello from main"
+git commit -am "Change greeting on main"
+```
+
+Both branches now have a different version of the same line.
+
+## Trigger and resolve the conflict
+
+- Merge:
+
+```bash
+git merge feature
+```
+
+Git stops and tells you there's a conflict. Run `git status` — it lists the file
+under "_Unmerged paths_" and, helpfully, tells you what to do next.
+
+- Open `random.txt`. Git has written both versions in, marked like this:
+
+```no-highlight
+<<<<<<< HEAD
+Hello from main
+=======
+Hello from feature
+>>>>>>> feature
+```
+
+- Edit the file by hand: keep the version you want (or combine them), and
+  **delete all three marker lines** (`<<<<<<<`, `=======`, `>>>>>>>`).
+
+- Tell git you've resolved it, and complete the merge:
+
+```bash
+git add random.txt
+git commit
+```
+
+- Draw the graph:
+
+```bash
+git log --oneline --graph --all
+```
+
+This time merging the two diverged lines of work produced a real **merge
+commit** — you can see the two branches joining back together.
+
+::: {.callout-note}
+Positron's conflict editor shows the same thing with "Accept Current / Accept
+Incoming / Accept Both" buttons. Now that you've seen the markers by hand, those
+buttons should make sense — they're just editing out the `<<<`/`===`/`>>>` for
+you.
+:::
+
+
+# Sharing your work: remotes and GitHub
+
+Everything so far has been local. A **remote** is a copy of your repo somewhere
+else — usually GitHub — so you can back it up, share it, and collaborate. This is
+the payoff for working reproducibly *and together*.
+
+## Connect your repo to GitHub
+
+- On GitHub, create a new **empty** repository (no README, no `.gitignore` — we
+  want it empty so it doesn't immediately diverge from yours). Copy its URL.
+
+- Back in your local repo, connect it. The conventional name for your main
+  remote is `origin`:
+
+```bash
+git remote add origin <url-you-copied>
+git remote -v        # check it's registered
+```
+
+- Push your commits up, setting `origin/main` as the default for next time:
+
+```bash
+git push -u origin main
+```
+
+- Refresh the GitHub page — your files and full history are now there.
+
+## Pull changes down
+
+- On GitHub, edit a file directly in the browser and commit it there. Now your
+  remote is one commit ahead of your local copy.
+
+- Bring that commit down:
+
+```bash
+git pull
+```
+
+`git pull` is really `git fetch` (download) + `git merge` (combine) — which
+means a pull can produce a merge conflict exactly like the one you just resolved.
+
+::: {.callout-important title="Authentication"}
+GitHub stopped accepting passwords for git in 2021, so your first push will ask
+for credentials. Two options:
+
+- **HTTPS + Personal Access Token (PAT)** — easiest to start with.
+- **SSH keys** — set up once, nothing to paste afterwards.
+
+R users have a gentle path for all of this — see the next section.
+:::
+
+## Clone someone else's repo
+
+- Pick any public repo and copy it, history and all, to your machine:
+
+```bash
+git clone <url>
+```
+
+Cloning sets up `origin` for you automatically — no `git remote add` needed.
+
+::: {.callout-tip title="In Positron"}
+"Clone Repository" from the welcome screen or command palette does the same as
+`git clone`. After that, the **Sync** button in the Source Control panel pushes
+and pulls for you.
+:::
+
+
+# Stretch: collaborate in pairs
+
+Only attempt this if you're comfortable with everything above — it combines
+remotes *and* conflicts, which is two hard things at once.
+
+- Pair up. One person creates a GitHub repo and adds the other as a collaborator
+  (repo Settings → Collaborators).
+
+- **Both** clone it.
+
+- Person A edits a file, commits, and pushes. Person B runs `git pull` and sees
+  A's change appear.
+
+- Now swap roles.
+
+- For the full experience: have **both** people edit the *same line*, both
+  commit. The first to push succeeds; the second person's `push` is rejected
+  ("remote contains work you do not have locally"). They run `git pull`, resolve
+  the conflict locally — just like before — then push the merge. This is the
+  everyday reality of collaborating with git.
+
+
+# git the R way: usethis
+
+Now that you know what each step does underneath, here's how to do the whole
+setup from the R console. The `usethis` package wraps the same git operations
+you've been running by hand.
+
+```r
+install.packages("usethis")
+
+usethis::use_git()        # init a repo + make the first commit
+usethis::use_github()     # create a GitHub repo and connect + push to it
+usethis::use_git_ignore(  # add entries to .gitignore
+  c(".Rhistory", ".RData", ".Rproj.user")
+)
+```
+
+When something with GitHub authentication goes wrong — and at some point it
+will — these two are your friends:
+
+```r
+usethis::create_github_token()  # walks you through making a PAT
+usethis::git_sitrep()           # "situation report": diagnoses your setup
+```
+
+::: {.callout-note title="Where to go next"}
+- **Happy Git with R** — <https://happygitwithr.com> (Jenny Bryan). The
+  definitive R + git + GitHub guide; start here for any setup pain.
+- **<https://dangitgit.com>** — plain-English fixes for "oh no" moments.
+- `git <command> --help` — the built-in manual for any command.
+
+You won't remember every command today, and you don't need to. Remember the
+**model** — working tree → staging area → commit → remote — and look the rest
+up.
+:::
 
 <!--
 Lab outline
