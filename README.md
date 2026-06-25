@@ -68,7 +68,7 @@ To edit, preview, and render documents, you need the following prerequisites:
 
 :tip: Rendered documents in **docs/** are only for local preview and are excluded from git. The HTML files for the website are rendered by GitHub Actions. Make sure to commit the **_freeze/** folder. We use freeze to cache chunks so rendering works without the original environment on GitHub Actions.
 
-- Finally commit changes
+- Finally commit changes (`docs` is not committed)
 
 ```
 git add .
@@ -85,7 +85,7 @@ nbisweden/raukr-2026:main <- you/raukr-2026:main
 nbisweden/raukr-2026:main <- you/raukr-2026:your-branch
 ```
 
-- Note that qmd rendering can be selectively disabled in _quarto.yml
+- Note that qmd rendering can be selectively disabled in _quarto.yml.
 
 ## Tips & Conventions
 
