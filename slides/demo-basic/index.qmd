@@ -1,0 +1,734 @@
+---
+title: "Demo Basic Slides"
+author: "Roy Francis"
+image: "assets/featured.webp"
+format: revealjs
+---
+
+## Introduction
+
+::: {.callout-note}
+This is a demo to showcase the **RaukR presentation design guide**, **usage** and capabilities of this presentation system. This presentation is created using **[quarto](https://quarto.org/)**. This presentation uses the javascript library **[revealjs](https://revealjs.com)** as the underlying framework.
+:::
+
+## Getting started
+
+- In RStudio, **File** > **New File** > **Quarto Presentation**
+- Add YAML matter to the top if not already there.
+
+```         
+---
+title: "This is a title"
+format:
+  revealjs
+---
+```
+
+- Click the **Render** button for a rendered preview.
+- Or use `quarto render` in the terminal:
+
+`quarto render slide.qmd`
+
+## Slides
+
+#### Slide separators
+
+Slides are separated by `##`.
+Incremental content on is separated by `. . .` like below.
+
+Hide or not count a slide:
+
+```         
+## Slide Title {visibility="hidden"}
+## Slide Title {visibility="uncounted"}
+```
+
+. . .
+
+#### Slide notes
+
+Any content inside class `.notes` on a slide are notes. This is only visible in presenter mode (by pressing **s**).
+
+. . .
+
+#### Keyboard shortcuts
+
+- Press {{< kbd ? >}} for help.
+
+::: {.notes}
+Here are some slide notes. Press **s** again to exit presenter mode.
+:::
+
+## Layout
+
+The slide content can be organized into columns which can be nested if needed.
+
+```         
+:::{.columns}
+:::{.column width="50%"}
+<div style="background-color:#fdebd0">Left content</div>
+:::
+
+:::{.column width="50%"}
+<div style="background-color:#eaf2f8">Right content</div>
+
+:::{.column width="60%"}
+<div style="background-color:#d0ece7">Inner left</div>
+:::
+:::{.column width="40%"}
+<div style="background-color:#f2d7d5">Inner right</div>
+:::
+
+:::
+:::
+```
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {style="background-color:#fdebd0"}
+Left content
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="background-color:#eaf2f8"}
+Right content
+:::
+
+::: {.column width="60%"}
+::: {style="background-color:#d0ece7"}
+Inner left
+:::
+:::
+
+::: {.column width="40%"}
+::: {style="background-color:#f2d7d5"}
+Inner right
+:::
+:::
+:::
+
+::::
+
+## Panel tabs
+
+::: {.panel-tabset}
+
+### Tab A
+
+Content for `Tab A`
+
+### Tab B
+
+Content for `Tab B`
+
+:::
+
+## Text Formatting
+
+Rendering of normal text, numbers and symbols.
+
+ABCDEFGHIJKLMNOPQRSTUYWXYZÅÄÖ
+
+abcdefghijklmnopqrstuvwxyzåäö
+
+0123456789
+
+!"#%&/()$@*^~<>-:;,_±|?+=
+
+`!"#%&/\()$@*^~<>-:;,_±|?+=`
+
+## Text formatting
+
+:::: {.columns}
+::: {.column width="50%"}
+
+Headings can be defined as shown below.
+
+```         
+## Level 2 heading  
+### Level 3 heading  
+#### Level 4 heading  
+##### Level 5 heading  
+###### Level 6 heading
+```
+
+### Level 3 heading
+
+#### Level 4 heading
+
+##### Level 5 heading
+
+###### Level 6 heading
+
+Level 1 usage is not recommended. Use level 2 for slide titles. Use level 3 and below for other titles.
+:::
+
+::: {.column width="50%"}
+Text scaling classes
+
+```         
+[Largest text]{.largest}
+[Larger text]{.larger}
+[Large text]{.large}
+Normal text.  
+[Small text]{.small}
+[Smaller text]{.smaller}
+[Smallest text]{.smallest}
+```
+
+[Largest text]{.largest}\
+[Larger text]{.larger}\
+[Large text]{.large}\
+Normal text\
+[Small text]{.small}\
+[Smaller text]{.smaller}\
+[Smallest text]{.smallest}
+:::
+::::
+
+## Text Formatting
+
+:::: {.columns}
+::: {.column width="40%"}
+Horizontal alignment of text can be adjusted as shown below.
+
+```         
+[Left aligned text]{.left}
+[Center aligned text]{.center}
+[Right aligned text]{.right}
+```
+
+[Left aligned text]{.left}  
+[Center aligned text]{.center}  
+[Right aligned text]{.right}
+
+```         
+::: {.blockquote}
+This line is quoted
+:::
+```
+
+::: blockquote
+This line is quoted
+:::
+
+:::
+
+::: {.column width="60%"}
+
+A horizontal line can be created using `---`
+
+---
+
+`This is **Bold text**`  This is **Bold text**
+
+`This is *Italic text*`  This is *Italic text*
+
+`~~Strikethrough~~ text`  ~~Strikethrough~~ text
+
+This is subscript `H~2~O`  H~2~O
+
+This is superscript `2^10`  2^10^
+
+`This is a [badge]{.badge .badge-primary}`  
+This is a [badge]{.badge .badge-primary}  
+
+`This is a [badge]{.badge .badge-secondary}`  
+This is a [badge]{.badge .badge-secondary}  
+
+`This is a [link](r-project.org)`  This is a [link](r-project.org)
+:::
+::::
+
+## Text formatting
+
+Fit text to full width.
+
+```         
+::: {.r-fit-text}
+Attention
+:::
+```
+
+::: {.r-fit-text}
+Attention
+:::
+
+## Text formatting
+
+In reports, `.aside` pushes content into the margin while in revealjs, it is pushed to the bottom.
+
+```
+::: {.aside}
+Content inside aside.
+:::
+```
+
+::: {.aside}
+Content inside aside.
+:::
+
+## Lists
+
+:::: {.columns}
+::: {.column width="50%"}
+
+**Unordered List**
+
+```         
+- Bullet 1
+- Bullet 2
+  - Sub-bullet 2.1
+```
+
+- Bullet 1
+- Bullet 2
+  - Sub-bullet 2.1
+
+:::
+
+::: {.column width="50%"}
+
+**Incremental List**
+
+```         
+:::{.incremental}
+1. Incremental Bullet 1
+2. Incremental Bullet 2
+3. Incremental Bullet 3
+:::
+```
+
+::: {.incremental}
+
+1. Incremental Bullet 1
+2. Incremental Bullet 2
+3. Incremental Bullet 3
+
+:::
+
+[For more options, see [here](https://quarto.org/docs/presentations/revealjs/#incremental-lists).]{.smaller}
+
+:::
+::::
+
+## Custom CSS styling
+
+- You can style text using any custom CSS
+- This is a block level element
+
+```         
+::: {style="color: red"}
+This paragraph is red.
+:::
+```
+
+::: {style="color: red"}
+This paragraph is red.
+:::
+
+- This is a span. ie; A word or one line.
+
+`[This text is blue]{style="color: blue"}`
+
+[This text is blue]{style="color: blue"}
+
+## Callouts
+
+:::: {.columns}
+::: {.column width="40%"}
+
+```         
+::: {.callout-note}
+This is a callout.
+:::
+
+::: {.callout-warning}
+This is a callout.
+:::
+
+::: {.callout-important}
+This is a callout.
+:::
+
+::: {.callout-tip}
+This is a callout.
+:::
+
+::: {.callout-caution}
+This is a callout.
+:::
+```
+
+:::
+
+::: {.column width="60%"}
+::: callout-note
+This is a callout.
+:::
+
+::: callout-warning
+This is a callout.
+:::
+
+::: callout-important
+This is a callout.
+:::
+
+::: callout-tip
+This is a callout.
+:::
+
+::: callout-caution
+This is a callout.
+:::
+
+:::
+::::
+
+::: {.aside}
+CallOut blocks are documented [here](https://quarto.org/docs/authoring/callouts.html)
+:::
+
+## Callouts
+
+Variants of callout
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```         
+::: {.callout-note icon=false}
+Icon is disabled
+:::
+
+::: {.callout-note appearance="simple"}
+Appearance is simple
+:::
+
+::: {.callout-note appearance="minimal"}
+Appearance is minimal
+:::
+
+::: {.callout-note appearance="simple"}
+## Custom title
+Simple appearance and a custom title
+:::
+
+::: {.callout-note appearance="minimal"}
+## Custom title
+Minimal appearance and a custom title
+:::
+```
+
+:::
+
+::: {.column width="50%"}
+
+::: {.callout-note icon=false}
+Icon is disabled
+:::
+
+::: {.callout-note appearance="simple"}
+Appearance is simple
+:::
+
+::: {.callout-note appearance="minimal"}
+Appearance is minimal
+:::
+
+::: {.callout-note appearance="simple"}
+## Custom title
+Simple appearance and a custom title
+:::
+
+::: {.callout-note appearance="minimal"}
+## Custom title
+Minimal appearance and a custom title
+:::
+
+:::
+::::
+
+## Callouts
+
+````
+::: {.callout-note}
+
+This contains code
+
+## Callout with code
+
+```
+Sys.Date()
+```
+
+:::
+````
+
+::: {.callout-note}
+
+## Callout with code
+
+This contains code
+
+```
+Sys.Date()
+```
+
+:::
+
+## Code formatting
+
+**Inline code**
+
+- Code can be defined inline where `` `this` `` looks like `this`.
+- R code can be executed inline `` `r "\u0060r Sys.Date()\u0060"` `` producing `r Sys.Date()`.
+
+`== != && ++ |> <> <- <= <~ /= |=> ->>`
+
+## Code formatting
+
+:::: {.columns}
+::: {.column width="50%"}
+
+**Code chunks**
+
+Code can also be defined inside chunks.
+
+````         
+```
+This is code
+```
+````
+
+```         
+This is code
+```
+
+R code is executed inside code blocks like this
+
+````
+```{{r}}
+Sys.Date()
+```
+````
+
+:::
+
+::: {.column width="50%"}
+The code and results can be hidden by
+
+````
+```{{r}}
+#| echo: false
+#| results: hide
+data(iris)
+```
+````
+
+[These are called chunk attributes. For more options, see [here](https://quarto.org/docs/computations/execution-options.html) and complete list [here](https://quarto.org/docs/reference/cells/cells-knitr.html).]{.small}
+
+:::
+::::
+
+## Images • Markdown
+
+**Using Markdown**
+
+::: {.columns}
+::: {.column width="50%"}
+
+Using regular markdown.
+
+```         
+![](assets/image.webp)
+```
+
+![](assets/image.webp)
+
+[The dimensions are based on image and/or fill up the entire width.]{.small}
+:::
+
+::: {.column width="50%"}
+Control image dimensions.
+
+```         
+![](assets/image.webp){width=50%}
+![](assets/image.webp){width=20%}
+```
+
+![](assets/image.webp){width=50%}
+![](assets/image.webp){width=20%}
+
+[For more image documentation, see [here](https://quarto.org/docs/authoring/figures.html).]{.smaller}
+
+:::
+:::
+
+## Images • Markdown • Layout
+
+Figure layout
+
+```         
+::: {layout-ncol=3}
+![Caption for figure 1](assets/image.webp){#fig-layout-1}
+
+![Caption for figure 2](assets/image.webp){#fig-layout-2}
+
+![Caption for figure 3](assets/image.webp){#fig-layout-3}
+:::
+```
+
+::: {layout-ncol="3"}
+![Caption for figure 1](assets/image.webp){#fig-layout-1}
+
+![Caption for figure 2](assets/image.webp){#fig-layout-2}
+
+![Caption for figure 3](assets/image.webp){#fig-layout-3}
+
+:::
+
+## Images • Markdown • Layout
+
+Absolute positioning
+
+```
+![](assets/image.webp){.absolute top=250 left=0 height="450"}
+![](assets/image.webp){.absolute top=200 right=50 height="250"}
+![](assets/image.webp){.absolute bottom=0 right=200 height="200"}
+```
+
+![](assets/image.webp){.absolute top=250 left=0 height="450"}
+
+![](assets/image.webp){.absolute top=200 right=50 height="250"}
+
+![](assets/image.webp){.absolute bottom=0 right=200 height="200"}
+
+## Images • HTML
+
+**Using Raw HTML**
+
+This image is 30% size.
+`<img src="assets/image.webp" style="width:30%;"/>`
+
+<img src="assets/image.webp" style="width:30%;"/>
+
+## Math expressions
+
+Some examples of rendering equations.
+
+:::: {.columns}
+::: {.column width="60%"}
+
+```
+$e^{i\pi} + 1 = 0$
+
+$$\frac{E \times X^2 \prod I}{2+7} = 432$$
+
+$$\sum_{i=1}^n X_i$$
+
+$$\int_0^{2\pi} \sin x~dx$$
+```
+
+:::
+
+::: {.column width="40%"}
+
+$e^{i\pi} + 1 = 0$
+$$\frac{E \times X^2 \prod I}{2+7} = 432$$
+$$\sum_{i=1}^n X_i$$
+$$\int_0^{2\pi} \sin x~dx$$
+
+:::
+::::
+
+## Math expressions
+
+Some examples of rendering equations.
+
+:::: {.columns}
+::: {.column width="60%"}
+
+```
+$\left( \sum_{i=1}^{n}{i} \right)^2 = \left( \frac{n(n-1)}{2}\right)^2 = \frac{n^2(n-1)^2}{4}$
+
+$\begin{eqnarray} X & \sim & \mathrm{N}(0,1)\\ Y & \sim & \chi^2_{n-p}\\ R & \equiv & X/Y \sim t_{n-p} \end{eqnarray}$
+
+$\begin{eqnarray} P(|X-\mu| > k) & = & P(|X-\mu|^2 > k^2)\\ & \leq & \frac{\mathbb{E}\left[|X-\mu|^2\right]}{k^2}\\ & \leq & \frac{\mathrm{Var}[X]}{k^2} \end{eqnarray}$
+```
+
+:::
+
+::: {.column width="40%"}
+
+$\left( \sum_{i=1}^{n}{i} \right)^2 = \left( \frac{n(n-1)}{2}\right)^2 = \frac{n^2(n-1)^2}{4}$
+
+$\begin{eqnarray} X & \sim & \mathrm{N}(0,1)\\ Y & \sim & \chi^2_{n-p}\\ R & \equiv & X/Y \sim t_{n-p} \end{eqnarray}$
+
+$\begin{eqnarray} P(|X-\mu| > k) & = & P(|X-\mu|^2 > k^2)\\ & \leq & \frac{\mathbb{E}\left[|X-\mu|^2\right]}{k^2}\\ & \leq & \frac{\mathrm{Var}[X]}{k^2} \end{eqnarray}$
+
+:::
+::::
+
+## Diagrams
+
+```{mermaid}
+%%| echo: fenced
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
+::: {.aside}
+Diagram [documentation](https://quarto.org/docs/authoring/diagrams.html).
+:::
+
+## Colourful {background-color="#ABEBC6"}
+
+This slide has a colourful background
+
+```         
+##  Colourful {background-color="#ABEBC6"}
+```
+
+## Big Image {background-image="assets/image.webp"}
+
+This slide has a background image
+
+```         
+##  Big Image {background-image="assets/image.webp"}
+```
+
+## General tips
+
+- To set custom title slide cover image
+
+  ```yaml
+  title-slide-attributes:
+    data-background-image: "assets/images/image.webp"
+  ```
+
+- To add custom end slide picture, set page title
+
+  `##  {background-image="assets/images/network.svg"}`
+
+- Add custom css under YAML `css: "styles.css"`
+
+##  {background-image="/assets/images/network.svg"}
+
+::: {.v-center .center}
+::: {}
+
+[Thank you!]{.largest}
+
+[Questions?]{.larger}
+
+[{{< meta current_year >}} • [SciLifeLab](https://www.scilifelab.se/) • [NBIS](https://nbis.se/) • [RaukR](https://nbisweden.github.io/raukr-2026)]{.smaller}
+
+:::
+:::
