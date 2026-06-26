@@ -313,7 +313,7 @@ project.)
 A branch lets you work on something without disturbing your main line of work.
 The mental model that makes everything else click: **a branch is just a movable
 pointer to a commit.** Making a commit moves the current pointer forward one
-step. That's why branching is instant — git writes a tiny pointer, it doesn't
+step. That's why branching is instant, git writes a tiny pointer, it doesn't
 copy your files.
 
 ## See where you are now
@@ -324,6 +324,7 @@ copy your files.
 git log --oneline --graph --all
 ```
 
+Using the `--onelin` flag compresses the commit history to just one line for readability.
 Note the labels — `main` and `HEAD` are both pointing at your latest commit.
 `HEAD` means "the branch I'm currently on".
 
@@ -357,7 +358,7 @@ put. You just saw the pointer move.
 git switch main
 ```
 
-- Open `random.txt`. Your `experiment` change isn't here — `main` never moved.
+- Open `random.txt`. Your `experiment` change isn't here, `main` never moved.
 
 - Merge the branch in:
 
@@ -368,13 +369,13 @@ git merge experiment
 - Draw the graph once more.
 
 Because `main` hadn't moved on its own, git just slid its pointer forward to
-catch up with `experiment` — this is a **fast-forward** merge, no new commit
+catch up with `experiment`. This is a **fast-forward** merge, no new commit
 needed.
 
 ::: {.callout-tip title="In Positron"}
 The current branch name sits in the status bar (bottom of the window). Click it
 to create or switch branches. The Git Graph view shows the same picture as
-`git log --graph`. Everything in this block works through those — but doing it
+`git log --graph`. Everything in this block works through those, but doing it
 on the command line first makes it obvious what the buttons are doing.
 :::
 
@@ -382,11 +383,8 @@ on the command line first makes it obvious what the buttons are doing.
 # When git can't decide: merge conflicts
 
 A conflict isn't an error. It's git refusing to *guess* when two branches changed
-the same lines. You — not git — decide which version wins. This is the single
+the same lines. You, not git, decide which version wins. This is the single
 most useful thing to have done once in a safe sandbox before it happens for real.
-
-We'll do this one on the command line regardless of whether you've been using
-Positron, because seeing the raw conflict markers is the whole point.
 
 ## Set up two conflicting edits
 
@@ -397,16 +395,18 @@ Positron, because seeing the raw conflict markers is the whole point.
 
 ```bash
 git switch -c feature
-# edit random.txt — change the first line to, say, "Hello from feature"
-git commit -am "Change greeting on feature"
+# edit random.txt - change the first line to, say, "Hello from feature"
+git add random.txt
+git commit -m "Change greeting on feature"
 ```
 
 - Switch back to `main` and change the *same line* differently:
 
 ```bash
 git switch main
-# edit random.txt — change the same first line to "Hello from main"
-git commit -am "Change greeting on main"
+# edit random.txt - change the same first line to "Hello from main"
+git add random.txt
+git commit -m "Change greeting on main"
 ```
 
 Both branches now have a different version of the same line.
@@ -419,7 +419,7 @@ Both branches now have a different version of the same line.
 git merge feature
 ```
 
-Git stops and tells you there's a conflict. Run `git status` — it lists the file
+Git stops and tells you there's a conflict. Run `git status`, it lists the file
 under "_Unmerged paths_" and, helpfully, tells you what to do next.
 
 - Open `random.txt`. Git has written both versions in, marked like this:
@@ -433,7 +433,7 @@ Hello from feature
 ```
 
 - Edit the file by hand: keep the version you want (or combine them), and
-  **delete all three marker lines** (`<<<<<<<`, `=======`, `>>>>>>>`).
+  **delete all three marker lines** (`<<<<<<<`, `=======`, `>>>>>>>`). If you use Positron it will remove them for you.
 
 - Tell git you've resolved it, and complete the merge:
 
@@ -449,14 +449,7 @@ git log --oneline --graph --all
 ```
 
 This time merging the two diverged lines of work produced a real **merge
-commit** — you can see the two branches joining back together.
-
-::: {.callout-note}
-Positron's conflict editor shows the same thing with "Accept Current / Accept
-Incoming / Accept Both" buttons. Now that you've seen the markers by hand, those
-buttons should make sense — they're just editing out the `<<<`/`===`/`>>>` for
-you.
-:::
+commit**, you can see the two branches joining back together.
 
 
 # Sharing your work: remotes and GitHub

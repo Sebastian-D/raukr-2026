@@ -327,53 +327,158 @@ git commit
 :::
 
 
-# Sharing your work: remotes
+# Github
 
-## Local and remote
+Local versus remote
 
-<br>
-
-A **remote** is a copy of your repo somewhere else — usually on GitHub. The default name for it is `origin`.
+## Why bother with GitHub?
 
 <br>
 
-![](assets/git_overview_local.png){height=250 fig-align=center}
+git already works perfectly well on your own machine. So why put anything online?
 
 <br>
 
-:::{.fragment}
-Cloning sets `origin` up automatically. To connect an existing local repo:
-
-```bash
-git remote add origin <url>
-```
+:::{.incremental}
+* **Backup**: your history lives somewhere other than your laptop. Laptop disasters won't erase 6 months of hard work
+* **Sharing**: send a collaborator a link instead of zipping and emailing folders
+* **Collaboration**: several people work on the same project without emailing versions back and forth
+* **Reproducibility**: "code available at github.com/..." is now standard in papers; reviewers and readers can see exactly what you did
+* **It's free**: public repositories cost nothing, and you get issue tracking, a project website, etc.
 :::
 
-## push, pull, fetch
+## GitHub is just a remote copy
+
+<br>
+
+**GitHub doesn't do anything mysterious.** A GitHub repository is *just another git repository*, the same commits and history you have locally, hosted on a server you can reach over the internet.
 
 <br>
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-```bash
-git push     # send your commits up
-git pull     # bring others' commits down
-             # (fetch + merge)
-git fetch    # download, but don't
-             # merge yet
-```
+**On your laptop**
+
+* A full repo in `.git/`
+* Complete history
+* Where you do your work
 :::
 
 ::: {.column width="50%"}
-:::{.incremental}
-* `push` and `pull` move commits between your machine and the remote
-* `pull` = `fetch` + `merge`, so it can produce conflicts just like a local merge
-* `fetch` lets you look before you leap
-:::
+**On GitHub**
+
+* A full repo, identical history
+* A copy you can reach from anywhere
+* Where you share and back up
 :::
 
 ::::
+
+<br>
+
+:::{.fragment}
+::: {.callout-note}
+The two are linked by a **remote**, a saved bookmark to the other copy, conventionally named `origin`. You keep them in sync by pushing commits up and pulling commits down.
+:::
+:::
+
+## Two copies, kept in sync
+
+<br>
+
+Because both sides are real git repositories, syncing is just moving commits between them:
+
+<br>
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**`git push`**
+
+Send your local commits *up* to GitHub
+:::
+
+::: {.column width="50%"}
+**`git pull`**
+
+Bring others' commits *down* to your laptop
+:::
+
+::::
+
+<br>
+
+:::{.fragment}
+This is the same pointer model as before, just across two machines: pushing moves GitHub's branch pointer forward to match yours; pulling moves yours forward to match GitHub's.
+
+Picture needed
+:::
+
+## Nothing leaves your computer until you push
+
+<br>
+
+A common surprise for newcomers: **committing and sharing are separate steps.**
+
+<br>
+
+:::{.incremental}
+* `git add` and `git commit` are **completely local** — they work on a plane with no wifi
+* Your commits pile up in your local history, private to you
+* Only `git push` sends them to GitHub
+* Only then can anyone else see them
+:::
+
+<br>
+
+:::{.fragment}
+So you can commit freely all day, tidy things up, and share only when you're ready. Committing is *not* publishing.
+:::
+
+## A typical day with both
+
+<br>
+
+git is for the work; GitHub is for sharing the work. A normal session uses both:
+
+<br>
+
+:::{.incremental}
+1. **Once:** `git clone` a repo from GitHub (or push a new local one up)
+2. **All day, offline:** edit → `git add` → `git commit`, over and over
+3. **To share:** `git push` your commits up to GitHub
+4. **To catch up:** `git pull` to bring in what collaborators pushed
+:::
+
+<br>
+
+:::{.fragment}
+Steps 2 are pure git, on your own machine. Steps 1, 3 and 4 are where GitHub comes in.
+:::
+
+## Why this matters for your research
+
+<br>
+
+For a research project, the payoff is concrete:
+
+<br>
+
+:::{.incremental}
+* Your supervisor or collaborators can read — and contribute to — your analysis code directly
+* A paper can point to the *exact* version of the code that produced its results
+* You can get a citable **DOI** for a release (via Zenodo), so your code is part of the scientific record
+* Months later, "future you" can see what you did and why
+:::
+
+<br>
+
+:::{.fragment}
+::: {.callout-tip}
+This is the "work reproducibly *and* together" part — git gives you the history, GitHub makes it shareable.
+:::
+:::
 
 ## Authenticating with GitHub
 
