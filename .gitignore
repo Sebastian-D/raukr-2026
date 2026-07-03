@@ -18,3 +18,4 @@ todo.txt
 *.fastq
 to-do.txt
 docs/
+*.Rproj

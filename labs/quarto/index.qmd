@@ -7,18 +7,21 @@ format: html
 ---
 
 ::: callout-note
-These are exercises to get you started with quarto. Refer to the official [quarto documentation](https://quarto.org) for help.
+These are exercises to get you started with Quarto. Refer to the official [Quarto documentation](https://quarto.org) for help.
 
-We aim to cover the following topics:
+We cover the following topics:
 
 - Basic usage
 - Markdown markup
-- Set up a quarto notebook
+- Set up a Quarto notebook
 - Add content and export to some common formats
   - HTML and PDF reports
   - RevealJS presentation
+  - Parameterized reports and presentations
 - Quarto projects
   - Website
+
+This exercise requires Quarto, R and R packages: `ggplot2`, `dplyr`, `stringr` and `knitr`.
 :::
 
 ```{r}
@@ -26,19 +29,20 @@ We aim to cover the following topics:
 library(ggplot2)
 library(dplyr)
 library(stringr)
+library(knitr)
 ```
 
 ## Introduction
 
-Create a quarto document by creating a text file with **.qmd** extension. In RStudio, go to **File > New File > Quarto Document**. You are given the option to set title, author etc as well as output format. Set the output format as **html**. This document that you are working in is a quarto notebook or R notebook. You can set the display mode to be **Source** or **Visual** (where text formatting is shown).
+Create a Quarto document by creating a text file with **.qmd** extension. In RStudio, go to **File > New File > Quarto Document**. You are given the option to set title, author etc as well as output format. Set the output format as **html**. This document that you are working in is a Quarto notebook or R notebook. You can set the display mode to be **Source** or **Visual** (where text formatting is shown).
 
-A quarto file usually consists of a YAML header, text in markdown format and if needed some code in code chunks. All of these are optional. An empty qmd file is a valid quarto file which will render to produce a blank html document.
+A Quarto file usually consists of a YAML header, text in markdown format and if needed some code in code chunks. All of these are optional. An empty qmd file is a valid Quarto file which will render to produce a blank html document.
 
 ![](assets/anatomy-parts.webp)
 
 ### YAML
 
-The content on the top of the quarto document within three dashes is the YAML matter. This is optional. It is really up to the author to decide how much information needs to be entered here. Here are some common base level YAML parameters.
+The content on the top of the Quarto document within three dashes is the YAML front matter. This is optional. It is really up to the author to decide how much information needs to be entered here. Here are some common base level YAML parameters.
 
 ````
 ---
@@ -54,7 +58,7 @@ date: "25-Apr-2022"
 ![](assets/report-a.webp)
 :::
 
-The default output format is html and this can be changed or arguments for this can be adjusted by specifying this in the yaml. Here is an updated version:
+The default output format is HTML and this can be changed or arguments for this can be adjusted by specifying this in the YAML. Here is an updated version:
 
 ````
 ---
@@ -132,12 +136,12 @@ date()
 ![](assets/report-c.webp)
 :::
 
-- **title-block-banner: true** displays the blue banner
-- **code-fold: true** folds the code and reduces clutter
-- **code-copy: true** adds a copy icon in the code chunk and allows the code to be copied easily
-- **code-tools: true** adds options to the top right of the document to allow the user to show/hide all code chunks and view source code
-- **df-print: kable** sets the default method of displaying tables
-- **standalone: false** specifies if all assets and libraries must be integrated into the output html file as a standalone document. Standalone document may not always work with complex html files such as those with interactive graphics.
+- **title-block-banner: true** Displays the blue banner
+- **code-fold: true** Folds the code and reduces clutter
+- **code-copy: true** Adds a copy icon in the code chunk and allows the code to be copied easily
+- **code-tools: true** Adds options to the top right of the document to allow the user to show/hide all code chunks and view source code
+- **df-print: kable** Sets the default method of displaying tables
+- **standalone: false** Keeps dependencies as external files. When set to `true`, Quarto tries to embed as many dependencies as possible into the output HTML file. Standalone documents may not always work with complex HTML files such as those with interactive graphics.
 
 For a complete guide to YAML metadata for HTML, see [here](https://quarto.org/docs/reference/formats/html.html#metadata).
 
@@ -213,7 +217,7 @@ For finer control, raw HTML can be used. For example;
 Using raw HTML would only work if the output format is an HTML format.
 :::
 
-Images can also be displayed using R code. Chunks option `out.width` in RMarkdown can be used to control image display size.
+Images can also be displayed using R code.
 
 This image is displayed at a size of 200 pixels.
 
@@ -333,7 +337,7 @@ Using `eval: false` prevents that chunk from being executed. `eval: true` which 
 | warning | true     | Display warnings from code execution    |
 | error   | false    | Display error from code execution       |
 | message | true     | Display messages from this chunk        |
-| include | true     | Disable message, warnings and all output|
+| include | true     | Use `false` to hide code, output, messages and warnings |
 
 Chunk options are specified like this:
 
@@ -346,7 +350,7 @@ Chunk options are specified like this:
 ```
 ````
 
-These chunk arguments or execution options can also be set globally in the YAML matter.
+These chunk arguments or execution options can also be set globally in the YAML front matter.
 
 ```
 ---
@@ -426,11 +430,11 @@ plot(x = iris$Petal.Length, y = iris$Petal.Width)
 
 ### Export
 
-The quarto notebook can be exported into various format. The most common formats are HTML and PDF.
+The Quarto notebook can be exported into various format. The most common formats are HTML and PDF.
 
 #### HTML
 
-The quarto document can be previewed as an HTML inside RStudio by clicking the 'Render' button.
+The Quarto document can be previewed as an HTML inside RStudio by clicking the 'Render' button.
 
 The document can be exported from R using the **quarto** R package.
 
@@ -450,19 +454,19 @@ HTML documents can be opened and viewed in any standard browser such as Chrome, 
 
 #### PDF
 
-A qmd document can be converted to a PDF. Behind the scenes, the markdown is converted to TeX format. The conversion to PDF needs a tool that understands TeX format and converts to PDF. This can be softwares like 'MacTeX', 'MikTeX' etc. which needs to be installed on the system. A light-weight option is to install **tinytex** through quarto.
+A qmd document can be converted to a PDF. Behind the scenes, the markdown is converted to TeX format. The conversion to PDF needs a tool that understands TeX format and converts to PDF. This can be tools like 'MacTeX', 'MikTeX' etc. which needs to be installed on the system. A light-weight option is to install **tinytex** through Quarto.
 
 ```bash
 quarto install tinytex
 ```
 
-The **format** argument in the YAML matter must be changed to `pdf`.
+The **format** argument in the YAML front matter must be changed to `pdf`.
 
 Sometimes TeX converters may need additional libraries which may need to be installed. And all features of HTML are not supported on TeX which may return errors.
 
 See [here](https://quarto.org/docs/reference/formats/pdf.html) for more PDF options.
 
-An alternative to using TeX based PDF generation is to use [Typst](https://typst.app/). Quarto support the Typst engine natively. More information about using Typst can be found in the quarto [typst documentation](https://quarto.org/docs/output-formats/typst.html).
+An alternative to using TeX based PDF generation is to use [Typst](https://typst.app/). Quarto supports the Typst engine natively. More information about using Typst can be found in the Quarto [typst documentation](https://quarto.org/docs/output-formats/typst.html).
 
 ## Report
 
@@ -483,6 +487,7 @@ This is how the YAML metadata is organized:
 
 ````
 ---
+title: '`{{r}} paste0(params$name," report")`'
 subtitle: "Parameterized report"
 author: "John Doe"
 date: last-modified
@@ -516,6 +521,20 @@ cat("## ",params$name)
 ```
 ````
 
+This code chunk is used to subset the iris dataset and display the first few rows of the subsetted data. The table has a label and a caption which is generated dynamically using the parameter value.
+
+````
+```{{r}}
+#| label: tbl-data
+#| tbl-cap: !expr paste0("Data for ",params$name," species.")
+iris_filtered <- subset(iris, iris$Species == params$name)
+head(iris_filtered)
+```
+````
+
+- It is important that the table label starts with `tbl-`
+- The table caption is generated from code using the special `!expr` usage
+
 This code chunk is used to create a plot along with plot caption and plot numbering.
 
 ````
@@ -529,14 +548,67 @@ ggplot(iris_filtered,aes(Sepal.Length,Petal.Length,col=Species))+
 ````
 
 - It is important that the figure label starts with `fig-`
-- The figure caption can be generated from code using the special `!expr` usage
+- The figure caption is generated from code using the special `!expr` usage
 
 In the last chunk, an image of the species is displayed.
 
+````
+```{{r}}
+#| echo: false
+#| label: fig-species
+#| fig-cap: !expr paste0("Photograph of ",params$name," species.")
+
+imgs <- c(
+    "setosa" = "assets/setosa.jpg",
+    "versicolor" = "assets/versicolor.jpg",
+    "virginica" = "assets/virginica.jpg"
+)
+
+knitr::include_graphics(imgs[[params$name]])
+```
+````
+
+Cross-references to the table and figure can be created using `@tbl-data` and `@fig-scatterplot` respectively.
+
+A parameterized report can be rendered from the terminal as such:
+
+```bash
+quarto render report.qmd -P name:versicolor
+```
+
+Alternatively, the parameters can be provided in a separate YAML file and passed in as such:
+
+```bash
+quarto render report.qmd --execute-params params.yaml
+```
+
+Lastly, the parameter can be passed in from R as such:
+
+```{r}
+#| eval: false
+quarto::quarto_render("report.qmd", execute_params = list(name = "versicolor"))
+```
+
+::: {.callout}
+
+**{{< fa clipboard-list >}} Tasks**
+
 - Try to create a new report for the species **versicolor**
-- Try to convert the document to PDF
+- Try to convert the document to PDF using Latex (`format: pdf`) and Typst (`format: typst`)
+
+:::
 
 HTML outputs are documented [here](https://quarto.org/docs/output-formats/html-basics.html).
+
+::: {.callout-tip}
+## Troubleshooting
+
+- YAML is indentation-sensitive. If rendering fails before any code runs, check for missing spaces, tabs or unmatched quotes in the YAML front matter.
+- If R reports that a package is missing, install it with `install.packages("package-name")` and render again.
+- If an image does not appear, check that the file path is relative to the `.qmd` file and that the file name matches exactly.
+- If a table or figure cross-reference does not work, check that the chunk label starts with `tbl-` or `fig-` and is unique in the document.
+- If PDF rendering fails, try HTML first. PDF output may require TinyTeX or another TeX installation, and some HTML-specific features may not convert cleanly.
+:::
 
 ## RevealJS
 
@@ -613,7 +685,8 @@ Some additional commentary of more peripheral interest.
 - Code chunks can have [line highlighting](https://quarto.org/docs/presentations/revealjs/#line-highlighting)
 
 ````
-```{{r code-line-numbers="4-5"}}
+```{{r}}
+#| code-line-numbers: "4-5"
 library(ggplot2)
 
 ggplot(iris,aes(Sepal.Length, Petal.Length))+
@@ -658,19 +731,19 @@ project:
   type: book
 ```
 
-Then running `quarto render` renders the output into a directory named `_site`. The output can be changed, for example, to **docs** for GitHub Pages.
+Then running `quarto render` renders the output into a directory named `_site`. During development, `quarto preview` starts a local preview server and updates the site as files change. The output can be changed, for example, to **docs** for GitHub Pages.
 
 ```
 project:
   type: website
-  output_dir: docs
+  output-dir: docs
 ```
 
 The output format by default is HTML. This can be changed or modified by adding `format` to the config file or to individual qmd files. The parameters defined in the config file will be shared by all other qmd files.
 
-To create a project in RStudio, go to **File > New Project **, then select directory and then a project type such as website, blog or book. Try creating one based on what interests you. Website and blog documentation is [here](https://quarto.org/docs/websites/) and books are [here](https://quarto.org/docs/books/).
+To create a project in RStudio, go to **File > New Project**, then select directory and then a project type such as website, blog or book. Try creating one based on what interests you. Website and blog documentation is [here](https://quarto.org/docs/websites/) and books are [here](https://quarto.org/docs/books/).
 
-For more project options, see [here](https://quarto.org/docs/reference/projects/options.html).
+For more project options, see [here](https://quarto.org/docs/reference/projects/options.html). To build your own personal website, see the topic **quarto-site** in the list of labs.
 
 ## Session
 

@@ -19,11 +19,6 @@ library(kableExtra) # for table
 library(patchwork) # multiple plot alignment
 library(plotly) # interactive plot
 library(ggiraph) # interactive plot
-
-# not used
-#library(gridExtra)
-#library(ggpubr)
-#library(cowplot)
 ```
 
 ## Graphs
@@ -127,14 +122,14 @@ legend(x=1,y=2.5,
 #| fig-height: 4
 #| fig-width: 5
 
-ggplot(iris,aes(Petal.Length,Sepal.Length,color=Species))+
+ggplot(iris,aes(Petal.Length,Petal.Width,color=Species))+
   geom_point()
 ```
 :::
 ::::
 
 ::: {.notes}
-For anything beyond extremely basic plots, base plotting quickly become complex. More importantly, base plots do not have consistency in it's functions or plotting strategy.
+For anything beyond extremely basic plots, base plotting quickly become complex. More importantly, base plots do not have consistency in its functions or plotting strategy.
 :::
 
 ## Why `ggplot2`?
@@ -161,7 +156,7 @@ For anything beyond extremely basic plots, base plotting quickly become complex.
 :::: {.columns}
 ::: {.column width="30%"}
 ![](assets/gog.webp)  
-![](assets/gog.webp)  
+![](assets/books.webp)  
 :::
 
 ::: {.column width="70%"}
@@ -183,7 +178,7 @@ Leland Wilkinson's **The Grammar of Graphics** introduces this idea that any kin
 
 Grammar of graphics (GOG) tries to unify all graphs under a common umbrella. GOG brings the idea that graphs are made up of discrete elements (data, aesthetics, geometry, statistics, coordinates, facets, themes etc) which can be mixed and matched to create any plot. This creates a consistent underlying framework to graphing.
 
-`ggplot` (Grammar of graphics) was built in R by Hadley Wickham in 2005 as an implementation of Leland Wilkinson's book Grammar of Graphics.
+`ggplot2` was built in R by Hadley Wickham in 2005 as an implementation of Leland Wilkinson's book: *Grammar of Graphics*.
 :::
 
 ## Building A Graph: Syntax
@@ -283,12 +278,12 @@ ggplot(iris,aes(x=Sepal.Length,
 
 ## Data • `iris`
 
-- Input data is always an R `data.frame` object
+- Input data is typically an R `data.frame` object
 
 ```{r}
 #| echo: false
-iris %>% head() %>%
-  kable("html",escape=F,align="c") %>%
+iris |> head() |>
+  kable("html",escape=F,align="c") |>
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
                 position="left",full_width = F)
 ```
@@ -306,8 +301,8 @@ It's a good idea to use `str()` to check the input dataframe to make sure that n
 
 ```{r}
 #| echo: false
-head(diamonds) %>% na.omit() %>%
-  kable("html",escape=F,align="c") %>%
+head(diamonds) |> na.omit() |>
+  kable("html",escape=F,align="c") |>
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
               position="left",full_width = F)
 ```
@@ -330,8 +325,8 @@ R `data.frame` is a tabular format with rows and columns just like a spreadsheet
 
 ```{r}
 #| echo: false
-iris %>% head(n=3) %>%
-  kable("html",escape=F,align="c") %>%
+iris |> head(n=3) |>
+  kable("html",escape=F,align="c") |>
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
                 position="left",full_width = F)
 ```
@@ -340,10 +335,10 @@ iris %>% head(n=3) %>%
 
 ```{r}
 #| echo: false
-iris %>%
-  gather(key=variable,value=value,-Species) %>%
-  head(n=3) %>%
-  kable("html",escape=F,align="c") %>%
+iris |>
+  pivot_longer(cols = -Species, names_to = "variable", values_to = "value") |>
+  head(n=3) |>
+  kable("html",escape=F,align="c") |>
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
                 position="left",full_width = F)
 ```
@@ -388,8 +383,8 @@ Geoms are the geometric components of a graph such as points, lines etc used to 
 - Geoms have default stats.
 
 ```{r}
-#| fig-height: 3
-#| fig-width: 8
+#| fig-height: 4
+#| fig-width: 9
 x <- ggplot(iris) + geom_bar(aes(x=Sepal.Length),stat="bin")
 y <- ggplot(iris) + geom_bar(aes(x=Species),stat="count")
 z <- ggplot(iris) + geom_bar(aes(x=Species,y=Sepal.Length),stat="identity")
@@ -424,8 +419,8 @@ wrap_plots(x,y,z,nrow=1)
 #| echo: false
 data.frame("plot"=c("histogram","smooth","boxplot","density","freqpoly"),
            "stat"=c("bin","smooth","boxplot","density","freqpoly"),
-           "geom"=c("bar","line","boxplot","line","line")) %>%
-  kable(format="html",escape=F,align="l") %>%
+           "geom"=c("bar","smooth","boxplot","line","line")) |>
+  kable(format="html",escape=F,align="l") |>
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
               position="left",full_width = F)
 ```
@@ -494,7 +489,7 @@ This would be an incorrect way to do it.
 
 ```         
 ggplot(iris)+
-geom_point(aes(x=Sepal.Length,y=Sepal.Width,size=2)
+geom_point(aes(x=Sepal.Length,y=Sepal.Width,size=2))
 ```
 
 :::
@@ -597,7 +592,7 @@ p + scale_color_manual(
 
 ::: {.notes}
 
-Scales are used to control the aesthetics. For example the aesthetic color is mapped to a variable `x`. The palette of colors used, the mapping of which color to which value, the upper and lower limit of the data and colors etc is controlled by scales.
+Scales are used to control the aesthetics. For example the aesthetic 'color' is mapped to a specific variable. The palette of colors used, the mapping of which color to which value, the upper and lower limit of the data and colors etc is controlled by scales.
 
 ![](assets/scales.webp){width="50%"}
 
@@ -713,7 +708,7 @@ p + scale_x_continuous(name="Sepal Length",
 
 The x and y axes are also controlled by scales. The axis break points, the break point text and limits are controlled through scales.
 
-When setting limits using `scale_`, the data outside the limits are dropped. Limits can also be set using `lims(x=c(3,5))` or `xlim(c(3,5))`. When mapping, `coord_map()` or `coord_cartesian()` is recommended for setting limits.
+When setting limits using `scale_`, the data outside the limits are dropped. Limits can also be set using `lims(x=c(3,5))` or `xlim(c(3,5))`. Use `coord_cartesian()` to set limits without dropping data. When mapping, `coord_map()` is recommended for map projections.
 
 :::
 
@@ -762,27 +757,27 @@ p + facet_wrap(~Species,nrow=3)
 ## Facets • `facet_grid`
 
 :::: {.columns}
-::: {.column width="60%"}
+::: {.column width="40%"}
 
 - Faceting in two dimensions
 
 ```{r}
-#| fig-height: 3
-#| fig-width: 7
-p <- diamonds %>%
+#| fig-height: 4
+#| fig-width: 5
+p <- diamonds |>
      ggplot(aes(carat,price))+
      geom_point()
-p + facet_grid(~cut+clarity)
+p + facet_grid(cut~clarity)
 ```
 
 :::
 
-::: {.column width="40%"}
+::: {.column width="60%"}
 
 ```{r}
-#| fig-height: 4
-#| fig-width: 5
-p + facet_grid(cut~clarity)
+#| fig-height: 3
+#| fig-width: 7
+p + facet_grid(~cut+clarity)
 ```
 
 :::
@@ -801,13 +796,14 @@ p + facet_grid(cut~clarity)
 
 - `coord_cartesian(xlim=c(2,8))` for zooming in
 - `coord_map` for controlling limits on maps
-- `coord_polar` for polar ccordinates
+- `coord_polar` for polar coordinates
 
 ```{r}
 #| fig-height: 4
 #| fig-width: 5
-p <- ggplot(iris,aes(x="",y=Petal.Length,fill=Species))+
-  geom_bar(stat="identity")
+p <- iris |> dplyr::group_by(Species) |> dplyr::tally() |> 
+      ggplot(aes(x="",y=n, fill=Species))+
+      geom_bar(stat="identity")
 p
 ```
 
@@ -828,7 +824,7 @@ p + coord_polar("y", start = 0)
 
 ::: {.notes}
 
-The coordinate system defines the surface used to represent numbers. Most plots use the cartesian coordinate sytem. Pie charts for example, is a polar coordinate projection of a cartesian barplot. Maps for example can have numerous coordinate systems called map projections. For example; UTM coordinates.
+The coordinate system defines the surface used to represent numbers. Most plots use the cartesian coordinate system. Pie charts for example, is a polar coordinate projection of a cartesian barplot. Maps for example can have numerous coordinate systems called map projections. For example; UTM coordinates.
 
 :::
 
@@ -931,9 +927,9 @@ element_text(family=NULL,face=NULL,color=NULL,size=NULL,hjust=NULL,
 
 ```{r}
 #| echo: false
-p <- diamonds %>%
-      filter(cut=="Fair"|cut=="Good",color=="D"|color=="E") %>%
-      droplevels() %>%
+p <- diamonds |>
+      filter(cut=="Fair"|cut=="Good",color=="D"|color=="E") |>
+      droplevels() |>
       ggplot(aes(carat,price,alpha=color,shape=cut))+
             geom_point()+
             labs(title="Title",subtitle="subtitle")+
@@ -956,7 +952,7 @@ p <- p + theme(
 #| fig-height: 4.6
 #| fig-width: 9
 #| echo: false
-dfr <- data.frame(value=rep(1,7),label=c("axis.title","axis.text","plot.title","plot.subtitle","legend.text","legend.title","strip.text"),stringsAsFactors=FALSE) %>%
+dfr <- data.frame(value=rep(1,7),label=c("axis.title","axis.text","plot.title","plot.subtitle","legend.text","legend.title","strip.text")) |>
   mutate(label=factor(label,levels=c("axis.title","axis.text","plot.title","plot.subtitle","legend.text","legend.title","strip.text")))
 
 q <- ggplot(dfr,aes(x=label,y=value,fill=label))+
@@ -983,9 +979,9 @@ element_rect(fill=NULL,color=NULL,size=NULL,linetype=NULL)
 
 ```{r}
 #| echo: false
-p <- diamonds %>%
-      filter(cut=="Fair"|cut=="Good",color=="D"|color=="E") %>%
-      droplevels() %>%
+p <- diamonds |>
+      filter(cut %in% c("Fair","Good"), color %in% c("D","E")) |>
+      droplevels() |>
       ggplot(aes(carat,price,alpha=color,shape=cut))+
             geom_point()+
             labs(title="Title",subtitle="subtitle")+
@@ -996,7 +992,7 @@ p <- diamonds %>%
 p <- p + theme(
     plot.background=element_rect(fill="#b3e2cd"),
     panel.background=element_rect(fill="#fdcdac"),
-    panel.border=element_rect(fill=NA,color="#cbd5e8",size=3),
+    panel.border=element_rect(fill=NA,color="#cbd5e8",linewidth=3),
     legend.background=element_rect(fill="#f4cae4"),
     legend.box.background=element_rect(fill="#e6f5c9"),
     strip.background=element_rect(fill="#fff2ae")
@@ -1007,7 +1003,7 @@ p <- p + theme(
 #| fig-height: 4.8
 #| fig-width: 9
 #| echo: false
-dfr <- data.frame(value=rep(1,6),label=c("plot.background","panel.background","panel.border","legend.background","legend.box.background","strip.background"),stringsAsFactors=FALSE) %>%
+dfr <- data.frame(value=rep(1,6),label=c("plot.background","panel.background","panel.border","legend.background","legend.box.background","strip.background")) |>
   mutate(label=factor(label,levels=c("plot.background","panel.background","panel.border","legend.background","legend.box.background","strip.background")))
 
 q <- ggplot(dfr,aes(x=label,y=value,fill=label))+
@@ -1029,9 +1025,9 @@ wrap_plots(p,q,nrow=1,widths=c(3,1))
 
 ```{r}
 #| echo: false
-p <- diamonds %>%
-      filter(cut=="Fair"|cut=="Good"|cut=="Very Good") %>%
-      droplevels() %>%
+p <- diamonds |>
+      filter(cut %in% c("Fair","Good","Very Good")) |>
+      droplevels() |>
       ggplot(aes(carat,price,color=cut))+
             geom_point()
 ```
@@ -1040,7 +1036,7 @@ p <- diamonds %>%
 newtheme <- theme_bw() + theme(
   axis.ticks=element_blank(), panel.background=element_rect(fill="white"),
   panel.grid.minor=element_blank(), panel.grid.major.x=element_blank(),
-  panel.grid.major.y=element_line(size=0.3,color="grey90"), panel.border=element_blank(),
+  panel.grid.major.y=element_line(linewidth=0.3,color="grey90"), panel.border=element_blank(),
   legend.position="top", legend.justification="right"
 )
 ```
@@ -1081,15 +1077,15 @@ p + newtheme
 ```{r}
 #| echo: false
 #| eval: false
-USArrests %>% head(n=3) %>%
-  kable("html",escape=F,align="c") %>%
+USArrests |> head(n=3) |>
+  kable("html",escape=F,align="c") |>
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
                 position="left",full_width = F)
 ```
 
 ```{r}
-us <- USArrests %>% mutate(state=rownames(.)) %>% slice(1:4) %>%
-                    gather(key=type,value=value,-state)
+us <- USArrests |> mutate(state = rownames(USArrests)) |> slice(1:4) |>
+      pivot_longer(cols = -state, names_to = "type", values_to = "value")
 p <- ggplot(us,aes(x=state,y=value,fill=type))
 ```
 
@@ -1136,7 +1132,7 @@ dev.off()
 
 ```{r}
 #| eval: false
-ggsave("plot.png",p,height=5,width=7,units="cm",dpi=200,type="cairo")
+ggsave("plot.png",p,height=5,width=7,units="cm",dpi=200,device=Cairo::CairoPNG)
 ```
 
 - Note that default units in `png` is pixels while in `ggsave` it's inches  
@@ -1145,8 +1141,8 @@ ggsave("plot.png",p,height=5,width=7,units="cm",dpi=200,type="cairo")
 
 ```{r}
 #| echo: false
-us <- USArrests %>% mutate(state=rownames(.)) %>% slice(1:4) %>%
-                    gather(key=type,value=value,-state)
+us <- USArrests |> mutate(state = rownames(USArrests)) |> slice(1:4) |>
+      pivot_longer(cols = -state, names_to = "type", values_to = "value")
 ```
 
 ```{r}
@@ -1198,11 +1194,10 @@ plotly::ggplotly(p1,width=500,height=400)
 ::: {.column width="50%"}
 
 ```{r}
-#| fig-height: 3.5
-#| fig-width: 4.5
+#| fig-height: 2.5
+#| fig-width: 3.5
 p2 <- p+ggiraph::geom_point_interactive(
-  aes(tooltip=paste0("<b>Species: </b>",Species)))+
-  theme_bw(base_size=12)
+  aes(tooltip=paste0("<b>Species: </b>",Species)))
 ggiraph::girafe(code=print(p2))
 ```
 
@@ -1227,8 +1222,8 @@ Most interactive plotting libraries are not as complete as `ggplot2`. Therefore,
 - [**ggraph**](https://ggraph.data-imaginist.com/): Network graphs  
 - [**ggiraph**](http://davidgohel.github.io/ggiraph/): Converting ggplot2 to interactive graphics  
 
-A collection of ggplot extension packages: [https://exts.ggplot2.tidyverse.org/](https://exts.ggplot2.tidyverse.org/).  
-Curated list of ggplot2 links: [https://github.com/erikgahner/awesome-ggplot2](https://github.com/erikgahner/awesome-ggplot2).  
+A collection of ggplot extension packages: <https://exts.ggplot2.tidyverse.org/>  
+Curated list of ggplot2 links: <https://github.com/erikgahner/awesome-ggplot2>  
 
 ## Learning & Help
 

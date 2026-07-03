@@ -38,7 +38,7 @@ format: revealjs
 
 ::: {.column width="50%"}
 ![](assets/rpkg_book.webp){width="60%"}  
-[[http://r-pkgs.had.co.nz/]{.smaller}](http://r-pkgs.had.co.nz/])
+[[https://r-pkgs.org/]{.smaller}](https://r-pkgs.org/)
 :::
 ::::
 
@@ -187,7 +187,7 @@ There is a subtle difference between loading a package into memory to be able to
 ## Package states
 
 ![](assets/installation.webp)  
-[[http://r-pkgs.had.co.nz/package.html]{.smaller}](http://r-pkgs.had.co.nz/package.html)
+[[https://r-pkgs.org/structure.html]{.smaller}](https://r-pkgs.org/structure.html)
 
 
 ::: {.notes}
@@ -978,7 +978,7 @@ Lets talk a bit more about setting up GitHub actions. There is an extra assignme
 
 ::: {.column width="30%"}
 [![](assets/rpkg_book.webp)
-[http://r-pkgs.had.co.nz/]{.smaller}](http://r-pkgs.had.co.nz/)
+[https://r-pkgs.org/]{.smaller}](https://r-pkgs.org/)
 :::
 ::::
 
