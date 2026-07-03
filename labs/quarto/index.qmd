@@ -589,7 +589,7 @@ Lastly, the parameter can be passed in from R as such:
 quarto::quarto_render("report.qmd", execute_params = list(name = "versicolor"))
 ```
 
-::: {.alert .alert-warning}
+::: {.callout}
 
 **{{< fa clipboard-list >}} Tasks**
 
