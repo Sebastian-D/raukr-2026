@@ -10,14 +10,11 @@ project:
     - "!labs/coding/*.qmd"
     - "!slides/debugging/*.qmd"
     - "!labs/debugging/*.qmd"
-    - "!slides/ggplot/*.qmd"
-    - "!labs/ggplot/*.qmd"
     - "!labs/git/*.qmd"
     - "!slides/oop/*.qmd"
     - "!labs/oop/*.qmd"
     - "!slides/packages/*.qmd"
     - "!labs/packages/*.qmd"
-    - "!slides/quarto/*.qmd"
     - "!slides/scripting/*.qmd"
     - "!labs/scripting/*.qmd"
     - "!slides/tidyverse/*.qmd"
@@ -154,4 +151,3 @@ filters:
   - reveal-logo
   - fontawesome
   - accordion
-
