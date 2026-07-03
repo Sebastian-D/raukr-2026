@@ -174,6 +174,8 @@ quarto add mcanouil/quarto-collapse-output
 quarto add royfrancis/quarto-accordion
 # Top logos in revealjs slides
 quarto add royfrancis/quarto-reveal-logo
+# shinylive
+quarto add quarto-ext/shinylive
 ```
 
 ---
