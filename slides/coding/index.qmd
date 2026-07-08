@@ -149,19 +149,22 @@ Sometimes these are domain-specific:
 ```{r indentation_bad}
 #| eval: false
 a <- 15
-  b <- 20
-  
-  c <- function(a,b){             #Bad
-return(a + b)}
+b <- 20
 
-      d <- 1+2:3*(4/5)
+c <- function(a, b) {
+  #Bad
+  return(a + b)
+}
+
+d <- 1 + 2:3 * (4 / 5)
 ```
 
 ```{r indentation_good}
 #| eval: false
 a <- 15
 b <- 20
-c <- function(a, b) {             #Good
+c <- function(a, b) {
+  #Good
   return(a + b)
 }
 d <- 1 + 2:3 * (4 / 5)
@@ -186,7 +189,9 @@ d <- 1 + 2:3 * (4 / 5)
 ```{r linewidth_bad}
 #| eval: false
 # Bad
-fn <- function(a_really_long_variable_name, another_really_long_name) a_really_long_variable_name + another_really_long_name
+fn <- function(a_really_long_variable_name, another_really_long_name) {
+  a_really_long_variable_name + another_really_long_name
+}
 ```
 
 ```{r linewidth_good}
