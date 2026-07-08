@@ -9,7 +9,7 @@ format: revealjs
 
 ```{r}
 #| echo: false
-# remotes::install_github("hadley/emo")
+# pak::pak("hadley/emo")
 library(emo)
 ```
 
@@ -18,6 +18,10 @@ library(emo)
 <br>
 
 After this module:
+
+- You will think more about when you should use AI.
+
+. . .
 
 - You will be aware of different coding styles.
 
@@ -37,6 +41,9 @@ After this module:
 
 - You will sample some different notations.
 
+## When to use AI
+
+Here we discuss that studies show that AI is not good for learning so you should only use it to ask for explanations, not to complete assignments during course.
 
 ## What is Coding Style?
 
