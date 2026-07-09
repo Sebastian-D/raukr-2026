@@ -37,6 +37,10 @@ After this module:
 
 - You will sample some different notations.
 
+. . .
+
+- You will think about when it is appropriate to use AI.
+
 
 ## What is Coding Style?
 
@@ -149,14 +153,12 @@ Sometimes these are domain-specific:
 ```{r indentation_bad}
 #| eval: false
 a <- 15
-b <- 20
+  b <- 20
+  
+  c <- function(a,b){             #Bad
+return(a + b)}
 
-c <- function(a, b) {
-  #Bad
-  return(a + b)
-}
-
-d <- 1 + 2:3 * (4 / 5)
+      d <- 1+2:3*(4/5)
 ```
 
 ```{r indentation_good}
@@ -189,9 +191,7 @@ d <- 1 + 2:3 * (4 / 5)
 ```{r linewidth_bad}
 #| eval: false
 # Bad
-fn <- function(a_really_long_variable_name, another_really_long_name) {
-  a_really_long_variable_name + another_really_long_name
-}
+fn <- function(a_really_long_variable_name, another_really_long_name) a_really_long_variable_name + another_really_long_name
 ```
 
 ```{r linewidth_good}
@@ -203,6 +203,26 @@ fn <- function(
 ) {
   a_really_long_variable_name + another_really_long_name
 }
+```
+
+:::
+::: {.column width="30%"}
+![https://posit-dev.github.io/air/](assets/air.webp){height="300px"}
+
+:::
+::::
+
+## Code formatting
+
+:::: {.columns}
+::: {.column width="70%"}
+
+Enable format on save:
+```{r}
+#| eval: false
+"[r]": {
+        "editor.formatOnSave": true
+    }
 ```
 
 :::
@@ -274,6 +294,41 @@ but with a bit of effort you can see them:
 ```{r show_hidden_vars}
 ls(all.names = TRUE)
 ```
+
+## When is AI appropriate?
+![](assets/first_title.png){.absolute top="50%" left="50%" width="600"}
+
+![](assets/second_title.png){.absolute top="75%" left="10%" width="600"}
+
+![](assets/third_title.png){.absolute top="25%" left="58%" width="600"}
+
+![](assets/fourth_title.png){.absolute top="20%" left="10%" width="600"}
+
+![](assets/fifth_title.png){.fragment .absolute top="90%" left="55%" width="600"}
+
+![](assets/sixth_title.png){.fragment .absolute top="50%" left="3%" width="600"}
+
+![](assets/seventh_title.png){.fragment .absolute top="10%" left="30%" width="600"}
+
+![](assets/eighth_title.png){.fragment .absolute top="90%" left="0%" width="600"}
+
+![](assets/ninth_title.png){.fragment .absolute top="80%" left="55%" width="600"}
+
+## When is AI appropriate?
+
+![](assets/muesli_coder_reviewer.png){.centered}
+
+::: {.notes}
+Short:
+- Depends on how you use it.
+- Generating solutions to exercises: Increases volume of topics but decreases understanding.
+- Asking for explanations: Increases understanding but not volume of topics.
+
+The effect of large language models (LLMs) in education is debated: Previous research shows that LLMs can help as well as hurt learning. In two pre-registered and incentivized laboratory experiments, we find no effect of LLMs on overall learning outcomes. In exploratory analyses and a field study, we provide evidence that the effect of LLMs on learning outcomes depends on usage behavior. Students who substitute some of their learning activities with LLMs (e.g., by generating solutions to exercises) increase the volume of topics they can learn about but decrease their understanding of each topic. Students who complement their learning activities with LLMs (e.g., by asking for explanations) do not increase topic volume but do increase their understanding. We also observe that LLMs widen the gap between students with low and high prior knowledge. While LLMs show great potential to improve learning, their use must be tailored to the educational context and students' needs.
+- AI Meets the Classroom: When Do Large Language Models Harm Learning?
+  Matthias Lehmann, Philipp B. Cornelius, Fabian J. Sting
+  https://doi.org/10.48550/arXiv.2409.09047
+:::
 
 ## {background-image="/assets/images/network.svg"}
 
