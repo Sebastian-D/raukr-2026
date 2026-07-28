@@ -1,0 +1,671 @@
+---
+title: "data.table"
+author: "Markus Mayrhofer"
+description: "Fast, memory-efficient tabular data wrangling in R, compared with base R and the tidyverse."
+format: html
+---
+
+::: {.callout-note}
+## Coding exercise
+
+We recommend that you run the code sections as you work through this exercise.
+You can copy-paste into a Quarto or R script and run line by line using
+{{< kbd mac=Command-Enter win=Ctrl-Enter linux=Ctrl-Enter >}}.
+:::
+
+```{r}
+#| label: setup
+#| message: false
+library(data.table)   # the topic of this lab
+library(dplyr)        # tidyverse reference implementations
+library(readr)        # read_tsv(), for the file-reading benchmark
+library(bench)        # benchmarking
+library(ggplot2)      # benchmark plots
+theme_set(theme_minimal())
+setDTthreads(percent = 100)   # use all cores; check with getDTthreads()
+```
+
+## Introduction
+
+`data.table` is an R package for working with **rectangular / tabular data**: rows
+are observations, columns are variables, each cell is one value. Most
+data-wrangling tasks are combinations of four basic actions:
+
+| Question | Operation |
+|---|---|
+| Which rows do I keep? | **filter** rows |
+| Which columns do I keep or compute? | **select / mutate** columns |
+| Should I calculate separately for each group? | **group by** |
+| Do I need information from another table? | **join** |
+
+**Where it comes from.** `data.table` was created by Matt Dowle, with version 1.0
+on CRAN in April 2006, and was long co-developed with Arun Srinivasan. It is now
+maintained by a wider team (Tyson Barrett is the current CRAN maintainer, with
+Jan Gorecki, Michael Chirico, Toby Hocking and others). It grew out of a practical
+problem: row-wise operations on a base R `data.frame` -- filtering, `rbind`,
+`merge` -- rebuild every column, which becomes slow and memory-hungry once tables
+get large. `data.table` is written largely in C, is
+multi-threaded, adds or changes columns *by reference* (without copying), and ships
+with fast file readers (`fread` / `fwrite`). It keeps a deliberately small
+dependency footprint -- just base R -- which is part of why it stays fast and
+stable. The cost is a terse, bracket-based syntax, which this lab unpacks.
+
+In this lab we express each of these in **three styles** and compare them:
+
+- **base R**: the tools that ship with R (`[`, `$`, `subset()`, `tapply()`, `aggregate()`, `merge()`).
+- **tidyverse** (`dplyr`): a sequence of named verbs joined by the pipe `|>`. Shown here only for comparison; many of you will already know it.
+- **data.table**: the focus of today. Everything happens inside `DT[i, j, by]`.
+
+::: {.callout-note}
+## The one idea to remember: `DT[i, j, by]`
+
+```
+DT[ i ,  j ,  by ]
+|  |    |    `-- group by these columns
+|  |    `------- compute, select, or update columns
+|  `------------ keep or match these rows
+`--------------- the data.table object
+```
+
+Read it as: **take rows `i`, do `j`, separately within each `by` group.**
+If there is no grouping, leave `by` out. If there is no row filter, leave `i`
+empty but keep the comma: `DT[, j]`.
+
+Two shorthands appear constantly:
+
+- `.N` = number of rows in the current group (like `dplyr::n()`).
+- `.()` = shorthand for `list()`; used in `j` to return or name columns.
+:::
+
+## Data: a simulated genotyping cohort
+
+We simulate genetic data because it produces **large tables**, which is
+exactly where `data.table` earns its keep. No files to download: the generator
+below is fully reproducible. The biological terms are only labels; the same
+row/column/group/join ideas apply to any large table.
+
+| Term | Meaning here |
+|---|---|
+| sample | one person or specimen |
+| variant | one genomic position where samples may differ |
+| genotype | number of alternate copies: 0, 1, or 2; **-1 means missing** |
+| read depth | how many sequencing reads cover a site |
+| genotype quality | confidence score for the genotype call |
+| allele frequency | average alternate-copy frequency across samples |
+
+The data has three linked tables:
+
+- **`samples`**: one row per sample (population, sex, batch, case/control).
+- **`variants`**: one row per variant (chromosome, position, gene, consequence, frequency).
+- **`genotypes`**: one row per sample x variant pair (genotype, read depth, quality). This is the **tall** table.
+
+```{r}
+#| label: simulate
+#| code-fold: true
+#| code-summary: "Run to generate the data -- click to expand"
+simulate_genotyping <- function(n_samples = 500, n_variants = 4000, seed = 42) {
+  set.seed(seed)
+
+  # samples: one row per sample
+  pops <- c("AFR", "AMR", "EAS", "EUR", "SAS")
+  samples <- data.table(
+    sample_id  = sprintf("S%05d", seq_len(n_samples)),
+    population = sample(pops, n_samples, replace = TRUE,
+                        prob = c(0.22, 0.14, 0.20, 0.30, 0.14)),
+    sex        = sample(c("M", "F"), n_samples, replace = TRUE),
+    batch      = sample(sprintf("batch%02d", 1:8), n_samples, replace = TRUE),
+    phenotype  = rbinom(n_samples, 1, 0.35)   # 1 = case, 0 = control
+  )
+
+  # variants: one row per variant
+  chroms <- c(1:22, "X")
+  conseq <- c("synonymous", "missense", "stop_gained", "splice_region", "intron", "UTR")
+  variants <- data.table(
+    variant_id  = sprintf("rs%07d", seq_len(n_variants)),
+    chrom       = sample(chroms, n_variants, replace = TRUE),
+    pos         = sample(1e6:2.5e8, n_variants, replace = TRUE),
+    ref         = sample(c("A", "C", "G", "T"), n_variants, replace = TRUE),
+    alt         = sample(c("A", "C", "G", "T"), n_variants, replace = TRUE),
+    gene        = sprintf("GENE%04d", sample(1:1500, n_variants, replace = TRUE)),
+    consequence = sample(conseq, n_variants, replace = TRUE,
+                         prob = c(0.30, 0.25, 0.03, 0.07, 0.25, 0.10)),
+    maf         = round(rbeta(n_variants, 0.6, 6), 4)   # skewed toward rare
+  )
+  flip <- variants$alt == variants$ref
+  variants[flip, alt := fifelse(ref == "A", "G", "A")]
+
+  # genotypes: one row per sample x variant (the tall table)
+  geno <- CJ(sample_id = samples$sample_id, variant_id = variants$variant_id)
+  geno[variants, maf := i.maf, on = "variant_id"]
+  n <- nrow(geno)
+  p <- geno$maf
+  u <- runif(n)
+  geno[, genotype := fifelse(u < (1 - p)^2, 0L,
+                       fifelse(u < (1 - p)^2 + 2 * p * (1 - p), 1L, 2L))]
+  geno[runif(n) < 0.02, genotype := -1L]                # 2% missing
+  geno[, read_depth       := rpois(n, lambda = 30)]
+  geno[, genotype_quality := pmin(99L, rpois(n, lambda = 45))]
+  geno[, maf := NULL]
+  setcolorder(geno, c("sample_id", "variant_id", "genotype", "read_depth", "genotype_quality"))
+
+  list(genotypes = geno[], variants = variants[], samples = samples[])
+}
+
+dat       <- simulate_genotyping(n_samples = 500, n_variants = 4000, seed = 42)
+genotypes <- dat$genotypes
+variants  <- dat$variants
+samples   <- dat$samples
+
+# Plain data.frame copies. The base R *and* tidyverse code below both use these,
+# so each style is measured on its own native input: base R indexing on a
+# data.frame, dplyr verbs on a data.frame, and data.table's `[` on a data.table.
+genotypes_df <- as.data.frame(genotypes)
+variants_df  <- as.data.frame(variants)
+samples_df   <- as.data.frame(samples)
+
+dim(genotypes)                                  # 500 x 4000 = 2,000,000 rows
+format(object.size(genotypes), units = "MB")
+head(genotypes, 4)
+```
+
+::: {.callout-tip}
+Exactly 2,000,000 rows (500 samples x 4000 variants), the same on every machine
+because the seed is fixed. The size is intentional: small examples hide the
+memory and copying behaviour that matters in real analyses. Only the benchmark
+*timings* later will differ from one computer to another; the data and the
+results will not.
+:::
+
+## Core operations
+
+Each operation below is shown in all three styles. Watch where the row filter,
+the column calculation, and the grouping live in each.
+
+::: {.callout-note}
+## Why the tidyverse code uses `genotypes_df`
+`data.table` inherits from `data.frame`, so dplyr verbs *do* work on a
+`data.table` -- but dplyr then has to convert it, which makes dplyr look slower
+and more memory-hungry than it really is. To keep the later benchmarks fair, the
+base R and tidyverse code both work on the plain `data.frame` copies
+(`genotypes_df`, `variants_df`, `samples_df`) while the `data.table` code works
+on the `data.table`. Each style is measured on its own native input.
+
+A `tibble` would work equally well: it is a `data.frame` underneath and benchmarks
+within a few percent. Plain `data.frame` also keeps the printed results in the same
+style as the other two engines.
+:::
+
+### Filter rows
+
+Get genotype rows where the genotype is a homozygous alternate call and read
+depth is adequate (showing top three).
+
+```{r}
+#| label: op-filter
+# base R
+head(genotypes_df[genotypes_df$genotype == 2 & genotypes_df$read_depth >= 20, ], 3)
+
+# tidyverse
+genotypes_df |> filter(genotype == 2, read_depth >= 20) |> head(3)
+
+# data.table: the row condition goes in i, before the first comma
+genotypes[genotype == 2 & read_depth >= 20][1:3]
+```
+
+Under the hood: all three build a TRUE/FALSE vector over the rows and keep the
+`TRUE` ones. All three return a **new** table -- the original is untouched -- so you
+pay memory for the rows you keep, and you would normally assign the result a name.
+
+### Select columns
+
+```{r}
+#| label: op-select
+# base R
+head(variants_df[, c("variant_id", "gene", "maf")], 3)
+
+# tidyverse
+variants_df |> select(variant_id, gene, maf) |> head(3)
+
+# data.table: selected columns go in j as .(...)
+variants[, .(variant_id, gene, maf)][1:3]
+```
+
+Under the hood: all three return a **new** table object, but the data vectors
+themselves are not duplicated until something modifies them.
+
+### Add a column
+
+```{r}
+#| label: op-mutate
+# base R (shallow copy: the other columns are shared with variants_df)
+v_tmp <- variants_df
+v_tmp$is_rare <- v_tmp$maf < 0.01
+head(v_tmp[, c("variant_id", "maf", "is_rare")], 3)
+
+# tidyverse (returns a new object)
+variants_df |> mutate(is_rare = maf < 0.01) |>
+  select(variant_id, maf, is_rare) |> head(3)
+
+# data.table: := adds/updates a column by reference (no copy)
+variants[, is_rare := maf < 0.01]
+variants[, .(variant_id, maf, is_rare)][1:3]
+```
+
+::: {.callout-warning}
+## Reference semantics
+`:=` changes `variants` **in place**: there is no new object to assign, and every
+other reference to that table sees the change. Use `copy(variants)` first if you
+need an untouched snapshot. A function that receives a `data.table` and uses `:=`
+can modify the caller's object unless it copies internally.
+
+The base R and tidyverse versions above are not expensive either: a `data.frame`
+is a list of columns, so they share the unchanged columns and duplicate only the
+column you touch. The copies that actually cost you are row-wise -- filters,
+`rbind`, joins -- which have to rebuild every column.
+:::
+
+### Group and summarise
+
+For each sample, among called genotypes, compute the mean read depth and the
+number of called genotypes.
+
+```{r}
+#| label: op-group
+# base R (aggregate() returns a matrix column, so flatten and rename)
+called <- genotypes_df[genotypes_df$genotype >= 0, ]
+agg <- aggregate(read_depth ~ sample_id, data = called,
+                 FUN = function(x) c(mean_depth = mean(x), n_called = length(x)))
+agg <- do.call(data.frame, agg)
+names(agg) <- c("sample_id", "mean_depth", "n_called")
+head(agg, 3)
+
+# tidyverse
+genotypes_df |>
+  filter(genotype >= 0) |>
+  group_by(sample_id) |>
+  summarise(mean_depth = mean(read_depth), n_called = n()) |>
+  head(3)
+
+# data.table: i filters, j computes, by defines the groups
+genotypes[genotype >= 0,
+          .(mean_depth = mean(read_depth), n_called = .N),
+          by = sample_id][1:3]
+```
+
+### Join tables
+
+Attach each variant's `consequence` and `gene` to the genotype rows, using
+`variant_id` as the shared key.
+
+```{r}
+#| label: op-join
+# base R (merge() reorders around the join key; re-sort to match the others)
+m <- merge(genotypes_df, variants_df[, c("variant_id", "consequence", "gene")],
+           by = "variant_id")
+m <- m[order(m$sample_id, m$variant_id),
+       c("sample_id", "variant_id", "genotype", "consequence", "gene")]
+head(m, 3)
+
+# tidyverse
+genotypes_df |>
+  inner_join(select(variants_df, variant_id, consequence, gene), by = "variant_id") |>
+  select(sample_id, variant_id, genotype, consequence, gene) |>
+  head(3)
+
+# data.table: x[y, on = "key"]
+variants[genotypes, on = "variant_id",
+         .(sample_id, variant_id, genotype, consequence, gene)][1:3]
+```
+
+## Keys
+
+The joins above used `on =` to match columns ad-hoc. If you look up or join on the
+same column repeatedly, it is worth setting a **key**.
+
+A key is one or more columns that a `data.table` is physically **sorted by**.
+`setkey(DT, col)` reorders the rows of `DT` by `col` -- in place, by reference --
+and records that order.
+
+```{r}
+#| label: keys
+setkey(genotypes, sample_id)
+key(genotypes)
+```
+
+Because the rows are now sorted by `sample_id`, `data.table` can find rows by
+**binary search** rather than scanning the whole table:
+
+```{r}
+#| label: keys-lookup
+genotypes["S00001"][1:3]     # keyed lookup: one sample's rows, found directly
+```
+
+A key speeds up three things on the key column(s):
+
+- **Row lookups**, as above.
+- **Repeated joins**: two tables keyed on the same column join by a fast sorted merge.
+- **Grouping** by the key column.
+
+You do not always need a key -- the `on =` joins above work without one -- but set a
+key when you will hit the same column many times, so the sort cost is paid once.
+`setindex()` gives a similar speed-up without physically re-ordering the table.
+
+## Benchmarks: time and memory
+
+`bench::mark()` runs each expression and records **elapsed time**, **memory
+allocated**, and **garbage collections**. Time matters because slow code interrupts
+analysis. Memory matters because large tables can fail when R runs out of RAM.
+`check = FALSE` allows small differences in output shape between engines.
+
+```{r}
+#| label: bench-fig-helper
+#| code-fold: true
+#| code-summary: "Helper: plot a bench::mark result (time, and memory when measured)"
+bench_fig <- function(b, engines) {
+  cols <- c("#D55E00", "#0072B2", "#009E73")   # base_R, middle engine, data.table
+  names(cols) <- engines
+
+  long <- data.frame(engine = as.character(b$expression),
+                     metric = "median time (ms)",
+                     value  = as.numeric(b$median) * 1000)
+  if (!is.null(b$mem_alloc) && !all(is.na(b$mem_alloc))) {
+    long <- rbind(long, data.frame(
+      engine = as.character(b$expression),
+      metric = "memory allocated (MB)",
+      value  = as.numeric(b$mem_alloc) / 1024^2))
+  }
+  # rev() so the first engine (base_R) sits on top after coord_flip
+  long$engine <- factor(long$engine, levels = rev(engines))
+  long$metric <- factor(long$metric,
+                        levels = c("median time (ms)", "memory allocated (MB)"))
+
+  # horizontal bars without coord_flip, so facet free scales work per panel
+  ggplot(long, aes(x = value, y = engine, fill = engine)) +
+    geom_col(width = 0.65, show.legend = FALSE, orientation = "y") +
+    geom_text(aes(label = round(value, 1)), hjust = -0.15, size = 3.3) +
+    facet_wrap(~ metric, scales = "free_x") +   # each metric gets its own value axis
+    scale_fill_manual(values = cols) +
+    scale_x_continuous(expand = expansion(mult = c(0, 0.18))) +
+    labs(x = NULL, y = NULL) +
+    theme_minimal(base_size = 12) +
+    theme(panel.grid.major.y = element_blank())
+}
+```
+
+### Grouped aggregation: per-variant allele frequency
+
+For each variant, among called genotypes, allele frequency is
+`sum(genotype) / (2 * n_called)`.
+
+```{r}
+#| label: bench-agg
+bench_agg <- bench::mark(
+  base_R = {
+    ca <- genotypes_df[genotypes_df$genotype >= 0, c("variant_id", "genotype")]
+    tapply(ca$genotype, ca$variant_id, sum) /
+      (2 * tapply(ca$genotype, ca$variant_id, length))
+  },
+  tidyverse = genotypes_df |>
+    filter(genotype >= 0) |>
+    group_by(variant_id) |>
+    summarise(af = sum(genotype) / (2 * n()), .groups = "drop"),
+  data.table = genotypes[genotype >= 0,
+                         .(af = sum(genotype) / (2 * .N)),
+                         by = variant_id],
+  check = FALSE,
+  iterations = 3
+)
+bench_agg[, c("expression", "median", "mem_alloc", "n_gc")]
+```
+
+```{r}
+#| label: fig-bench-agg
+#| fig-cap: "Grouped aggregation over 2,000,000 genotype rows: median run time and memory allocated, per engine. Lower is better."
+#| fig-height: 3
+bench_fig(bench_agg, c("base_R", "tidyverse", "data.table"))
+```
+
+::: {.callout-note}
+## Reading this result
+On this run `dplyr` is the **fastest** on time: a
+grouped `summarise()` over a few thousand groups is well optimised, so
+`data.table` has little headroom left on time for this particular task.
+
+Where `data.table` does win here is **memory**: it allocates several times less
+than either alternative, because it groups without materialising large
+intermediate copies. If your table is big enough that RAM is the binding
+constraint, that difference decides whether the job runs at all.
+
+`data.table`'s *time* advantage shows up in the next two benchmarks, the join and the file
+read. This is why we measure instead of asserting: which tool wins depends
+on the operation, the shape of the data, and whether time or memory is scarce.
+Run this on your own machine and the results may differ slightly.
+:::
+
+### Three-table join
+
+Attach variant `consequence` + `gene` and sample `population` to every genotype row.
+
+::: {.callout-warning}
+## Read this benchmark with one caveat
+The `setkey()` calls happen **before** `bench::mark()`, so the one-time cost of
+sorting the tables is **not** included in the `data.table` timing, while base R
+and dplyr pay their full cost inside the timed expression. That matches a real
+application -- you sort once, then join and look up many times -- but this benchmark
+performs only a *single* join. For a genuine one-off join you would have to add the 
+sort cost to `data.table`'s time, reducing its advantage slightly.
+:::
+
+```{r}
+#| label: bench-join
+# keyed joins are sorted-merge joins (fast); set keys once, outside the timing
+setkey(genotypes, variant_id)
+setkey(variants,  variant_id)
+
+bench_join <- bench::mark(
+  base_R = {
+    m1 <- merge(genotypes_df, variants_df[, c("variant_id", "consequence", "gene")],
+                by = "variant_id")
+    merge(m1, samples_df[, c("sample_id", "population")], by = "sample_id")
+  },
+  tidyverse = genotypes_df |>
+    inner_join(select(variants_df, variant_id, consequence, gene), by = "variant_id") |>
+    inner_join(select(samples_df,  sample_id, population),          by = "sample_id"),
+  data.table = samples[
+    variants[genotypes, on = "variant_id",
+             .(sample_id, variant_id, genotype, consequence, gene)],
+    on = "sample_id"],
+  check = FALSE,
+  iterations = 2
+)
+bench_join[, c("expression", "median", "mem_alloc")]
+```
+
+```{r}
+#| label: fig-bench-join
+#| fig-cap: "Three-table join over 2,000,000 genotype rows: median run time and memory allocated, per engine. Lower is better."
+#| fig-height: 3
+bench_fig(bench_join, c("base_R", "tidyverse", "data.table"))
+```
+
+### Reading a file
+
+Large analyses often start by reading a file. Write the genotype table to a
+temporary TSV, then compare read speeds.
+
+```{r}
+#| label: bench-io
+tmp <- tempfile(fileext = ".tsv")
+data.table::fwrite(genotypes, tmp, sep = "\t")
+cat("file size:", round(file.info(tmp)$size / 1e6, 1), "MB\n")
+
+bench_io <- bench::mark(
+  base_R     = read.delim(tmp),
+  readr      = readr::read_tsv(tmp, show_col_types = FALSE) |> as.data.frame(),
+  data.table = data.table::fread(tmp),
+  check = FALSE, iterations = 3, memory = FALSE
+)
+bench_io[, c("expression", "median")]
+unlink(tmp)
+```
+
+```{r}
+#| label: fig-bench-io
+#| fig-cap: "Reading a ~50 MB TSV: median run time, per engine. Lower is better. (Memory is not profiled for file readers, so time only.)"
+#| fig-height: 2.4
+bench_fig(bench_io, c("base_R", "readr", "data.table"))
+```
+
+## Exercises
+
+Each exercise gives the base R and tidyverse answers so you know the target
+output. Write the `data.table` version yourself, then open the folded solution to
+check.
+
+### Per-sample call rate
+
+For each sample, what fraction of genotypes are non-missing (`genotype >= 0`)?
+Show the 3 samples with the **lowest** call rate.
+
+```{r}
+#| label: ex1-ref
+# base R
+cr <- sort(tapply(genotypes_df$genotype >= 0, genotypes_df$sample_id, mean))
+head(data.frame(sample_id = names(cr), call_rate = as.numeric(cr)), 3)
+
+# tidyverse
+genotypes_df |>
+  group_by(sample_id) |>
+  summarise(call_rate = mean(genotype >= 0)) |>
+  arrange(call_rate) |>
+  head(3)
+```
+
+```{r}
+#| label: ex1-sol
+#| code-fold: true
+#| code-summary: "Show data.table solution"
+genotypes[, .(call_rate = mean(genotype >= 0)), by = sample_id][order(call_rate)][1:3]
+```
+
+### High-quality missense rows per gene
+
+Among genotype rows with `genotype_quality >= 30` and `genotype > 0`, joined to
+variant annotation and keeping `consequence == "missense"`, which 3 genes have the
+most such rows?
+
+```{r}
+#| label: ex2-ref
+# base R
+g  <- genotypes_df[genotypes_df$genotype_quality >= 30 & genotypes_df$genotype > 0, ]
+mg <- merge(g, variants_df[, c("variant_id", "consequence", "gene")], by = "variant_id")
+tab <- sort(table(mg$gene[mg$consequence == "missense"]), decreasing = TRUE)
+head(data.frame(gene = names(tab), n = as.integer(tab)), 3)
+
+# tidyverse
+genotypes_df |>
+  filter(genotype_quality >= 30, genotype > 0) |>
+  inner_join(variants_df, by = "variant_id") |>
+  filter(consequence == "missense") |>
+  count(gene, sort = TRUE) |>
+  head(3)
+```
+
+```{r}
+#| label: ex2-sol
+#| code-fold: true
+#| code-summary: "Show data.table solution"
+variants[genotypes[genotype_quality >= 30 & genotype > 0], on = "variant_id"][
+  consequence == "missense", .N, by = gene][order(-N)][1:3]
+```
+
+### Kept calls per population
+
+Joining genotypes to `samples`, for each `population` how many genotype rows pass
+`read_depth >= 15 & genotype_quality >= 25`?
+
+```{r}
+#| label: ex3-ref
+# base R
+mp   <- merge(genotypes_df, samples_df[, c("sample_id", "population")], by = "sample_id")
+keep <- mp$read_depth >= 15 & mp$genotype_quality >= 25
+kept <- tapply(keep, mp$population, sum)
+data.frame(population = names(kept), kept = as.integer(kept))
+
+# tidyverse
+genotypes_df |>
+  inner_join(select(samples_df, sample_id, population), by = "sample_id") |>
+  group_by(population) |>
+  summarise(kept = sum(read_depth >= 15 & genotype_quality >= 25))
+```
+
+```{r}
+#| label: ex3-sol
+#| code-fold: true
+#| code-summary: "Show data.table solution"
+samples[genotypes, on = "sample_id"][
+  , .(kept = sum(read_depth >= 15 & genotype_quality >= 25)), by = population][order(population)]
+```
+
+## Cheat sheet
+
+| Task | base R | tidyverse | data.table |
+|---|---|---|---|
+| filter rows | `x[x$a > 1, ]` | `filter(x, a > 1)` | `x[a > 1]` |
+| select cols | `x[, c("a", "b")]` | `select(x, a, b)` | `x[, .(a, b)]` |
+| new col | `x$z <- x$a + x$b` | `mutate(x, z = a + b)` | `x[, z := a + b]` |
+| summarise | `aggregate(a ~ g, x, mean)` | `summarise(x, m = mean(a))` | `x[, .(m = mean(a))]` |
+| group | (via `aggregate` / `tapply`) | `group_by(x, g)` | `x[, ..., by = g]` |
+| count | `table(x$g)` | `count(x, g)` | `x[, .N, by = g]` |
+| arrange | `x[order(-x$a), ]` | `arrange(x, desc(a))` | `x[order(-a)]` |
+| join | `merge(x, y, by = "k")` | `inner_join(x, y, by = "k")` | `x[y, on = "k"]`, or `merge(x, y, by = "k")` |
+| read tsv | `read.delim(f)` | `read_tsv(f)` | `fread(f)` |
+| write tsv | `write.table(x, f)` | `write_tsv(x, f)` | `fwrite(x, f)` |
+
+## A caveat: whose method is actually running?
+
+The "base R" column above assumes a plain `data.frame`. That matters, because
+`data.table` inherits from `data.frame` **and** supplies its own methods for
+several base R generics -- so identical-looking code can dispatch to a completely
+different implementation depending on what you hand it. `merge()` is the clearest
+example:
+
+```{r}
+#| label: merge-dispatch
+dt_x <- data.table(k = 1:3, v = 1:3)
+df_x <- as.data.frame(dt_x)
+
+"merge.data.table" %in% as.character(methods("merge"))  # data.table defines one
+class(merge(dt_x, dt_x, by = "k"))                      # -> merge.data.table ran
+class(merge(df_x, df_x, by = "k"))                      # -> merge.data.frame ran
+```
+
+Hand `merge()` two `data.table`s and you get data.table's own C join, which on
+millions of rows is more than an order of magnitude faster than base R's
+`merge.data.frame` on the same data -- so `merge()` is a perfectly good
+`data.table` join, not just a base R one. The same applies to `[`: a `data.table`
+uses `[.data.table`, not `[.data.frame`.
+
+This is exactly why the base R benchmarks above use the `_df` copies: to measure
+base R itself, rather than `data.table` wearing a base R coat. Functions with no
+`data.table` method -- `aggregate()`, `tapply()`, `table()`, `order()` -- are
+genuinely base R whatever you pass them.
+
+## Where to go next
+
+- `vignette("datatable-intro")` and the other built-in `data.table` vignettes
+- `?data.table` for the full `[i, j, by]` reference
+- The `dtplyr` package: write dplyr code, get data.table speed
+- `setDTthreads()` / `getDTthreads()` to tune parallelism
+
+## Session
+
+<details>
+  <summary>Session info</summary>
+
+```{r}
+#| label: session
+sessionInfo()
+```
+
+</details>
