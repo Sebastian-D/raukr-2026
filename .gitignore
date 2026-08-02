@@ -18,3 +18,5 @@ todo.txt
 *.fastq
 to-do.txt
 docs/
+.positai
+*.h5
