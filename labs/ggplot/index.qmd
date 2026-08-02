@@ -4,6 +4,9 @@ author: "Roy Francis"
 description: "Creating plots and graphs using the ggplot2 package."
 image: "assets/featured.webp"
 format: html
+knitr:
+  opts_chunk:
+    fig.retina: 1
 ---
 
 ::: {.callout-note}
@@ -35,7 +38,7 @@ library(stringr)
 
 library(ggplot2)
 library(ggrepel)
-library(patchwork)
+# library(showtext)
 ```
 
 We use the `iris` data to get started. This dataset has four continuous variables and one categorical variable. It is important to remember about the data type when plotting graphs.
@@ -343,7 +346,7 @@ ggplot(data = iris, mapping = aes(x = Petal.Length, y = Petal.Width)) +
   geom_point(aes(color = Species, size = Sepal.Width)) +
   guides(
     size = guide_legend(nrow = 2, byrow = TRUE),
-    color = guide_legend(nrow = 3, byrow = T)
+    color = guide_legend(nrow = 3, byrow = TRUE)
   ) +
   theme(
     legend.position = "top",
@@ -406,7 +409,7 @@ ggplot(data = iris, mapping = aes(x = Petal.Length, y = Petal.Width)) +
 #| fig-width: 6
 
 ggplot(data = iris, mapping = aes(x = Species, y = Petal.Width)) +
-  geom_bar(stat = "identity")
+  geom_col()
 ```
 
 ### Flip axes
@@ -418,7 +421,7 @@ x and y axes can be flipped using `coord_flip`.
 #| fig-width: 6
 
 ggplot(data = iris, mapping = aes(x = Species, y = Petal.Width)) +
-  geom_bar(stat = "identity") +
+  geom_col() +
   coord_flip()
 ```
 
@@ -430,9 +433,9 @@ An example of using error bars with points. The mean and standard deviation is c
 #| fig-height: 4
 #| fig-width: 6
 
-dfr <- iris %>%
-  group_by(Species) %>%
-  summarise(mean = mean(Sepal.Length), sd = sd(Sepal.Length)) %>%
+dfr <- iris |>
+  group_by(Species) |>
+  summarise(mean = mean(Sepal.Length), sd = sd(Sepal.Length)) |>
   mutate(high = mean + sd, low = mean - sd)
 
 ggplot(data = dfr, mapping = aes(x = Species, y = mean, color = Species)) +
@@ -452,22 +455,23 @@ Download the data csv file.
 
 <a class="btn btn-secondary btn-sm" href="https://www.dropbox.com/s/7imn0eoey9ckxh5/data_economist.csv?dl=1" role="button">{{< fa download >}} data_economist.csv</a>
 
-Start by reading in the data.
+Then read in the data. Adjust the path as needed.
 
 ```{r}
-ec <- read.csv("assets/data_economist.csv", header = T)
+ec <- read.csv("assets/data_economist.csv", header = TRUE)
 head(ec)
 ```
 
-Make sure that the fields are of the correct type. The x-axis field 'CPI' and the y-axis field 'HDI' must be of numeric type. The categorical field 'Region' must be of Factor type.
+Make sure that the fields are of the correct type. The x-axis field 'CPI' and the y-axis field 'HDI' must be of numeric type. The field 'Region' must be of Factor type.
 
 ```{r}
 str(ec)
 ```
 
-We need to first modify the region column. The current levels in the 'Region' field are:
+We need to first modify the 'Region' column. The current levels in the 'Region' field are:
 
 ```{r}
+ec$Region <- factor(ec$Region)
 levels(ec$Region)
 ```
 
@@ -558,19 +562,24 @@ Now, we add the trend line using `geom_smooth`. Check out `?geom_smooth` and loo
 
 ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
   geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white") +
-  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = F, size = 0.6, color = "red")
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE, linewidth = 0.6, color = "red")
 
 ```
 
-Notice that the line in drawn over the points due to the plotting order. We want the points to be over the line. So reorder the geoms. Since we provided no aesthetic mappings to `geom_smooth`, there is no legend entry for the trendline. We can fake a legend entry by providing an aesthetic, for example; `aes(fill="red")`. We do not use the color aesthetic because it is already in use and would give us reduced control later on to modify this legend entry.
+Notice that the line is drawn over the points due to the plotting order. We want the points to be over the line. So reorder the geoms. Since we provided no aesthetic mappings to `geom_smooth`, there is no legend entry for the trendline. We can fake a legend entry by providing an aesthetic, for example; `aes(fill="red")`. We do not use the color aesthetic because it is already in use and would give us reduced control later on to modify this legend entry.
 
 ```{r}
 #| fig-height: 4
 #| fig-width: 7
 
 p <- ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
-  geom_smooth(aes(fill = "red"), method = "lm", formula = y ~ poly(x, 2), se = F, color = "red", size = 0.6) +
+  geom_smooth(aes(fill = "red"), method = "lm", formula = y ~ poly(x, 2), se = FALSE, color = "red", linewidth = 0.6) +
   geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white")
+
+trend_model <- lm(HDI ~ poly(CPI, 2), data = ec)
+r_squared <- summary(trend_model)$r.squared
+r_label <- as.expression(bquote(R^2 == .(round(r_squared, 2))))
+
 p
 ```
 
@@ -579,7 +588,7 @@ p
 Now we add the text labels. Only a subset of countries are plotted. The list of countries to label is shown below.
 
 ```         
-"Congo","Afghanistan","Sudan","Myanmar","Iraq","Venezuela","Russia","Argentina","Brazil","Italy","South Africa","Cape Verde","Bhutan","Botswana","Britian","New Zealand","Greece","China","India","Rwanda","Spain","France","United States","Japan","Norway","Singapore","Barbados","Germany"
+"Congo","Afghanistan","Sudan","Myanmar","Iraq","Venezuela","Russia","Argentina","Brazil","Italy","South Africa","Cape Verde","Bhutan","Botswana","Britain","New Zealand","Greece","China","India","Rwanda","Spain","France","United States","Japan","Norway","Singapore","Barbados","Germany"
 ```
 
 - Use `geom_text` to subset the original data.frame to the reduced set above and plot the labels as text. See `?geom_text`.
@@ -588,7 +597,7 @@ Now we add the text labels. Only a subset of countries are plotted. The list of 
 #| fig-height: 5
 #| fig-width: 7
 
-labels <- c("Congo", "Afghanistan", "Sudan", "Myanmar", "Iraq", "Venezuela", "Russia", "Argentina", "Brazil", "Italy", "South Africa", "Cape Verde", "Bhutan", "Botswana", "Britian", "New Zealand", "Greece", "China", "India", "Rwanda", "Spain", "France", "United States", "Japan", "Norway", "Singapore", "Barbados", "Germany")
+labels <- c("Congo", "Afghanistan", "Sudan", "Myanmar", "Iraq", "Venezuela", "Russia", "Argentina", "Brazil", "Italy", "South Africa", "Cape Verde", "Bhutan", "Botswana", "Britain", "New Zealand", "Greece", "China", "India", "Rwanda", "Spain", "France", "United States", "Japan", "Norway", "Singapore", "Barbados", "Germany")
 
 p + geom_text(data = subset(ec, Country %in% labels), aes(label = Country), color = "black")
 ```
@@ -597,20 +606,15 @@ p + geom_text(data = subset(ec, Country %in% labels), aes(label = Country), colo
 
 Custom font can be used for the labels by providing the font name to argument `family` like so `geom_text(family="fontname")`. If you do not want to bother with fonts, just avoid the `family` argument in `geom_text` and skip this part.
 
-Using custom fonts can be tricky business. To use a font name, it must be installed on your system and it should be imported into the R environment. This can be done using the `extrafont` package. Try importing one of the fonts available on your system. Not all fonts work. `extrafont` prefers **.ttf** fonts. If a font doesn't work, try another.
+Using custom fonts can be tricky business. A convenient way to use fonts in plots is the `showtext` package. It can register fonts from Google Fonts or from a local font file, and then make them available to ggplot2 through the `family` argument.
 
 ```{r}
-#| eval: false
-
-library(extrafont)
-font_import(pattern = "Gidole", prompt = FALSE)
-# load fonts for pdf
-loadfonts()
-# list available fonts in R
-fonts()
+library(showtext)
+sysfonts::font_add_google(name = "Slabo 27px", family = "Slabo 27px")
+showtext_auto()
 ```
 
-The actual font used on the Economist graph is something close to [ITC Officina Sans](https://www.myfonts.com/collections/officina-sans-font-itc). Since this is not a free font, I am using a free font called [Gidole](https://gidole.github.io/).
+The actual font used on the Economist graph is something close to [ITC Officina Sans](https://www.myfonts.com/collections/officina-sans-font-itc). Since this is not a free font, I am using a free font called [Slabo 27px](https://fonts.google.com/specimen/Slabo+27px). After the font is registered with `showtext`, it can be used in ggplot2 by setting `family = "Slabo 27px"`.
 
 ```{r}
 #| fig-height: 5
@@ -618,13 +622,13 @@ The actual font used on the Economist graph is something close to [ITC Officina 
 
 p + geom_text(
   data = subset(ec, Country %in% labels), aes(label = Country),
-  color = "black", family = "Gidole"
+  color = "black", family = "Slabo 27px"
 )
 ```
 
 ### Label Overlap
 
-To avoid overlapping of labels, we can use a `ggplot2` extension package `ggrepel`. We can use function `geom_text_repel()` from the `ggrepel` package. `geom_text_repel()` has the same arguments/aesthetics as `geom_text` and a few more. Skip the `family=Gidole` part if you do not want to change the font.
+To avoid overlapping of labels, we can use a `ggplot2` extension package `ggrepel`. We can use function `geom_text_repel()` from the `ggrepel` package. `geom_text_repel()` has the same arguments/aesthetics as `geom_text` and a few more. Skip the `family="Slabo 27px"` part if you do not want to change the font.
 
 ```{r}
 #| fig-height: 5
@@ -634,7 +638,7 @@ library(ggrepel)
 p <- p + geom_text_repel(
   data = subset(ec, Country %in% labels), aes(label = Country),
   color = "black", box.padding = unit(1, "lines"), segment.size = 0.25,
-  size = 3, family = "Gidole"
+  size = 3, family = "Slabo 27px"
 )
 p
 ```
@@ -655,7 +659,7 @@ p <- p + scale_x_continuous(
 ) +
   scale_y_continuous(
     name = "Human Development Index, 2011 (1=best)",
-    breaks = seq(from = 0, to = 1, by = 0.1), limits = c(0.2, 1)
+    breaks = seq(from = 0.2, to = 1, by = 0.1), limits = c(0.2, 1)
   )
 p
 ```
@@ -665,14 +669,14 @@ p
 Now we want to change the color palette for the points and modify the legend text for the trendline.
 
 - Use `scale_color_manual()` to provide custom colors. These are the colors to use for the points: `"#23576E","#099FDB","#29B00E", "#208F84","#F55840","#924F3E"`. 
-- Use `scale_fill_manual` to change the trendline label since it's a fill scale. The legend entry for the trendline should read 'R^2=52%'.
+- Use `scale_fill_manual` to change the trendline label since it's a fill scale. Compute the model fit first, then use the resulting value to create the legend entry as `R²`.
 
 ```{r}
 #| fig-height: 5
 #| fig-width: 7
 
 p <- p + scale_color_manual(values = c("#23576E", "#099FDB", "#29B00E", "#208F84", "#F55840", "#924F3E")) +
-  scale_fill_manual(name = "trend", values = "red", labels = expression(paste(R^2, "=52%")))
+  scale_fill_manual(name = "trend", values = "red", labels = r_label)
 p
 ```
 
@@ -696,14 +700,14 @@ p
 
 ### Theme
 
-We want to move the legend to the top and as a single row. This can be done using `theme()` option `legend.position`. See `?theme`. `guides()` is used to set the number of rows to 1. We also set a custom font for all text elements using `base_family="Gidole"`. This can be skipped if a font change is not required.
+We want to move the legend to the top and as a single row. This can be done using `theme()` option `legend.position`. See `?theme`. `guides()` is used to set the number of rows to 1. We also set a custom font for all text elements using `base_family="Slabo 27px"`. This can be skipped if a font change is not required.
 
 ```{r}
 #| fig-height: 5
 #| fig-width: 7
 
 p <- p + guides(color = guide_legend(nrow = 1)) +
-  theme_bw(base_family = "Gidole") +
+  theme_bw(base_family = "Slabo 27px") +
   theme(legend.position = "top")
 p
 ```
@@ -750,7 +754,7 @@ The full script for this challenge is summarized here:
 #| eval: false
 
 # read data
-ec <- read.csv("assets/data_economist.csv", header = T)
+ec <- read.csv("assets/data_economist.csv", header = TRUE)
 # refactor
 ec$Region <- factor(ec$Region,
   levels = c(
@@ -766,16 +770,21 @@ ec$Region <- factor(ec$Region,
 )
 
 # labels
-labels <- c("Congo", "Afghanistan", "Sudan", "Myanmar", "Iraq", "Venezuela", "Russia", "Argentina", "Brazil", "Italy", "South Africa", "Cape Verde", "Bhutan", "Botswana", "Britian", "New Zealand", "Greece", "China", "India", "Rwanda", "Spain", "France", "United States", "Japan", "Norway", "Singapore", "Barbados", "Germany")
+labels <- c("Congo", "Afghanistan", "Sudan", "Myanmar", "Iraq", "Venezuela", "Russia", "Argentina", "Brazil", "Italy", "South Africa", "Cape Verde", "Bhutan", "Botswana", "Britain", "New Zealand", "Greece", "China", "India", "Rwanda", "Spain", "France", "United States", "Japan", "Norway", "Singapore", "Barbados", "Germany")
+
+# trendline label
+trend_model <- lm(HDI ~ poly(CPI, 2), data = ec)
+r_squared <- summary(trend_model)$r.squared
+r_label <- as.expression(bquote(R^2 == .(round(r_squared, 2))))
 
 # plotting
 p1 <- ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
-  geom_smooth(aes(fill = "red"), method = "lm", formula = y ~ poly(x, 2), se = F, color = "red", size = 0.6) +
+  geom_smooth(aes(fill = "red"), method = "lm", formula = y ~ poly(x, 2), se = FALSE, color = "red", linewidth = 0.6) +
   geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white") +
   geom_text_repel(
     data = subset(ec, Country %in% labels), aes(label = Country),
     color = "black", box.padding = unit(1, "lines"), segment.size = 0.25,
-    size = 3, family = "Gidole"
+    size = 3, family = "Slabo 27px"
   ) +
   scale_x_continuous(
     name = "Corruption Perceptions Index, 2011 (10=least corrupt)",
@@ -783,16 +792,16 @@ p1 <- ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
   ) +
   scale_y_continuous(
     name = "Human Development Index, 2011 (1=best)",
-    breaks = seq(from = 0, to = 1, by = 0.1), limits = c(0.2, 1)
+    breaks = seq(from = 0.2, to = 1, by = 0.1), limits = c(0.2, 1)
   ) +
   scale_color_manual(values = c("#23576E", "#099FDB", "#29B00E", "#208F84", "#F55840", "#924F3E")) +
-  scale_fill_manual(name = "trend", values = "red", labels = expression(paste(R^2, "=52%"))) +
+  scale_fill_manual(name = "trend", values = "red", labels = r_label) +
   labs(
     title = "Corruption and human development",
     caption = "Sources: Transparency International; UN Human Development Report"
   ) +
   guides(color = guide_legend(nrow = 1)) +
-  theme_bw(base_family = "Gidole") +
+  theme_bw(base_family = "Slabo 27px") +
   theme(
     legend.position = "top",
     panel.grid.minor = element_blank(),
@@ -811,7 +820,7 @@ p1
 
 ## WSJ Heatmap
 
-The aim of this challenge is to recreate the plot below originally published in [The Wall Street Journal](http://graphics.wsj.com/infectious-diseases-and-vaccines/). The plot is a heatmap showing the normalized number of cases of measles across 51 US states from 1928 to 2003. X-axis shows years and y-axis shows the names of states. The color of the tiles denote the number of measles cases per 100,000 people. Introduction of the measles vaccine is shown as the black line in 1963.
+The aim of this challenge is to recreate the plot below originally published in [The Wall Street Journal](http://graphics.wsj.com/infectious-diseases-and-vaccines/). The plot is a heatmap showing the normalized number of cases of measles across US states from 1928 to 2003. X-axis shows years and y-axis shows the names of states. The color of the tiles denote the number of measles cases per 100,000 people. Introduction of the measles vaccine is shown as the black line in 1963.
 
 ![](assets/wsj-heatmap.webp)
 
@@ -821,10 +830,10 @@ Download the data csv file.
 
 <a class="btn btn-secondary btn-sm" href="https://www.dropbox.com/s/19p8vku0i9np26b/data_wsj.csv?dl=1" role="button">{{< fa download >}} data_wsj.csv</a>
 
-Start by reading in the data. This .csv file has two lines of comments so we need to skip 2 lines while reading in the data. We also add `stringsAsFactors=F` to avoid the automatic conversion of character fields to factor type.
+Start by reading in the data. This .csv file has two lines of comments so we need to skip 2 lines while reading in the data.
 
 ```{r}
-me <- read.csv("assets/data_wsj.csv", header = T, stringsAsFactors = F, skip = 2)
+me <- read.csv("assets/data_wsj.csv", header = TRUE, skip = 2)
 head(me)
 ```
 
@@ -840,21 +849,21 @@ Looking at this dataset, there is going to be quite a bit of data clean-up and t
 - Replace all "-" with NAs
 - The number of cases across each state is a character and needs to be converted to numeric
 - Collapse (sum) week-level data to year.
-- Abbreviate state names
+- Modify state names
 
 ### Tidy Data
 
-Convert the wide format to long format using the function `gather()` from package `dplyr`.
+Convert the wide format to long format using the function `pivot_longer()` from package `tidyr`.
 
 ```{r}
-me1 <- me %>% gather(key = state, value = value, -YEAR, -WEEK)
+me1 <- me |> pivot_longer(cols = -c(YEAR, WEEK), names_to = "state", values_to = "value")
 head(me1)
 ```
 
 Now, replace all '-' with NA in the field value. We use the function `str_replace()` from R package `stringr`. Then convert the value field to numeric.
 
 ```{r}
-me2 <- me1 %>% mutate(
+me2 <- me1 |> mutate(
   value = str_replace(value, "^-$", NA_character_),
   value = as.numeric(value)
 )
@@ -896,14 +905,15 @@ The solution is to sum up all the cases for a state for all weeks within a year 
 ```{r}
 fun1 <- function(x) ifelse(all(is.na(x)), NA, sum(x, na.rm = TRUE))
 
-me3 <- me2 %>%
-  group_by(YEAR, state) %>%
-  summarise(total = fun1(value)) %>%
+me3 <- me2 |>
+  group_by(YEAR, state) |>
+  summarise(total = fun1(value)) |>
+  ungroup() |>
   mutate(
     state = str_replace_all(state, "[.]", " "),
     state = str_to_title(state)
-  )
-colnames(me3) <- tolower(colnames(me3))
+  ) |>
+  rename_with(tolower)
 head(me3)
 ```
 
@@ -932,7 +942,7 @@ Add borders around the tiles. We use `reorder(state,desc(state))` to reverse the
 #| fig-width: 9
 
 p <- ggplot(me3, aes(x = year, y = reorder(state, desc(state)), fill = total)) +
-  geom_tile(color = "white", size = 0.25)
+  geom_tile(color = "white", linewidth = 0.25)
 p
 ```
 
@@ -948,7 +958,7 @@ cols <- c("#e7f0fa", "#c9e2f6", "#95cbee", "#0099dc", "#4ab04a", "#ffd73e", "#ee
 
 p + scale_y_discrete(expand = c(0, 0)) +
   scale_x_continuous(expand = c(0, 0), breaks = seq(1930, 2010, by = 10)) +
-  scale_fill_gradientn(colors = cols, na.value = "grey95")
+  scale_fill_gradientn(colors = cols, na.value = "grey90")
 ```
 
 The fill scale can be further refined to resemble that of the original plot.
@@ -964,11 +974,12 @@ p <- p + scale_y_discrete(expand = c(0, 0)) +
   scale_fill_gradientn(
     colors = cols, na.value = "grey95",
     limits = c(0, 4000),
+    oob = scales::squish,
     values = c(0, 0.01, 0.02, 0.03, 0.09, 0.1, 0.15, 0.25, 0.4, 0.5, 1),
     labels = c("0k", "1k", "2k", "3k", "4k"),
     guide = guide_colourbar(
-      ticks = T, nbin = 50,
-      barheight = .5, label = T,
+      ticks = TRUE, nbin = 50,
+      barheight = .5, label = TRUE,
       barwidth = 10
     )
   )
@@ -1001,16 +1012,16 @@ p
 
 ### Annotation
 
-Add the annotation line and text to denote the introduction of the vaccine. The line is at the position 1963. Custom font 'Gidole' is used here. This can be skipped.
+Add the annotation line and text to denote the introduction of the vaccine. The line is at the position 1963. Custom font 'Slabo 27px' is used here. This can be skipped.
 
 ```{r}
 #| fig-height: 6
 #| fig-width: 9
 
-p <- p + geom_segment(x = 1963, xend = 1963, y = 0, yend = 51.5, size = .6, alpha = 0.7) +
+p <- p + geom_segment(x = 1963, xend = 1963, y = 0, yend = 51.5, linewidth = .6, alpha = 0.7) +
   annotate("text",
     label = "Vaccine introduced", x = 1963, y = 53,
-    vjust = 1, hjust = 0, size = I(3), family = "Gidole"
+    vjust = 1, hjust = 0, size = I(3), family = "Slabo 27px"
   )
 p
 ```
@@ -1024,6 +1035,7 @@ Here we change the following aspects of the plot using `theme`:
 - Position the legend to bottom center.
 - Set legend font to color grey20.
 - Adjust size and justification of x and y axes text
+- Align title to the left of the plot rather than panel area
 - Adjust title justification
 - Remove all gridlines
 
@@ -1031,7 +1043,7 @@ Here we change the following aspects of the plot using `theme`:
 #| fig-height: 6
 #| fig-width: 9
 
-p + theme_minimal(base_family = "Gidole") +
+p + theme_minimal(base_family = "Slabo 27px") +
   theme(
     legend.position = "bottom",
     legend.justification = "center",
@@ -1040,7 +1052,8 @@ p + theme_minimal(base_family = "Gidole") +
     axis.text.y = element_text(size = 6, hjust = 1, vjust = 0.5),
     axis.text.x = element_text(size = 8),
     axis.ticks.y = element_blank(),
-    title = element_text(hjust = -.07, vjust = 1),
+    plot.title.position = "plot",
+    plot.title = element_text(hjust = 0, vjust = 1),
     panel.grid = element_blank()
   )
 ```
@@ -1059,50 +1072,50 @@ fun1 <- function(x) ifelse(all(is.na(x)), NA, sum(x, na.rm = TRUE))
 
 # read data
 me3 <- read.csv("assets/data_wsj.csv",
-  header = T,
-  stringsAsFactors = F, skip = 2
-) %>%
-  gather(key = state, value = value, -YEAR, -WEEK) %>%
+  header = TRUE,
+  skip = 2
+) |>
+  pivot_longer(cols = -c(YEAR, WEEK), names_to = "state", values_to = "value") |>
   mutate(
     value = str_replace(value, "^-$", NA_character_),
     value = as.numeric(value)
-  ) %>%
-  group_by(YEAR, state) %>%
-  summarise(total = fun1(value)) %>%
+  ) |>
+  group_by(YEAR, state) |>
+  summarise(total = fun1(value)) |>
   mutate(
     state = str_replace_all(state, "[.]", " "),
     state = str_to_title(state)
-  )
-
-colnames(me3) <- tolower(colnames(me3))
+  ) |>
+  rename_with(tolower)
 
 # custom colors
 cols <- c("#e7f0fa", "#c9e2f6", "#95cbee", "#0099dc", "#4ab04a", "#ffd73e", "#eec73a", "#e29421", "#f05336", "#ce472e")
 
 # plotting
-p <- ggplot(me3, aes(x = year, y = reorder(state, desc(state)), fill = total)) +
-  geom_tile(color = "white", size = 0.25) +
+ggplot(me3, aes(x = year, y = reorder(state, desc(state)), fill = total)) +
+  geom_tile(color = "white", linewidth = 0.25) +
   scale_y_discrete(expand = c(0, 0)) +
   scale_x_continuous(expand = c(0, 0), breaks = seq(1930, 2010, by = 10)) +
   scale_fill_gradientn(
     colors = cols, na.value = "grey95",
     limits = c(0, 4000),
+    oob = scales::squish,
     values = c(0, 0.01, 0.02, 0.03, 0.09, 0.1, 0.15, 0.25, 0.4, 0.5, 1),
     labels = c("0k", "1k", "2k", "3k", "4k"),
     guide = guide_colourbar(
-      ticks = T, nbin = 50,
-      barheight = .5, label = T,
+      ticks = TRUE, nbin = 50,
+      barheight = .5, label = TRUE,
       barwidth = 10
     )
   ) +
   labs(x = "", y = "", fill = "", title = "Measles") +
   coord_fixed() +
-  geom_segment(x = 1963, xend = 1963, y = 0, yend = 51.5, size = .9) +
+  geom_segment(x = 1963, xend = 1963, y = 0, yend = 51.5, linewidth = .9) +
   annotate("text",
     label = "Vaccine introduced", x = 1963, y = 53,
-    vjust = 1, hjust = 0, size = I(3), family = "Gidole"
+    vjust = 1, hjust = 0, size = I(3), family = "Slabo 27px"
   ) +
-  theme_minimal(base_family = "Gidole") +
+  theme_minimal(base_family = "Slabo 27px") +
   theme(
     legend.position = c(.5, -.13),
     legend.direction = "horizontal",
@@ -1111,8 +1124,8 @@ p <- ggplot(me3, aes(x = year, y = reorder(state, desc(state)), fill = total)) +
     axis.text.y = element_text(size = 6, hjust = 1, vjust = 0.5),
     axis.text.x = element_text(size = 8),
     axis.ticks.y = element_blank(),
-    panel.grid = element_blank(),
-    title = element_text(hjust = -.07, vjust = 1),
+    plot.title.position = "plot",
+    plot.title = element_text(hjust = 0, vjust = 1),
     panel.grid = element_blank()
   )
 

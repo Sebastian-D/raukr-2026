@@ -585,7 +585,7 @@ Sys.Date()
 
 ## Accordions
 
-Accordion support is provided through the [accordion](https://github.com/royfrancis/accordion) extension.
+Accordion support is provided through the [accordion](https://github.com/royfrancis/quarto-accordion) extension.
 
 Accordion contents can be defined in the YAML header as shown below.
 
@@ -1208,7 +1208,7 @@ Plots using base R.
 
 ## Static plots • `ggplot2`
 
-Plotting using [`ggplot2`](http://ggplot2.org/).
+Plotting using [`ggplot2`](https://ggplot2.tidyverse.org/).
 
 ```{r}
 #| fig-height: 6
