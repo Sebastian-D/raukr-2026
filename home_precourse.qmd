@@ -1,0 +1,188 @@
+---
+title: "Precourse"
+pagetitle: "RaukR 2026 • Precourse"
+description: "Preparation and system set-up for the workshop"
+date: ""
+sidebar: false
+format: html
+---
+
+## Location
+
+<iframe width="100%" height="500px" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" src="https://use.mazemap.com/embed.html#v=1&amp;campusid=100&amp;zlevel=2&amp;center=18.288745,57.639640&amp;zoom=19.8&amp;sharepoitype=poi&amp;sharepoi=293352&amp;utm_medium=iframe" allow="geolocation" title="Campus Gotland"></iframe>
+
+**Campus Gotland**  
+Uppsala University  
+Cramérgatan 3  
+621 57 Visby  
+Gotland, Sweden  
+
+We will use classrooms B25 and B27 on Floor 2 (on map) throughout the workshop. We may use other rooms for Online sessions. Lunches and coffee/tea will be served in the Cafe next to it on the ground floor.
+
+::: {.callout-tip}
+If you have a door access card for Uppsala university, take it with you.
+:::
+
+## Computer
+
+You can use any system you like, but we recommend using a Linux or Mac system. It's good to have about 20GB of free space on your system. If you are using Windows, you will likely need WSL2 (Windows Subsystem for Linux). This will allow you to run a Linux environment on your Windows machine.
+
+::: {.callout-warning}
+Make sure you have administrative rights on your system. You will need to install software and packages. Make sure you set-up Eduroam for wifi at your home institution before you leave.
+:::
+
+## Software
+
+You will need the following list of software tools and a list of R packages for the Hands-on practical labs.
+
+- R 4.5
+- IDE (Latest RStudio, Positron or VS Code)
+- Quarto 1.8.25 or newer
+- Slack (https://raukr.slack.com/) *Invitation will be sent to your email*
+- Git
+- Browser (Chrome, Firefox, Safari etc)
+- Conda (Optional, Miniforge recommended)
+- Docker (Optional)
+
+It's better to install R and install necessary packages in an isolated environment for the workshop rather than installing directly onto the system. That way, it's also convenient to remove everything after the workshop. You can use a [Conda](https://github.com/conda-forge/miniforge) environment, [pixi](https://pixi.prefix.dev/latest/) environment or a [docker](https://www.docker.com/) container.
+
+### Conda
+
+Install [Miniforge](https://github.com/conda-forge/miniforge). Test that it works and then create a new environment and activate it.
+
+```{sh}
+#| eval: false
+#| filename: Terminal
+conda create -n raukr -c conda-forge -c bioconda r-base=4.5 r-tidyverse r-essentials r-svglite r-ragg r-systemfonts quarto freetype libpng libxml2 pkg-config zlib xz bioconda::htslib gdal proj
+conda activate raukr
+```
+
+To install packages, see installation instructions below. If you are using the docker container, you don't need Conda.
+
+### Pixi
+
+Install [Pixi](https://pixi.prefix.dev/latest/installation/). Test that it works and then create a new environment and activate it.
+
+```{sh}
+#| eval: false
+#| filename: Terminal
+pixi init --channel conda-forge --channel bioconda raukr
+cd raukr
+pixi add r-base=4.5 r-tidyverse r-essentials r-svglite r-ragg r-systemfonts quarto freetype libpng libxml2 pkg-config zlib xz htslib gdal proj
+pixi shell
+```
+
+## R packages
+
+You can install R packages for each lab as you go. Alternatively, you can save some time during the labs by setting up the environment and installing the R packages in advance. You can use either use renv or manually install.
+
+### Renv
+
+Create a work directory and download the lockfile into it.
+
+<a class="btn btn-secondary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2026/refs/heads/main/renv.lock" role="button">{{< fa download >}} renv.lock</a>
+
+Then, restore packages from the lockfile.
+
+```{r}
+#| echo: true
+#| eval: false
+install.packages(c("renv", "pak", "gitcreds"))
+options(renv.config.pak.enabled = TRUE)
+renv::restore("renv.lock")
+```
+
+Based on missing system libraries, you may need to install additional system dependencies and re-run installation.
+
+### Manual
+
+Here is the list of R packages you will need to install:
+
+```{r}
+#| echo: false
+#| results: hide
+
+library(renv)
+library(renvtools)
+library(dplyr)
+
+# discover packages used in materials
+pkgs_found <- renv::dependencies() |>
+  distinct(Package) |>
+  arrange(Package)
+# pkgs used for site and demo
+pkgs_site <- c("googlesheets4", "toastui", "crosstalk", "dygraphs", "formattable", "highcharter", "networkD3", "reactable", "leaflet", "htmlTable", "renvtools")
+# discard pkgs used for site and demo
+pkgs_found <- pkgs_found |>
+  filter(!Package %in% pkgs_site)
+
+# get pkg list from renv env
+pkgs_renv <- read_lock("renv.lock", format = "tibble")
+# get intersect
+pkgs_shared <- sort(intersect(pkgs_found$Package, pkgs_renv$Package))
+p <- pkgs_renv %>% filter(Package %in% pkgs_shared)
+
+p |>
+  group_by(Source, Repository) |>
+  tally()
+
+# split pkgs into rpsm, bioc and github
+p_rspm <- p |>
+  filter(Repository %in% c("CRAN", "RSPM"))
+p_bioc <- p |>
+  filter(Source == "Bioconductor")
+p_github <- p |>
+  filter(Source == "GitHub")
+```
+
+Install CRAN packages if they are not already installed.
+
+```{r}
+#| echo: false
+#| class-output: sourceCode r
+cat(paste0("pkgs_cran <- c('", paste0(sort(p_rspm$Package), collapse = "', '"), "')\n\n"))
+cat("for( pkg in pkgs_cran) {\n")
+cat(paste0("  if (!requireNamespace(pkg, quietly = TRUE)) {\n    install.packages(pkg, repos = 'https://packagemanager.rstudio.com/all/latest', verbose = TRUE)\n  }\n"))
+cat("}\n")
+```
+
+Install Bioconductor packages.
+
+```{r}
+#| echo: false
+#| class-output: sourceCode r
+cat(paste0("BiocManager::install(c(", paste0("'", paste0(sort(p_bioc$Package), collapse = "','"), "'"), "), update = TRUE, ask = FALSE)"))
+```
+
+Install GitHub packages.
+
+```{r}
+#| echo: false
+#| class-output: sourceCode r
+
+if (nrow(p_github) > 0) {
+  for (i in 1:nrow(p_github)) {
+    pkg <- p_github$Package[i]
+    repo <- paste(p_github$RemoteUsername[i], p_github$RemoteRepo[i], sep = "/")
+    ref <- p_github$RemoteRef[i]
+    host <- p_github$RemoteHost[i]
+    cat(paste0("remotes::install_github(repo = '", repo, "', ref = '", ref, "', host = '", host, "')\n"))
+  }
+}
+```
+
+## Course materials
+
+Course materials will be made available on <https://nbisweden.github.io/raukr-2026/home_contents.html> once the workshop begins. You can copy-paste code from the website to your R session. 
+
+Alternatively, you can also download/clone the materials from GitHub and run them locally. To do this, go to <https://github.com/NBISweden/raukr-2026> and click on the green **Code** button. You can either download the materials as a zip file (**Download ZIP**) or clone the repository using git. If you are using git, run the following command in your terminal:
+
+```{sh}
+#| eval: false
+#| filename: Terminal
+git clone https://github.com/NBISweden/raukr-2026.git
+```
+
+This will create a folder called `raukr-2026` in your current working directory. You can then open the materials in RStudio or any other IDE of your choice. Or run a docker container as previous described.
+
+The course materials on GitHub and the website will persist after the workshop. You can use them as a reference in the future.
