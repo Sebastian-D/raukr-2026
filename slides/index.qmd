@@ -9,6 +9,7 @@ listing:
   contents:
     - "*.qmd"
     - "!welcome/*.qmd"
+    - "!quarto/sample/*.qmd"
 date: ""
 toc: false
 sidebar: false
