@@ -2,6 +2,7 @@
 title: "data.table"
 author: "Markus Mayrhofer"
 description: "Fast, memory-efficient tabular data wrangling in R, compared with base R and the tidyverse."
+image: "assets/featured.webp"
 format: revealjs
 css: assets/custom.css
 execute:
@@ -65,7 +66,10 @@ variants  <- dat$variants
 genotypes <- dat$genotypes
 ```
 
-## This session {.smaller}
+## This session
+
+::: {.columns}
+::: {.column width="70%"}
 
 `data.table` is an R package for working with **rectangular / tabular data**.
 
@@ -76,17 +80,27 @@ genotypes <- dat$genotypes
 4. Simulate large biological data where the differences are visible.
 :::
 
-. . .
+::: {.fragment}
 
 Work through the companion lab, which contains the executable examples,
 benchmarks, and exercises.
+
+:::
+
+:::
+::: {.column width="30%"}
+
+![](assets/datatable.webp)
+
+:::
+:::
 
 ::: {.aside}
 `data.table` may run before the tidyverse session, but the tidyverse code is
 shown as a *reference* since many of you will already be familiar with it.
 :::
 
-## Where data.table comes from {.smaller}
+## Where data.table comes from
 
 - Created by **Matt Dowle**; version 1.0 on CRAN in **April 2006**. Long co-developed with **Arun Srinivasan**, now maintained by a wider team.
 - Born from a practical problem: base R's `data.frame` **copies** data on many operations, which is slow and memory-hungry on large tables.
@@ -97,7 +111,7 @@ shown as a *reference* since many of you will already be familiar with it.
 
 `data.table` has a terse `DT[i, j, by]` syntax, which is what we will demonstrate.
 
-## A table is just rows, columns, groups, joins {.smaller}
+## A table is just rows, columns, groups, joins
 
 Rows are observations, columns are variables, a cell is one value. Almost every
 data-wrangling question is one of four actions:
@@ -111,7 +125,7 @@ data-wrangling question is one of four actions:
 
 Today we express each of these three ways and compare them.
 
-## A bioinformatics data example. {.smaller}
+## A bioinformatics data example.
 
 Genetic data produces **large tables** frequently. We'll simulate a data set.
 
@@ -126,20 +140,32 @@ Genetic data produces **large tables** frequently. We'll simulate a data set.
 
 ## Three linked tables {.smaller .scrollable}
 
+::: {.columns}
+::: {.column width="60%"}
+
 - **samples**: one row per sample (population, sex, batch, case/control)
 - **variants**: one row per variant (chrom, position, gene, consequence, frequency)
 - **genotypes**: one row per sample x variant (genotype, read depth, quality) -- the **tall** table
 
 ```r
-dat       <- simulate_genotyping(n_samples = 500, n_variants = 4000)
-samples   <- dat$samples
-variants  <- dat$variants
-genotypes <- dat$genotypes      # 500 x 4000 = 2,000,000 rows
+dat <- simulate_genotyping(
+  n_samples = 500, 
+  n_variants = 4000
+)
+samples <- dat$samples
+variants <- dat$variants
+
+# 500 x 4000 = 2,000,000 rows
+genotypes <- dat$genotypes  
 ```
 
+:::
+::: {.column width="40%"}
 ::: {.panel-tabset}
 
 ### samples
+
+::: {.small .scrollable}
 
 ```{r}
 #| eval: true
@@ -147,7 +173,11 @@ genotypes <- dat$genotypes      # 500 x 4000 = 2,000,000 rows
 head(samples, 50)
 ```
 
+:::
+
 ### variants
+
+::: {.small .scrollable}
 
 ```{r}
 #| eval: true
@@ -155,7 +185,11 @@ head(samples, 50)
 head(variants, 50)
 ```
 
+:::
+
 ### genotypes
+
+::: {.small .scrollable}
 
 ```{r}
 #| eval: true
@@ -165,14 +199,15 @@ head(genotypes, 50)
 
 :::
 
+:::
+:::
+:::
+
 ::: {.aside}
 The generator is provided with the lab: reproducible, no downloads.
 :::
 
-
-
-
-## A table is just rows, columns, groups, joins {.smaller}
+## A table is just rows, columns, groups, joins
 
 Rows are observations, columns are variables, a cell is one value. Almost every
 data-wrangling question is one of four actions:
@@ -209,7 +244,7 @@ No grouping? Leave `by` out. No row filter? Leave `i` empty but keep the comma: 
 
 `.N` = rows in the current group. `.()` = shorthand for `list()`.
 
-## Filter rows {.smaller}
+## Filter rows
 
 **Task:** keep called homozygous-alt rows with adequate depth.
 
@@ -229,7 +264,7 @@ Under the hood: all three build a TRUE/FALSE vector over the rows and keep the
 you pay memory for the rows you keep. You typically assign the returned table a name.
 
 
-## Select columns {.smaller}
+## Select columns
 
 **Task:** keep only a few of the variant columns.
 
@@ -244,7 +279,7 @@ Under the hood: all three return a **new** table object -- but data vectors
 are not duplicated until necessary.
 
 
-## Create columns {.smaller}
+## Create columns
 
 ```r
 # add a column
@@ -270,7 +305,7 @@ variants[, is_rare := maf < 0.01]
 `:=` needs no assignment and changes the original in place. Convenient, but every
 other reference to that table sees the change. Use `copy(variants)` to avoid.
 
-## Grouped summaries {.smaller}
+## Grouped summaries
 
 **Task:** per sample, mean read depth among called genotypes.
 
@@ -290,7 +325,7 @@ genotypes[genotype >= 0, .(mean_depth = mean(read_depth)), by = sample_id]
 Split by group, compute within each group, combine. `data.table` does this
 with low overhead, especially when the data are already keyed.
 
-## Joins: add columns from another table {.smaller}
+## Joins: add columns from another table
 
 ```r
 # base R
@@ -307,7 +342,7 @@ variants[genotypes, on = "variant_id",
 ```
 
 
-## Keys: sort once, look up fast {.smaller}
+## Keys: sort once, look up fast
 
 A **key** is one or more columns a `data.table` is physically **sorted by**.
 
@@ -330,7 +365,7 @@ A key speeds up **lookups**, **repeated joins**, and **grouping** on the key
 column. You do not always need one (`on =` joins ad-hoc), but set a key when you
 will hit the same column many times, so the sort is paid once.
 
-## Benchmarks: time *and* memory {.smaller}
+## Benchmarks: time *and* memory
 
 `bench::mark()` records **elapsed time**, **memory allocated**, and **garbage collections**.
 
@@ -347,7 +382,7 @@ bench::mark(
 - **Time** matters because slow code interrupts your work.
 - **Memory** matters because large tables can *fail* when R runs out of RAM.
 
-## What to expect {.smaller}
+## What to expect
 
 ::: {.incremental}
 - On **a few thousand rows**, all three are fast enough: pick your preference.
@@ -372,6 +407,7 @@ bench::mark(
 ## {background-image="/assets/images/network.svg"}
 
 ::: {.v-center .center}
+::: {}
 
 [Thank you!]{.largest}
 
@@ -379,4 +415,5 @@ bench::mark(
 
 [{{< meta current_year >}} • [SciLifeLab](https://www.scilifelab.se/) • [NBIS](https://nbis.se/) • [RaukR](https://nbisweden.github.io/raukr-2026)]{.smaller}
 
+:::
 :::

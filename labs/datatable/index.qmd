@@ -2,6 +2,7 @@
 title: "data.table"
 author: "Markus Mayrhofer"
 description: "Fast, memory-efficient tabular data wrangling in R, compared with base R and the tidyverse."
+image: "assets/featured.webp"
 format: html
 ---
 
