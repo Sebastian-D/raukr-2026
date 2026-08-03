@@ -15,7 +15,6 @@ project:
     - "!labs/packages/*.qmd"
     - "!slides/scripting/*.qmd"
     - "!labs/scripting/*.qmd"
-    - "!slides/tidyverse/*.qmd"
     - "!labs/tidyverse/*.qmd"
     - "!slides/vectorization/*.qmd"
     - "!labs/vectorization/*.qmd"
@@ -42,13 +41,13 @@ website:
       - text: "Registration"
         href: "home_registration.html"
         aria-label: "Registration"
-      - text: Gallery
+      - text: "Gallery"
         href: "home_gallery.html"
         aria-label: "Gallery"
-      - text: FAQ
+      - text: "FAQ"
         href: "home_faq.html"
         aria-label: "FAQ"
-      - text: About
+      - text: "About"
         href: "home_about.html"
         aria-label: "About"
       - icon: github
