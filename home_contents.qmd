@@ -30,7 +30,7 @@ execute:
 |R Packages                             |Jenny Bryan (Posit)           ||
 |[13-Aug-2026 (Thu)]{.badge .badge-secondary}                          |||
 |Code Optimization                      |Marcin Kierczak               |[Slides](slides/debugging/index.html), [Lab](labs/debugging/index.html)|
-|Working with data.table                |Markus Mayrhofer              ||
+|data.table                             |Markus Mayrhofer              |[Slides](slides/datatable/index.html), [Lab](labs/datatable/index.html)|
 |Neural networks in R                   |Marcin Kierczak               ||
 |R & AI                                 |Sebastian DiLorenzo           |[Slides](slides/ai/index.html)|
 |[14-Aug-2026 (Fri)]{.badge .badge-secondary}                          |||
