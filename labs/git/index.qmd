@@ -452,6 +452,16 @@ This time merging the two diverged lines of work produced a real **merge
 commit**, you can see the two branches joining back together.
 
 
+# Additional reading and exercises
+
+Want more? There's tons of git resources out there. Below are a few of them with topics that might come in handy:
+
+[How to undo things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)  
+[Tagging your work](https://git-scm.com/book/en/v2/Git-Basics-Tagging)  
+[Deep dive into branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)  
+
+
+
 # Sharing your work: remotes and GitHub
 
 Everything so far has been local. A **remote** is a copy of your repo somewhere

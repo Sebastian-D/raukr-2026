@@ -69,17 +69,14 @@ Let git try to merge it
 
 <br>
 
-Common confusion
-
 :::: {.columns}
 
-::: {.column width="40%"}
+::: {.column width="60%"}
 **Git:**
 
 * Version control software
 * Works locally on your computer
 
-<br>
 
 **GitHub:**
 
@@ -87,9 +84,14 @@ Common confusion
 * Collaboration platform
 :::
 
-::: {.column width="60%"}
+::: {.column width="40%"}
 
 ![](assets/Git-Logo.png){width=40%}
+
+::: {.div style="margin-bottom:200px"}
+:::
+
+
 
 ![](assets/github-logo.png){width=60%}
 :::
@@ -140,8 +142,6 @@ git status
 
 ::::
 
-<br>
-
 :::{.fragment}
 ::: {.callout-note}
 Everything git knows lives inside `.git/`. Delete that folder and you have plain files again; the rest of your project is untouched.
@@ -169,7 +169,15 @@ Everything git knows lives inside `.git/`. Delete that folder and you have plain
 When you're confused, run `git status`. It almost always tells you the next move.
 :::
 
+## Three commands you'll use constantly
 
+<br>
+![](assets/git_status.png){width=70%}
+
+
+# Example
+
+{{< video https://youtu.be/hVKpdqCcvWw >}}
 
 ## What not to track through git
 
@@ -189,32 +197,26 @@ When you're confused, run `git status`. It almost always tells you the next move
 
 <br>
 
-List files or file patterns that should not be tracked in a file called `.gitignore` at the repo root:
+List file patterns that should not be tracked in a file called `.gitignore`:
 
 ```
 # R session junk
 .Rhistory
-.RData
 .Rproj.user/
 
 # Rendered output
 *_files/
-*.html
 
 # Data and secrets — keep these out of git!
 data/*.csv
-.Renviron
 ```
 
-<br>
 
 :::{.fragment}
 ::: {.callout-important}
 `.gitignore` only stops git from tracking files it isn't *already* tracking. Once committed, a file keeps being tracked until you explicitly remove it.
 :::
 :::
-
-# Try it yourself! 
 
 # Working on parallel lines: branches
 
@@ -344,6 +346,7 @@ git already works perfectly well on your own machine. So why put anything online
 * **Sharing**: send a collaborator a link instead of zipping and emailing folders
 * **Collaboration**: several people work on the same project without emailing versions back and forth
 * **Reproducibility**: "code available at github.com/..." is now standard in papers; reviewers and readers can see exactly what you did
+* **DOI**: You can get a citable DOI for a release (via Zenodo)
 * **It's free**: public repositories cost nothing, and you get issue tracking, a project website, etc.
 :::
 
@@ -412,14 +415,15 @@ Bring others' commits *down* to your laptop
 :::{.fragment}
 This is the same pointer model as before, just across two machines: pushing moves GitHub's branch pointer forward to match yours; pulling moves yours forward to match GitHub's.
 
-Picture needed
 :::
 
+## Syncing with Github
+
+![](assets/github-sync.png){width=100%}
+
+
+
 ## Nothing leaves your computer until you push
-
-<br>
-
-A common surprise for newcomers: **committing and sharing are separate steps.**
 
 <br>
 
@@ -430,11 +434,6 @@ A common surprise for newcomers: **committing and sharing are separate steps.**
 * Only then can anyone else see them
 :::
 
-<br>
-
-:::{.fragment}
-So you can commit freely all day, tidy things up, and share only when you're ready. Committing is *not* publishing.
-:::
 
 ## A typical day with both
 
@@ -457,49 +456,78 @@ git is for the work; GitHub is for sharing the work. A normal session uses both:
 Steps 2 are pure git, on your own machine. Steps 1, 3 and 4 are where GitHub comes in.
 :::
 
-## Why this matters for your research
 
-<br>
+## Create a GitHub repository
 
-For a research project, the payoff is concrete:
-
-<br>
-
-:::{.incremental}
-* Your supervisor or collaborators can read — and contribute to — your analysis code directly
-* A paper can point to the *exact* version of the code that produced its results
-* You can get a citable **DOI** for a release (via Zenodo), so your code is part of the scientific record
-* Months later, "future you" can see what you did and why
-:::
-
-<br>
+::: {.incremental}
+* Create a GitHub account
+* Create a new *empty* repository on GitHub
 
 :::{.fragment}
-::: {.callout-tip}
-This is the "work reproducibly *and* together" part — git gives you the history, GitHub makes it shareable.
+
+![](assets/github-new-repo.png){width=70%}
 :::
 :::
+
+## Connect your local repo to GitHub
+
+<br>
+
+By convention, the main remote is called origin.
+
+```bash
+git remote add origin https://github.com/USERNAME/REPOSITORY.git
+```
+
+Check that it worked:
+
+```bash
+git remote -v
+```
+
+<br>
+
+![](assets/git-remote.png){width=100%}
 
 ## Authenticating with GitHub
 
 <br>
 
-GitHub stopped accepting passwords for git in 2021. Two modern options:
+GitHub no longer accepts your account password for Git operations over HTTPS.
 
-<br>
+<br> 
 
-:::{.incremental}
-* **HTTPS + Personal Access Token (PAT)** — easiest to set up; in R, `usethis::create_github_token()` walks you through it
-* **SSH keys** — set up once, no tokens to paste afterwards
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**HTTPS
+https://github.com/...**
+
+Authenticate using a Personal Access Token
+
+*Good default for beginners*
 :::
 
-<br>
+::: {.column width="50%"}
+
+**SSH
+git@github.com:...**
+
+Authenticate using a private key on your computer
+The matching public key on GitHub
+
+*Convenient after the initial setup*
+:::
+
+::::
 
 :::{.fragment}
-::: {.callout-tip}
-From R: `usethis::gh_token_help()` and `usethis::git_sitrep()` diagnose almost every "it won't let me push" problem.
+::: {.callout-note}
+Your GitHub password is still used when signing in to the GitHub website. It just isn't used by git push over HTTPS.
 :::
 :::
+
 
 
 # Git without the command line: Positron
@@ -532,8 +560,6 @@ The GUI is just a convenient front-end. Knowing the commands means you're never 
 
 ::::
 
-# Try it out yourself! Do the same commit in Positron *and* on the command line
-
 # git the R way: usethis
 
 ## Let usethis do the setup
@@ -556,6 +582,83 @@ usethis::git_sitrep()       # "situation report": diagnose your setup
 :::{.fragment}
 These wrap the same git operations — handy, but worth knowing what they do underneath.
 :::
+
+## Forks
+
+<br>
+
+Your own GitHub repository, but copied from someone else's.
+
+When you don't have permission to push to the original repository
+
+<br>
+
+                 Original repository
+                  (someone else's)
+                        │
+                     Fork
+                        ▼
+                  Your repository
+
+<br>
+
+:::{.incremental}
+
+* A fork is a complete copy of another GitHub repository
+* You own the fork and have full write access
+* The original repository is unchanged
+* You can clone your fork and work as usual
+<br>
+
+:::
+
+## Pull requests
+
+A Pull Request (PR) is a request to merge changes from one branch into another
+
+<br>
+
+  Your branch (or fork)
+          │
+          ▼
+    Open Pull Request
+          │
+          ▼
+  Review • Discuss • Test
+          │
+          ▼
+        Merge
+
+<br>
+
+:::{.incremental}
+
+* Compare your changes with the target branch
+* Review the code before it is merged
+* Merge once everyone is happy
+
+:::
+
+::: {.fragment}
+A Pull Request doesn't change anything by itself, it just asks someone to review and merge your changes.
+:::
+
+## All terminology
+
+<br>
+
+
+**git**: local version control  
+**Github**: hosting and collaboration platform for Git repositories  
+
+**add**: stage a file for commit  
+**commit**: commit the staged changes to the local repository  
+**push**: send your local commits to the remote repository  
+**pull**: bring commits from the remote repository to your local repository  
+
+**Branch**: "copy" where you can test out new ideas  
+**Fork**: your own copy of someone else's repository  
+**Pull Request**: request to merge your changes into a branch  
 
 ## Where to go next
 
