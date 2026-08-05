@@ -1,0 +1,419 @@
+---
+title: "data.table"
+author: "Markus Mayrhofer"
+description: "Fast, memory-efficient tabular data wrangling in R, compared with base R and the tidyverse."
+image: "assets/featured.webp"
+format: revealjs
+css: assets/custom.css
+execute:
+  echo: true
+  eval: false
+---
+
+## Data {visibility="hidden"}
+
+```{r}
+#| label: slide-data
+#| eval: true
+#| echo: false
+#| message: false
+library(data.table)
+
+simulate_genotyping <- function(n_samples = 500, n_variants = 4000, seed = 42) {
+  set.seed(seed)
+  pops <- c("AFR", "AMR", "EAS", "EUR", "SAS")
+  samples <- data.table(
+    sample_id  = sprintf("S%05d", seq_len(n_samples)),
+    population = sample(pops, n_samples, replace = TRUE,
+                        prob = c(0.22, 0.14, 0.20, 0.30, 0.14)),
+    sex        = sample(c("M", "F"), n_samples, replace = TRUE),
+    batch      = sample(sprintf("batch%02d", 1:8), n_samples, replace = TRUE),
+    phenotype  = rbinom(n_samples, 1, 0.35)
+  )
+  chroms <- c(1:22, "X")
+  conseq <- c("synonymous", "missense", "stop_gained", "splice_region", "intron", "UTR")
+  variants <- data.table(
+    variant_id  = sprintf("rs%07d", seq_len(n_variants)),
+    chrom       = sample(chroms, n_variants, replace = TRUE),
+    pos         = sample(1e6:2.5e8, n_variants, replace = TRUE),
+    ref         = sample(c("A", "C", "G", "T"), n_variants, replace = TRUE),
+    alt         = sample(c("A", "C", "G", "T"), n_variants, replace = TRUE),
+    gene        = sprintf("GENE%04d", sample(1:1500, n_variants, replace = TRUE)),
+    consequence = sample(conseq, n_variants, replace = TRUE,
+                         prob = c(0.30, 0.25, 0.03, 0.07, 0.25, 0.10)),
+    maf         = round(rbeta(n_variants, 0.6, 6), 4)
+  )
+  flip <- variants$alt == variants$ref
+  variants[flip, alt := fifelse(ref == "A", "G", "A")]
+  geno <- CJ(sample_id = samples$sample_id, variant_id = variants$variant_id)
+  geno[variants, maf := i.maf, on = "variant_id"]
+  n <- nrow(geno)
+  p <- geno$maf
+  u <- runif(n)
+  geno[, genotype := fifelse(u < (1 - p)^2, 0L,
+                       fifelse(u < (1 - p)^2 + 2 * p * (1 - p), 1L, 2L))]
+  geno[runif(n) < 0.02, genotype := -1L]
+  geno[, read_depth       := rpois(n, lambda = 30)]
+  geno[, genotype_quality := pmin(99L, rpois(n, lambda = 45))]
+  geno[, maf := NULL]
+  setcolorder(geno, c("sample_id", "variant_id", "genotype", "read_depth", "genotype_quality"))
+  list(genotypes = geno[], variants = variants[], samples = samples[])
+}
+
+dat       <- simulate_genotyping(n_samples = 500, n_variants = 4000, seed = 42)
+samples   <- dat$samples
+variants  <- dat$variants
+genotypes <- dat$genotypes
+```
+
+## This session
+
+::: {.columns}
+::: {.column width="70%"}
+
+`data.table` is an R package for working with **rectangular / tabular data**.
+
+::: {.incremental}
+1. Demonstrate the core table operations: **choose rows, choose columns, add columns, group, summarise, join**.
+2. Compare the **same task** in three styles: **base R**, **tidyverse**, and **data.table**.
+3. See what happens under the hood: **copies, memory, indexing, keys**.
+4. Simulate large biological data where the differences are visible.
+:::
+
+::: {.fragment}
+
+Work through the companion lab, which contains the executable examples,
+benchmarks, and exercises.
+
+:::
+
+:::
+::: {.column width="30%"}
+
+![](assets/datatable.webp)
+
+:::
+:::
+
+::: {.aside}
+`data.table` may run before the tidyverse session, but the tidyverse code is
+shown as a *reference* since many of you will already be familiar with it.
+:::
+
+## Where data.table comes from
+
+- Created by **Matt Dowle**; version 1.0 on CRAN in **April 2006**. Long co-developed with **Arun Srinivasan**, now maintained by a wider team.
+- Born from a practical problem: base R's `data.frame` **copies** data on many operations, which is slow and memory-hungry on large tables.
+- Written largely in **C**, **multi-threaded**, changes columns **by reference** (no copy), and ships fast I/O (`fread` / `fwrite`).
+- Deliberately **few dependencies** (just base R), part of why it stays fast and stable.
+
+. . .
+
+`data.table` has a terse `DT[i, j, by]` syntax, which is what we will demonstrate.
+
+## A table is just rows, columns, groups, joins
+
+Rows are observations, columns are variables, a cell is one value. Almost every
+data-wrangling question is one of four actions:
+
+| Question | Operation |
+|---|---|
+| Which rows do I keep? | **filter rows** |
+| Which columns do I keep or compute? | **select / mutate columns** |
+| Should I calculate separately for each group? | **group by** |
+| Do I need information from another table? | **join** |
+
+Today we express each of these three ways and compare them.
+
+## A bioinformatics data example.
+
+Genetic data produces **large tables** frequently. We'll simulate a data set.
+
+| Term | Meaning in this session |
+|---|---|
+| sample | one person or specimen |
+| variant | one genomic position where samples may differ |
+| genotype | alternate copies: 0, 1, or 2; **-1 = missing** |
+| read depth | how many sequencing reads cover a site |
+| genotype quality | confidence score for the call |
+| allele frequency | average alternate-copy frequency across samples |
+
+## Three linked tables {.smaller .scrollable}
+
+::: {.columns}
+::: {.column width="60%"}
+
+- **samples**: one row per sample (population, sex, batch, case/control)
+- **variants**: one row per variant (chrom, position, gene, consequence, frequency)
+- **genotypes**: one row per sample x variant (genotype, read depth, quality) -- the **tall** table
+
+```r
+dat <- simulate_genotyping(
+  n_samples = 500, 
+  n_variants = 4000
+)
+samples <- dat$samples
+variants <- dat$variants
+
+# 500 x 4000 = 2,000,000 rows
+genotypes <- dat$genotypes  
+```
+
+:::
+::: {.column width="40%"}
+::: {.panel-tabset}
+
+### samples
+
+::: {.small .scrollable}
+
+```{r}
+#| eval: true
+#| echo: false
+head(samples, 50)
+```
+
+:::
+
+### variants
+
+::: {.small .scrollable}
+
+```{r}
+#| eval: true
+#| echo: false
+head(variants, 50)
+```
+
+:::
+
+### genotypes
+
+::: {.small .scrollable}
+
+```{r}
+#| eval: true
+#| echo: false
+head(genotypes, 50)
+```
+
+:::
+
+:::
+:::
+:::
+
+::: {.aside}
+The generator is provided with the lab: reproducible, no downloads.
+:::
+
+## A table is just rows, columns, groups, joins
+
+Rows are observations, columns are variables, a cell is one value. Almost every
+data-wrangling question is one of four actions:
+
+| Question | Operation |
+|---|---|
+| Which rows do I keep? | **filter rows** |
+| Which columns do I keep or compute? | **select / mutate columns** |
+| Should I calculate separately for each group? | **group by** |
+| Do I need information from another table? | **join** |
+
+Today we express each of these three ways and compare them.
+
+
+
+
+## `data.table` syntax: `DT[i, j, by]`
+
+```r
+DT[ i ,  j ,  by ]
+|  |    |    `-- group by these columns
+|  |    `------- compute, select, or update columns
+|  `------------ keep or match these rows
+`--------------- the data.table object
+```
+
+Read it as:
+
+> Take rows **`i`**, do **`j`**, separately within each **`by`** group.
+
+No grouping? Leave `by` out. No row filter? Leave `i` empty but keep the comma: `DT[, j]`.
+
+. . .
+
+`.N` = rows in the current group. `.()` = shorthand for `list()`.
+
+## Filter rows
+
+**Task:** keep called homozygous-alt rows with adequate depth.
+
+```r
+# base R
+genotypes_df[genotypes_df$genotype == 2 & genotypes_df$read_depth >= 20, ]
+
+# tidyverse
+genotypes_df |> filter(genotype == 2, read_depth >= 20)
+
+# data.table -- the row condition goes in i
+genotypes[genotype == 2 & read_depth >= 20]
+```
+
+Under the hood: all three build a TRUE/FALSE vector over the rows and keep the
+`TRUE` ones. All three return a **new** table -- the original is untouched -- so
+you pay memory for the rows you keep. You typically assign the returned table a name.
+
+
+## Select columns
+
+**Task:** keep only a few of the variant columns.
+
+```r
+# select a few columns
+variants_df[, c("variant_id", "gene", "maf")]      # base R
+variants_df |> select(variant_id, gene, maf)       # tidyverse
+variants[, .(variant_id, gene, maf)]               # data.table
+```
+
+Under the hood: all three return a **new** table object -- but data vectors 
+are not duplicated until necessary.
+
+
+## Create columns
+
+```r
+# add a column
+
+# base R: adds the column, rebinds the name
+variants_df$is_rare <- variants_df$maf < 0.01               
+
+# tidyverse: you must assign/name the result
+variants_df <- variants_df |> mutate(is_rare = maf < 0.01)  
+
+# data.table: modifies in place, no assignment
+variants[, is_rare := maf < 0.01]                           
+```
+
+. . .
+
+| Style | Adding a column |
+|---|---|
+| base R | shallow copy: columns are shared until modified, then only that column is duplicated |
+| tidyverse | same, but returns a new object -- you must assign it |
+| data.table `:=` | no new object at all; every reference sees the change |
+
+`:=` needs no assignment and changes the original in place. Convenient, but every
+other reference to that table sees the change. Use `copy(variants)` to avoid.
+
+## Grouped summaries
+
+**Task:** per sample, mean read depth among called genotypes.
+
+```r
+# base R
+called <- genotypes_df[genotypes_df$genotype >= 0, ]
+aggregate(read_depth ~ sample_id, data = called, FUN = mean)
+
+# tidyverse
+genotypes_df |> filter(genotype >= 0) |>
+  group_by(sample_id) |> summarise(mean_depth = mean(read_depth))
+
+# data.table -- i filters, j computes, by groups
+genotypes[genotype >= 0, .(mean_depth = mean(read_depth)), by = sample_id]
+```
+
+Split by group, compute within each group, combine. `data.table` does this
+with low overhead, especially when the data are already keyed.
+
+## Joins: add columns from another table
+
+```r
+# base R
+merge(genotypes_df, variants_df[, c("variant_id","consequence","gene")], 
+        by = "variant_id")
+
+# tidyverse
+genotypes_df |> inner_join(select(variants_df, variant_id, consequence, gene), 
+        by = "variant_id")
+
+# data.table -- x[y, on = "key"]
+variants[genotypes, on = "variant_id",
+         .(sample_id, variant_id, genotype, consequence, gene)]
+```
+
+
+## Keys: sort once, look up fast
+
+A **key** is one or more columns a `data.table` is physically **sorted by**.
+
+```r
+setkey(genotypes, sample_id)   # reorders genotypes in place, by reference
+key(genotypes)                 # "sample_id"
+```
+
+Because the rows are sorted, `data.table` can use **binary search** and
+**sorted-merge joins** instead of scanning every row:
+
+```r
+genotypes["S00001"]            # fast lookup of one sample's rows
+setkey(variants, variant_id)   # then a keyed join is a fast sorted merge
+```
+
+. . .
+
+A key speeds up **lookups**, **repeated joins**, and **grouping** on the key
+column. You do not always need one (`on =` joins ad-hoc), but set a key when you
+will hit the same column many times, so the sort is paid once.
+
+## Benchmarks: time *and* memory
+
+`bench::mark()` records **elapsed time**, **memory allocated**, and **garbage collections**.
+
+```r
+bench::mark(
+  base_R     = { ... tapply(...) ... },
+  tidyverse  = genotypes_df |> filter(genotype >= 0) |>
+                 group_by(variant_id) |> summarise(af = sum(genotype)/(2*n())),
+  data.table = genotypes[genotype >= 0, .(af = sum(genotype)/(2*.N)), by = variant_id],
+  check = FALSE, iterations = 3
+)
+```
+
+- **Time** matters because slow code interrupts your work.
+- **Memory** matters because large tables can *fail* when R runs out of RAM.
+
+## What to expect
+
+::: {.incremental}
+- On **a few thousand rows**, all three are fast enough: pick your preference.
+- The gap grows with **row count**, **repeated joins**, **grouped calculations**, and **in-place updates**.
+- `data.table` often wins on time and/or memory at scale, and `fread`/`fwrite` are the most reliable everyday win.
+:::
+
+
+## Takeaways
+
+::: {.incremental}
+- Every table operation is about **rows, columns, groups, or joins**.
+- `data.table` packs them into `DT[i, j, by]`.
+- `:=` modifies **by reference**: saves memory, changes the original.
+- **Keys** sort/index tables for fast repeated joins and lookups.
+:::
+
+. . .
+
+**Next:** the lab, then `vignette("datatable-intro")` and `?data.table`.
+
+## {background-image="/assets/images/network.svg"}
+
+::: {.v-center .center}
+::: {}
+
+[Thank you!]{.largest}
+
+[Questions?]{.larger}
+
+[{{< meta current_year >}} • [SciLifeLab](https://www.scilifelab.se/) • [NBIS](https://nbis.se/) • [RaukR](https://nbisweden.github.io/raukr-2026)]{.smaller}
+
+:::
+:::

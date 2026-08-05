@@ -59,6 +59,8 @@ Images: www.tidyverse.org, Wikipedia, www.tidyverse.org
 
 . . .
 
+<br>
+
 ::: blockquote
 *Navigating the balance between base R and the tidyverse is a challenge to learn.*\
 [- Robert A. Muenchen](http://r4stats.com/articles/why-r-is-hard-to-learn/)
@@ -182,7 +184,7 @@ M <- matrix(rnorm(16), nrow=4); M %<>% colSums(); M
 
 ## Native R pipe
 
-From R \>= 4.1.0 we have a native `|>` pipe that is a bit faster than `%>%` but currently has no placeholders mechanism.
+From R \>= 4.1.0 we have a native `|>` pipe that is fasterm than `%>%`, dependency-free and native but has less rich placeholders mechanism.
 
 ```{r native_pipe}
 c(1,2,3,4,5) |> mean()
@@ -192,7 +194,7 @@ c(1,2,3,4,5) |> mean()
 
 <hr>
 
-even simple placeholder `_` is available now. But `r emo::ji('danger')` only for **named** arguments.
+a placeholder `_` is available but `r emo::ji('danger')` only for **named** arguments.
 
 ```{r native_pipe2}
 mtcars |> lm(mpg ~ disp, data = _)
@@ -203,7 +205,7 @@ mtcars |> lm(mpg ~ disp, data = _)
 Sometimes we want to pass the resulting data to *other than the first* argument of the next function in chain. `magritter` provides placeholder mechanism for this:
 
 -   `x %>% f(y, .)` $\equiv$ `f(y, x)`,
--   `x %>% f(y, z = .)` $\equiv$ `f(y, z = x)`.
+-   `x %>% f(y, z = .)` $\equiv$ `f(y, z = x)`
 
 . . .
 
@@ -246,7 +248,7 @@ and, indeed the `f` function works:
 
 ## Time to do [Lab 1.1](../../labs/tidyverse/#pipes)
 
-![](assets/your_turn.webp)
+![](assets/MKSam.png)
 
 ## Tibbles
 
@@ -375,11 +377,11 @@ vehicles$gear
 
 ## Time to do [Lab 1.2](../../labs/tidyverse/#tibbles)
 
-![](assets/your_turn.webp)
+![](assets/MKSam.png)
 
 ## Loading Data
 
-In `tidyverse` you import data using `readr` package that provides a number of useful data import functions:
+In `tidyverse` you import data using `readr` package (relying on fast `vroom` engine) that provides a number of useful data import functions:
 
 -   `read_delim()` a generic function for reading x-delimited files. There are a number of convenience wrappers:
     -   `read_csv()` used to read comma-delimited files,
@@ -481,14 +483,14 @@ But saving in csv (or tsv) does mean you loose information about the type of dat
 
 ## Time to do [Lab 1.3](../../labs/tidyverse/#parsing)
 
-![](assets/your_turn.webp)
+![](assets/MKSam.png)
 
 ## Basic Data Transformations with `dplyr`
 
 Let us create a tibble:
 
 ```{r}
-jewels <- as_tibble(diamonds) %>% head()
+jewels <- as_tibble(diamonds) |> head()
 jewels[1:5,]
 ```
 
@@ -497,7 +499,7 @@ jewels[1:5,]
 ## Picking Observations using `filter()`
 
 ```{r}
-jewels %>% filter(cut == 'Ideal' | cut == 'Premium', carat >= 0.23) %>% head()
+jewels |> filter(cut == 'Ideal' | cut == 'Premium', carat >= 0.23) |> head()
 ```
 
 ## Floating point and `tidyverse`
@@ -510,21 +512,21 @@ jewels %>% filter(cut == 'Ideal' | cut == 'Premium', carat >= 0.23) %>% head()
 . . .
 
 ```{r}
-jewels %>% filter(near(0.23, carat) | is.na(carat)) %>% head(n = 4)
+jewels |> filter(near(0.23, carat) | is.na(carat)) |> head(n = 4)
 ```
 
 ## Rearranging Observations using `arrange()`
 
 ```{r}
 #| eval: false
-jewels %>% arrange(cut, carat, desc(price))
+jewels |> arrange(cut, carat, desc(price))
 ```
 
 . . .
 
 ```{r}
 #| echo: false
-jewels %>% arrange(cut, carat, desc(price))
+jewels |> arrange(cut, carat, desc(price))
 ```
 
 ::: callout-caution
@@ -537,59 +539,72 @@ The `NA`s always end up at the end of the rearranged tibble.
 ### Simple range
 
 ```{r}
-jewels %>% select(color, clarity, x:z) %>% head(n = 4)
+jewels |> select(color, clarity, x:z) |> head(n = 4)
 ```
 
 ### Exclusion
 
 ```{r}
-jewels %>% select(-(x:z)) %>% head(n = 5)
+jewels |> select(-(x:z)) |> head(n = 5)
 ```
 :::
 
 ## Renaming variables
 
 ::: callout-note
-`rename` is a variant of `select`, here used with `everything()` to move `x` to the beginning and rename it to `var_x`
+`rename` is a variant of `select`, here used to rename `x` to `var_x`
 :::
 
 ```{r}
 #| eval: false
-jewels %>% rename(var_x = x) %>% head(n = 2)
+jewels |> rename(var_x = x) |> head(n = 2)
 ```
 
 . . .
 
 ```{r}
 #| echo: false
-jewels %>% rename(var_x = x) %>% head(n = 2)
+jewels |> rename(var_x = x) |> head(n = 2)
 ```
 
 ## Bring columns to front
 
 ::: callout-tip
-use `everything()` to bring some columns to the front
+use `relocate()` (instead of legacy `everything()`) to bring some columns to the front
 :::
 
 ```{r}
 #| eval: false
-jewels %>% select(x:z, everything()) %>% head(n = 2)
+jewels |> relocate(x:z) |> head(n = 2)
+jewels |> select(x:z, everything()) |> head(n = 2) # legacy
 ```
 
 . . .
 
 ```{r}
 #| echo: false
-jewels %>% select(x:z, everything()) %>% head(n = 2)
+jewels |> relocate(x:z) |> head(n = 2)
 ```
+
+. . .
+
+And `relocate` is very flexible:
+```{r}
+#| eval: false
+jewels %>%
+  relocate(x:z, .after = cut)
+
+jewels %>%
+  relocate(x:z, .before = price)
+``` 
 
 ## Create/alter new Variables with `mutate`
 
 ```{r}
 #| eval: false
-jewels %>% 
-  mutate(p = x + z, q = p + y) %>% 
-  select(-(depth:price)) %>% 
+jewels |> 
+  mutate(p = x + z, q = p + y) |> 
+  select(-(depth:price)) |> 
   head(n = 5)
 ```
 
@@ -597,10 +612,26 @@ jewels %>%
 
 ```{r}
 #| echo: false
-jewels %>% 
-  mutate(p = x + z, q = p + y) %>% 
-  select(-(depth:price)) %>% 
+jewels |>  
+  mutate(p = x + z, q = p + y) |> 
+  select(-(depth:price)) |> 
   head(n = 5)
+```
+
+## Conditional mutate
+The legacy way:
+```{r}
+#| eval: false
+iris |>
+  as_tibble() |>
+  mutate_if(is.numeric, scale)
+```
+should be replaced with modern `across()` approach:
+```{r}
+#| eval: false
+ris |>
+  as_tibble() |>
+  mutate(across(where(is.numeric), scale))
 ```
 
 ## Create/alter new Variables with `transmute` `r emo::ji('wizard')`
@@ -610,7 +641,7 @@ Only the transformed variables will be retained.
 :::
 
 ```{r}
-jewels %>% transmute(carat, cut, sum = x + y + z) %>% head(n = 5)
+jewels |> transmute(carat, cut, sum = x + y + z) |>  head(n = 5)
 ```
 
 ## Group and Summarize
@@ -619,7 +650,7 @@ jewels %>% transmute(carat, cut, sum = x + y + z) %>% head(n = 5)
 ### Simple
 
 ```{r}
-jewels %>% group_by(cut) %>% summarize(max_price = max(price),
+jewels |> group_by(cut) |>  summarize(max_price = max(price),
                                       mean_price = mean(price),
                                       min_price = min(price))
 ```
@@ -627,16 +658,54 @@ jewels %>% group_by(cut) %>% summarize(max_price = max(price),
 ### More complex
 
 ```{r}
-jewels %>% group_by(cut, color) %>%  summarize(max_price = max(price), 
+jewels |> group_by(cut, color) |>  summarize(max_price = max(price), 
                                               mean_price = mean(price), 
-                                              min_price = min(price)) %>% head(n = 5)
+                                              min_price = min(price)) |> head(n = 5)
 ```
+:::
+
+## More on (un-)grouping
+
+- `.groups = "drop"` is an argument to `summarise()`. It tells `summarise()` to return an ungrouped data frame after the summary is computed.
+- `ungroup()` is a separate verb that removes grouping from an already grouped data frame.
+
+::: panel-tabset
+### using `.groups` 
+```{r}
+diamonds |>
+  group_by(cut) |>
+  summarise(mean_price = mean(price), .groups = "drop")
+```
+
+### using `ungroup()`
+```{r}
+diamonds |>
+  group_by(cut) |>
+  summarise(mean_price = mean(price)) |>
+  ungroup()
+```
+
+### the difference
+```{r}
+diamonds %>%
+  group_by(cut, color) %>%
+  summarise(mean_price = mean(price)) |> head(n=2)
+```
+`summarise()` default `.groups = 'drop_last'` retains grouping by `color`!
+
+### conclusion
+- `.groups = "drop"` --> remove all grouping.
+- `.groups = "drop_last"` --> remove only the last grouping variable (the default in many cases).
+- `.groups = "keep"` --> keep all grouping variables.
+- `.groups = "rowwise"` --> return a rowwise data frame.
+
+`.groups = "drop"` is effectively equivalent to calling `ungroup()` immediately after `summarise()`, but **only** in the context of that `summarise()` call. ungroup() is the more general function that can be used anywhere in a `dplyr` pipeline.
 :::
 
 ## Other data manipulation tips
 
 ```{r}
-jewels %>% group_by(cut) %>% summarize(count = n())
+jewels |> group_by(cut) |> summarize(count = n())
 ```
 
 . . .
@@ -662,12 +731,12 @@ Usually data are untidy in only one way. However, if you are unlucky, they are r
 ```{r tidy_iris3}
 #| echo: false
 iris3 <-
-  iris %>% 
-  unite(Sepal.L.W, Sepal.Length, Sepal.Width, sep = "/") %>% 
+  iris |>  
+  unite(Sepal.L.W, Sepal.Length, Sepal.Width, sep = "/") |> 
   unite(Petal.L.W, Petal.Length, Petal.Width, sep = "/")
-iris3 %>%
-  head(n = 3) %>%
-  kable("html",escape=F,align="c") %>% 
+iris3 |> 
+  head(n = 3) |> 
+  kable("html",escape=F,align="c") |> 
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
                 position="left",full_width = F)
 ```
@@ -677,8 +746,8 @@ iris3 %>%
 ```{r tidy_iris4}
 #| echo: false
 iris4 <- t(iris) 
-iris4[,1:4] %>%
-  kable("html",escape=F,align="c") %>% 
+iris4[,1:4] |> 
+  kable("html",escape=F,align="c") |> 
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
                 position="left",full_width = F)
 ```
@@ -694,7 +763,7 @@ iris4[,1:4] %>%
 ```{r tidy_iris1}
 #| echo: false
 data("iris") 
-iris %>% head(n=3) %>% kable("html",escape=F,align="c") %>%
+iris |>  head(n=3) |>  kable("html",escape=F,align="c") |> 
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
                 position="left",full_width = F)
 ```
@@ -703,43 +772,43 @@ iris %>% head(n=3) %>% kable("html",escape=F,align="c") %>%
 
 ```{r tidy_iris2}
 #| echo: false
-iris2 <- iris %>% 
+iris2 <- iris |> 
   gather(key=variable, value=value, -Species)
-iris2 %>%
-  head(n=3) %>%
-  kable("html",escape=F,align="c") %>% 
+iris2 |>
+  head(n=3) |>
+  kable("html",escape=F,align="c") |> 
   kable_styling(bootstrap_options=c("striped","hover","responsive","condensed"),
                 position="left",full_width = F)
 ```
 
 ## Tidying Data with `pivot_longer`
 
-If some of your column names should be values of a variable, use `pivot_longer` (old `gather`):
+If some of your column names should be values of a variable, use `pivot_longer` (which modernizes the legacy `gather`):
 
 ```{r}
 #| include: false
-jewels %>% 
-  mutate(`2008` = price) %>% 
-  select(-price) %>% 
+jewels |>
+  mutate(`2008` = price) |> 
+  select(-price) |> 
   mutate(`2009` = `2008` + floor(sample(rnorm(100, mean = 0.01 * mean(`2008`)), 
                                 size = 1, 
                                 replace=T
                                 ))
-         ) %>%
+         ) |>
   select(cut, `2008`, `2009`) -> jewels2
 ```
 
 ::::: columns
 ::: {.column width="50%"}
 ```{r jewels2}
-jewels2 %>% head(n = 5)
+jewels2 |> head(n = 5)
 ```
 :::
 
 ::: {.column width="50%"}
 ```{r}
-jewels2 %>% 
-  pivot_longer(cols = c(`2008`, `2009`), names_to = 'year', values_to = 'price') %>% 
+jewels2 |> 
+  pivot_longer(cols = c(`2008`, `2009`), names_to = 'year', values_to = 'price') |>
   head(n = 5)
 ```
 :::
@@ -747,11 +816,11 @@ jewels2 %>%
 
 ## Tidying Data with `pivot_wider`
 
-If some of your observations are scattered across many rows, use `pivot_wider` (old `spread`):
+If some of your observations are scattered across many rows, use `pivot_wider` (which modernizes the legacy `spread`):
 
 ```{r}
 #| include: false
-jewels %>% head(n = 3) %>% select(cut, price, clarity, x, y, z) %>% gather(x,y,z, key='dimension', value='measurement') -> jewels3
+jewels |> head(n = 3) |> select(cut, price, clarity, x, y, z) |> gather(x,y,z, key='dimension', value='measurement') -> jewels3
 ```
 
 ::::: columns
@@ -763,8 +832,8 @@ jewels3
 
 ::: {.column width="50%"}
 ```{r}
-jewels3 %>% 
-  pivot_wider(names_from = dimension, values_from = measurement) %>% 
+jewels3 |>
+  pivot_wider(names_from = dimension, values_from = measurement) |> 
   head(n = 5)
 ```
 :::
@@ -772,13 +841,13 @@ jewels3 %>%
 
 ## Tidying Data with `separate`
 
-If some of your columns contain more than one value, use `separate`:
+If some of your columns contain more than one value, use `separate_wider_delim` -- the secure, explicit replacement for legacy `separate()`:
 
 ```{r}
 #| include: false
-jewels4 <- jewels %>% 
-  head(n = 2) %>% 
-  select(cut, price, clarity, x, y, z) %>% 
+jewels4 <- jewels |> 
+  head(n = 2) |> 
+  select(cut, price, clarity, x, y, z) |>
   unite(dim, x, y, z, sep='/')
 ```
 
@@ -791,31 +860,57 @@ jewels4
 
 ```{r}
 #| eval: false
-jewels4 %>% 
-  separate(dim, into = c("x", "y", "z"), sep = "/", convert = T)
+jewels4 |>
+  separate_wider_delim(dim, delim = "/", names = c("x", "y", "z"))
 ```
 
 . . .
 
 ```{r}
 #| echo: false
-jewels4 %>% 
-  separate(dim, into = c("x", "y", "z"), sep = "/", convert = T)
+jewels4 |> 
+  separate_wider_delim(dim, delim = "/", names = c("x", "y", "z"))
 ```
 
 ::: callout-note
-Here, `sep` is here interpreted as the position to split on. It can also be a *regular expression* or a delimiting string/character. Pretty flexible approach!
+The modern separate_wider_* function family is strict, meaning it will explicitly alert you with an error if rows contain an uneven balance of delimiters!
 :::
+
+## Handling Mismatches in wider splits
+
+The modern `separate_wider_delim()` is **strict**. By default, it will throw an error if the delimiter count is inconsistent across rows. Use `too_few` and `too_many` to handle uneven data:
+
+::::: columns
+::: {.column width="90%"}
+
+```{r}
+#| eval: false
+jewels4 |> 
+  separate_wider_delim(
+    cols = dim, 
+    delim = "/", 
+    names = c("x", "y", "z"),
+    too_few = "align_start",  # Options: "align_start", "align_end", "debug"
+    too_many = "drop" # Options: "drop", "merge"
+  )
+```
+
+**Strict Validation:** No more silent misalignments like in the legacy `separate()`.
+
+**Debug Mode:** Setting `too_few = "debug"` creates temporary logical columns identifying exactly where and why splits failed.
+:::
+
+:::::
 
 ## Tidying Data with `unite`
 
-If some of your columns contain more than one value
+If some of your columns contain elements that need to be grouped together:
 
 ```{r}
 #| include: false
-jewels5 <- jewels %>% 
-  head(n = 5) %>% 
-  select(cut, price, clarity, x, y, z) %>% 
+jewels5 <- jewels |>
+  head(n = 5) |>
+  select(cut, price, clarity, x, y, z) |>
   separate(clarity, into = c('clarity_prefix', 'clarity_suffix'), sep = 2)
 ```
 
@@ -828,28 +923,69 @@ jewels5
 
 ```{r}
 #| eval: false
-jewels5 %>% unite(clarity, clarity_prefix, clarity_suffix, sep='')
+jewels5 |> unite(clarity, clarity_prefix, clarity_suffix, sep='')
 ```
 
 ```{r}
 #| echo: false
-jewels5 %>% unite(clarity, clarity_prefix, clarity_suffix, sep='')
+jewels5 |> unite(clarity, clarity_prefix, clarity_suffix, sep='')
 ```
+
+## Missing Data -- the `!is.na()` boilerplate problem
+
+A common pattern in data cleaning:
+
+::: panel-tabset
+### simple
+```{r}
+#| eval: false
+df |>
+  filter(!is.na(x))
+```
+### complex
+```{r}
+#| eval: false
+df |>
+  filter(!is.na(x) & !is.na(y) & !is.na(z))
+```
+::: 
+
+. . .
+
+::: panel-tabset
+### option 1
+```{r}
+#| eval: false
+df |> drop_na(x)
+df |> drop_na(x, y, z)
+```
+- less boilerplate
+- easier to read
+- explicit intent: *remove missing rows*
+
+### option 2
+Instead of removing rows, sometimes you want to fill missing values:
+```{r}
+#| eval: false
+df |> mutate(x = coalesce(x, y, z))
+```
+This means *Take the first non-NA value across these columns.*
+:::
 
 ## Completing Missing Values Using `complete`
 
 ```{r}
 #| eval: false
 #| include: false
-jewels %>% 
-  head(n = 10) %>% 
-  select(cut, clarity, price) %>% 
+jewels |> 
+  head(n = 10) |> 
+  select(cut, clarity, price) |> 
   mutate(cut, cut2=replace(cut, sample(1:10, 4, F), NA)) -> missing_stones
 ```
 
 ```{r}
 #| code-line-numbers: "3"
-jewels %>% head(n = 10) %>% select(cut, clarity, price) %>% 
+jewels |> head(n = 10) |> select(cut, clarity, price) |> 
   mutate(continent = sample(c('Aus', 'Eur'), size = 6, replace = T)) -> missing_stones
 ```
 
@@ -857,14 +993,14 @@ jewels %>% head(n = 10) %>% select(cut, clarity, price) %>%
 
 ```{r}
 #| eval: false
-missing_stones %>% complete(cut, continent) %>% head(n = 7)
+missing_stones |> complete(cut, continent) |> head(n = 7)
 ```
 
 . . .
 
 ```{r}
 #| echo: false
-missing_stones %>% complete(cut, continent) %>% head(n = 7)
+missing_stones |> complete(cut, continent) |> head(n = 7)
 ```
 
 ## Combining Datasets
@@ -946,7 +1082,7 @@ knitr::kable(B)
 . . .
 
 ```{r}
-A %>% inner_join(B, by = 'key')
+A |> inner_join(B, by = 'key')
 # All non-matching rows are dropped!
 ```
 
@@ -971,7 +1107,7 @@ knitr::kable(B)
 . . .
 
 ```{r}
-A %>% left_join(B, by = 'key')
+A |> left_join(B, by = 'key')
 ```
 
 ## The Joins Family — `right_join`
@@ -995,7 +1131,7 @@ knitr::kable(B)
 . . .
 
 ```{r}
-A %>% right_join(B, by = 'key')
+A |> right_join(B, by = 'key')
 ```
 
 ## The Joins Family — `full_join`
@@ -1019,14 +1155,14 @@ knitr::kable(B)
 . . .
 
 ```{r}
-A %>% full_join(B, by = 'key')
+A |> full_join(B, by = 'key')
 ```
 
 ## Some Other Friends
 
 -   `stringr` for string manipulation and regular expressions
 -   `forcats` for working with factors
--   `lubridate` for working with dates
+-   `lubridate` for working with dates (now in the `tidyverse` core)
 
 ##  {background-image="/assets/images/network.svg"}
 
