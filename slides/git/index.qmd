@@ -246,7 +246,7 @@ data/*.csv
 
 ![](assets/git_branches_pointers_and_head-1.png){width=100%}
 
-A branch is **just a movable pointer to a commit** — a 41-byte file, nothing more.
+A branch is **just a movable pointer to a commit**, nothing more than a 41-byte file.
 
 <br>
 
@@ -329,6 +329,30 @@ git commit
 :::
 
 
+## git summary
+
+<br>
+
+:::{.incremental}
+- git is a system for version control, works locally on your computer
+- Keeps track of changes to your files
+- A git repository is a `.git` folder containing all information
+- Create a repository with `git init`
+- Add files by staging and commiting them (`git add`, `git commit`)
+- Each commit adds to the commit history
+- Use `.gitignore` file to prevent git from tracking files (large files, binary, data, junk files)
+:::
+
+## git summary
+
+<br>
+
+:::{.incremental}
+- A branch is a pointer to a commit
+- Use branches to test out new features, then merge back into main
+- git tries to merge branches automatically, merge conflicts happen when that is not possible
+:::
+
 # Github
 
 Local versus remote
@@ -337,27 +361,26 @@ Local versus remote
 
 <br>
 
-git already works perfectly well on your own machine. So why put anything online?
+git already works perfectly well on your own machine. So why use Github?
 
 <br>
 
 :::{.incremental}
-* **Backup**: your history lives somewhere other than your laptop. Laptop disasters won't erase 6 months of hard work
+* **Backup**: your history lives somewhere other than your laptop
 * **Sharing**: send a collaborator a link instead of zipping and emailing folders
-* **Collaboration**: several people work on the same project without emailing versions back and forth
+* **Collaboration**: several people work on the same project
 * **Reproducibility**: "code available at github.com/..." is now standard in papers; reviewers and readers can see exactly what you did
 * **DOI**: You can get a citable DOI for a release (via Zenodo)
-* **It's free**: public repositories cost nothing, and you get issue tracking, a project website, etc.
+* **It's free**: repositories cost nothing, and you get issue tracking, a project website, etc.
 :::
 
 ## GitHub is just a remote copy
 
 <br>
 
-**GitHub doesn't do anything mysterious.** A GitHub repository is *just another git repository*, the same commits and history you have locally, hosted on a server you can reach over the internet.
+**GitHub doesn't do anything mysterious.** A GitHub repository is *just another git repository*, hosted on a server you can reach over the internet.
 
-<br>
-
+::: {.fragment}
 :::: {.columns}
 
 ::: {.column width="50%"}
@@ -377,8 +400,7 @@ git already works perfectly well on your own machine. So why put anything online
 :::
 
 ::::
-
-<br>
+:::
 
 :::{.fragment}
 ::: {.callout-note}
@@ -413,7 +435,7 @@ Bring others' commits *down* to your laptop
 <br>
 
 :::{.fragment}
-This is the same pointer model as before, just across two machines: pushing moves GitHub's branch pointer forward to match yours; pulling moves yours forward to match GitHub's.
+Same pointer model as before, just across two machines: pushing moves GitHub's branch pointer forward to match yours; pulling moves yours forward to match GitHub's.
 
 :::
 
@@ -428,8 +450,8 @@ This is the same pointer model as before, just across two machines: pushing move
 <br>
 
 :::{.incremental}
-* `git add` and `git commit` are **completely local** — they work on a plane with no wifi
-* Your commits pile up in your local history, private to you
+* `git add` and `git commit` are **completely local**, They don't require an internet connection
+* Your commits are saved in your local history, private to you
 * Only `git push` sends them to GitHub
 * Only then can anyone else see them
 :::
@@ -439,7 +461,7 @@ This is the same pointer model as before, just across two machines: pushing move
 
 <br>
 
-git is for the work; GitHub is for sharing the work. A normal session uses both:
+git is for the work, GitHub is for sharing the work. A normal session uses both:
 
 <br>
 
@@ -493,7 +515,7 @@ git remote -v
 
 <br>
 
-GitHub no longer accepts your account password for Git operations over HTTPS.
+GitHub no longer accepts your account password for HTTPS operations.
 
 <br> 
 
@@ -514,7 +536,7 @@ Authenticate using a Personal Access Token
 **SSH
 git@github.com:...**
 
-Authenticate using a private key on your computer
+Authenticate using a private key on your computer.
 The matching public key on GitHub
 
 *Convenient after the initial setup*
@@ -552,12 +574,6 @@ Positron's **Source Control** panel calls the exact same git underneath. Every b
 | Clicking a changed file | `git diff` |
 :::
 
-::: {.column width="45%"}
-:::{.fragment}
-The GUI is just a convenient front-end. Knowing the commands means you're never stuck when the buttons behave unexpectedly.
-:::
-:::
-
 ::::
 
 # git the R way: usethis
@@ -580,7 +596,7 @@ usethis::git_sitrep()       # "situation report": diagnose your setup
 <br>
 
 :::{.fragment}
-These wrap the same git operations — handy, but worth knowing what they do underneath.
+Wraps the same git operations you already know, but conveniently packaged for R users.
 :::
 
 ## Forks
@@ -593,14 +609,20 @@ When you don't have permission to push to the original repository
 
 <br>
 
+:::: {.columns}
+::: {.column width="50%"}
+
                  Original repository
                   (someone else's)
                         │
-                     Fork
+                      Fork
                         ▼
                   Your repository
 
 <br>
+:::
+
+::: {.column width="50%"}
 
 :::{.incremental}
 
@@ -611,25 +633,47 @@ When you don't have permission to push to the original repository
 <br>
 
 :::
+:::
+
+::::
+
+## Forks
+
+<br>
+
+Your own GitHub repository, but copied from someone else's.
+
+When you don't have permission to push to the original repository
+
+<br>
+
+
+![](assets/git-upstream-fork.png){width=100%}
+
+
+
 
 ## Pull requests
 
 A Pull Request (PR) is a request to merge changes from one branch into another
 
-<br>
+:::: {.columns}
+::: {.column width="50%"}
 
-  Your branch (or fork)
-          │
-          ▼
-    Open Pull Request
-          │
-          ▼
-  Review • Discuss • Test
-          │
-          ▼
-        Merge
+                 Your branch (or fork)
+                        │
+                        ▼
+                  Open Pull Request
+                        │
+                        ▼
+                Review • Discuss • Test
+                        │
+                        ▼
+                      Merge
 
-<br>
+:::
+
+::: {.column width="50%"}
 
 :::{.incremental}
 
@@ -639,26 +683,30 @@ A Pull Request (PR) is a request to merge changes from one branch into another
 
 :::
 
+:::
+::::
+
 ::: {.fragment}
 A Pull Request doesn't change anything by itself, it just asks someone to review and merge your changes.
 :::
 
-## All terminology
+## Summary
 
 <br>
 
+|          |           |
+| ---------|--------------|
+| **git** | local version control |  
+| **GitHub** | hosting and collaboration platform for Git repositories |  
+| **add** | stage a file for commit |  
+| **commit** | commit the staged changes to the local repository |  
+| **push** | send your local commits to the remote repository |  
+| **pull** | bring commits from the remote repository to your local repository |  
+| **Branch** | "copy" where you can test out new ideas |  
+| **Fork** | your own copy of someone else's repository |  
+| **Pull Request** | request to merge your changes into a branch |  
 
-**git**: local version control  
-**Github**: hosting and collaboration platform for Git repositories  
-
-**add**: stage a file for commit  
-**commit**: commit the staged changes to the local repository  
-**push**: send your local commits to the remote repository  
-**pull**: bring commits from the remote repository to your local repository  
-
-**Branch**: "copy" where you can test out new ideas  
-**Fork**: your own copy of someone else's repository  
-**Pull Request**: request to merge your changes into a branch  
+: {tbl-colwidths="[25,75]"}
 
 ## Where to go next
 
@@ -667,11 +715,12 @@ A Pull Request doesn't change anything by itself, it just asks someone to review
 :::{.incremental}
 * **Happy Git with R** — happygitwithr.com (Jenny Bryan). The definitive R + git + GitHub guide; start here for any setup pain.
 * **dangitgit.com** — plain-English fixes for "oh no" moments
+* **git-scm.com/book** — the official git book, online and free
 * `git <command> --help` — the built-in manual for any command
 :::
 
 <br>
 
 :::{.fragment}
-You won't remember every command today — and you don't need to. Remember the **model** (working tree → staging → commit → remote) and look the rest up.
+You won't remember every command today, and you don't need to. Remember the basics and look the rest up.
 :::
