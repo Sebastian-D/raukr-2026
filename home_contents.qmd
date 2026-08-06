@@ -25,7 +25,7 @@ execute:
 |Best Coding Practices                  |Sebastian DiLorenzo           |[Slides](slides/coding/index.html), [Lab](labs/coding/index.html)|
 |Reproducible research                  |Roy Francis                   |[Slides](slides/rr/index.html)|
 |Managing R environment with renv       |Roy Francis                   |[Slides](slides/r-env/index.html), [Lab](labs/r-env/index.html)|
-|Pipelines with targets                 |Roy Francis                   |Slides, Lab|
+|Pipelines with targets                 |Roy Francis                   |[Slides](slides/targets/index.html), [Lab](labs/targets/index.html)|
 |Quarto projects                        |Christophe Dervieux (Posit)   ||
 |[12-Aug-2026 (Wed)]{.badge .badge-secondary}                          |||
 |Git & GitHub                           |Nina Norgren                  |[Slides](slides/git/index.html), [Lab](labs/git/index.html)|
@@ -37,7 +37,7 @@ execute:
 |R & AI                                 |Sebastian DiLorenzo           |[Slides](slides/ai/index.html)|
 |[14-Aug-2026 (Fri)]{.badge .badge-secondary}                          |||
 |Tidyverse                              |Marcin Kierczak               |[Slides](slides/tidyverse/index.html), Lab|
-|Data visualization                     |Roy Francis                   |Slides, Lab|
+|Data visualization                     |Roy Francis                   ||
 |[WEEK 2]{.badge .badge-primary}                                       |||
 |[17-Aug-2026 (Mon)]{.badge .badge-secondary}                          |||
 |Statistics                             |Dania Machlab                 ||
