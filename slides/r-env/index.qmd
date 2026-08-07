@@ -351,6 +351,13 @@ Emerging alternatives to `renv`
   - Rust-based, fast, and cross-platform
   - Resolves entire environment before installation
 
+. . .
+
+- [**ir**](https://r-lib.github.io/ir/)
+  - [Posit Blog](https://opensource.posit.co/blog/2026-07-23_ir-0-1-0/)
+
+  > a small command-line tool that runs R scripts and renders Quarto documents using runtime requirements declared in the file itself
+
 ## Acknowledgements
 
 ::: {.columns}
@@ -383,3 +390,11 @@ renv official [documentation](https://rstudio.github.io/renv/index.html)
 
 :::
 :::
+
+## Session
+
+```{r}
+#| echo: false
+#| eval: true
+sessionInfo()
+```
