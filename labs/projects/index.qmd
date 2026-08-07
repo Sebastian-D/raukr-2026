@@ -201,6 +201,10 @@ You can use the R package [`owidR`](https://github.com/piersyork/owidR) to acces
 
 You can use the R package [`pxweb`](https://github.com/rOpenGov/pxweb/) to access the [Statistics Sweden](https://www.scb.se) API. This API aggregates data on many topics, including health, environment, and economics.
 
+## TidyTuesday
+
+[TidyTuesday](https://github.com/rfordatascience/tidytuesday) is a project where a dataset is selected weekly for the R community to practice data analysis. You can browse their repository and find tons of interesting datasets.
+
 ## Visualization
 
 Visualization can be useful to make datasets more comprehensible. To gain some inspiration look at the amazing visualizations made by Cédric Scherer using tidyverse <https://www.behance.net/cedscherer>.
