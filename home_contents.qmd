@@ -18,7 +18,7 @@ execute:
 |---------------------------------------|------------------------------|-----|
 |[WEEK 1]{.badge .badge-primary}                                       |||
 |[10-Aug-2026 (Mon)]{.badge .badge-secondary}                          |||
-|Welcome                                |Marcin Kierczak               |[Slides](slides/welcome/index.html)|
+|Welcome                                |Sebastian DiLorenzo, Roy Francis,Marcin Kierczak               |[Slides](slides/welcome/index.html)|
 |Positron                               |Jenny Bryan (Posit)           |[Materials](https://pos.it/ron-raukr)|
 |Introduction to Quarto                 |Christophe Dervieux (Posit)   ||
 |[11-Aug-2026 (Tue)]{.badge .badge-secondary}                          |||
