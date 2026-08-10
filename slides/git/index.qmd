@@ -5,8 +5,6 @@ image: "assets/featured.webp"
 format:
   revealjs:
     css: assets/styles.css
-    resources:
-      - git-demo.html
 ---
 
 # What is this git? And how does it work?
@@ -117,8 +115,6 @@ Let git try to merge it
 
 ## Interacting with git
 
-<br>
-
 :::: {.columns}
 
 ::: {.column width="50%"}
@@ -193,9 +189,6 @@ When you're confused, run `git status`. It almost always tells you the next move
 
 
 ## .gitignore
-
-
-<br>
 
 List file patterns that should not be tracked in a file called `.gitignore`:
 
@@ -376,8 +369,6 @@ git already works perfectly well on your own machine. So why use Github?
 
 ## GitHub is just a remote copy
 
-<br>
-
 **GitHub doesn't do anything mysterious.** A GitHub repository is *just another git repository*, hosted on a server you can reach over the internet.
 
 ::: {.fragment}
@@ -516,8 +507,6 @@ git remote -v
 <br>
 
 GitHub no longer accepts your account password for HTTPS operations.
-
-<br> 
 
 :::: {.columns}
 
