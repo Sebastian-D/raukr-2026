@@ -130,19 +130,34 @@ A project needs **several layers** of reproducibility:
 
 ## Code • Be kind to future you
 
+::: {.columns}
+::: {.column width="60%"}
 ::: {.incremental}
 
 - Write modular, reusable functions instead of long scripts
 - Use informative and consistent naming and style guides (e.g., tidyverse style guide)
-- Projects should be self-contained and portable
-  - Use project root as the reference point
-  - Use relative paths instead of absolute paths for file access
-  - Avoid `setwd()` to local paths in code
 - Set seed for reproducibility of random processes
 - Separate configuration / settings from code
 - Use version control (Git) for code and documents
 - Host code in a public repository (GitHub, Gitlab, Bitbucket) for backup and collaboration
+- Projects should be self-contained and portable
+  - Use project root as the reference point
+  - Use relative paths instead of absolute paths for file access
+  - Avoid `setwd()` to local paths in code
 
+:::
+:::
+::: {.column width="40%"}
+::: {.fragment}
+
+![](assets/jenny-fire.webp)
+
+![](assets/arson.webp)
+
+[[Project workflow](https://tidyverse.org/blog/2017/12/workflow-vs-script/), [Stop Jenny committing arson](https://www.rostrum.blog/posts/2024-04-01-perpetual-restart/)]{.small}
+
+:::
+:::
 :::
 
 ::: {.fragment}
@@ -173,6 +188,8 @@ A project needs **several layers** of reproducibility:
 
 ## Data • Sharing is caring
 
+::: {.columns}
+::: {.column width="60%"}
 ::: {.incremental}
 
 - Store data in a structured and organized manner
@@ -183,6 +200,13 @@ A project needs **several layers** of reproducibility:
 - Share data and code in a FAIR manner (with DOI if possible)
 - Use a data repository (Zenodo, Dryad, OSF, Dataverse, Figshare) to share data
 
+:::
+:::
+::: {.column width="40%"}
+
+![](assets/fair-care.webp)
+
+:::
 :::
 
 ::: {.fragment}
