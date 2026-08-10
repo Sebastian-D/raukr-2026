@@ -15,12 +15,15 @@ format: revealjs
 ## What this sessions will cover
 
 :::: {.columns}
-::: {.column width="60%"}
+::: {.column width="40%"}
 
 <br>
 
-- Brief setup of LLMs in Positron
-- Using AI capabiliies in Positron
+- A brief history of Posit data science agents
+- Setup of LLMs in Positron
+- LLM modes
+- Posit Assistant modes
+- Some useful commands
 - Prompt engineering 101
 - Some LLM specific packages in R
 - Testing, a toy example
@@ -31,83 +34,318 @@ format: revealjs
 <br>
 <br>
 
-:::{.callout-note}
-https://positron.posit.co/assistant.html
 :::
-
-:::
-::: {.column width="40%"}
+::: {.column width="50%"}
 
 ![](assets/robot.webp)
 
 :::
 ::::
 
-## Setup in Positron
-
-## Capabilities of using AI in Positron
-
-##
-
-<br><br><br><br><br><br>
-
-[[Live demo]{.largest}]{.center}
-
-::: {.notes}
-What I covered 2025 in live demo:
-
-Rstudio
-  1. setup copilot
-  2. Where you can see it searching for code completions
-  3. High level goal start of file
-  4. View() your data
-  5. code complete whole function
-  6. code complete 1 line
-  7. comments
-  8. questions&answers
-  9. Bugs
-  10. Ellmer
-:::
-
-## How to write prompts
+## A brief history of Posit data science agents
 
 :::: {.columns}
-::: {.column width="75%"}
+
+::: {.column width="30%"}
+
+### Positron Assistant
+**June 2025** (Preview)
+
+A general-purpose coding assistant built into Positron. Aware of the live R/Python session state, it helped write, edit, and debug code — with agent mode for code execution. User needed their own model provider to use it.
+
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="30%" .fragment}
+
+### Databot
+**August 2025**
+
+A exploratory data analysis agent for Positron. Unlike traditional code assistants, Databot connected directly to active R/Python sessions to inspect variables, data frames, plots, and console history in real time. User needed their own model provider to use it.
+
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="30%" .fragment}
+
+### Posit Assistant
+**April 2026** (Preview feature) / **July 2026** (General availability)
+
+Combines the strengths of both predecessors into a full-spectrum data science agent. Runs in Positron and RStudio, powered by the Posit AI model service or other model provider. Features skills, plan mode, reasoning, and live session awareness.
+
+:::
+
+::::
+
+::: {.notes}
+How It Works Behind the Scenes
+Regardless of which LLM is processing your request, Posit Assistant wraps the model in a data-science-specific environment:
+Context Gathering: Posit Assistant grabs details from your active session (loaded packages, data frame schemas, workspace variables, console logs, and project instructions in AGENTS.md).
+2 System Prompting & Skills: It injects domain-specific skills (like Quarto authoring, Shiny development, or R modeling patterns) into the call. 
+3 Execution: It hands all this off to your selected LLM, gets the instructions back, and performs the requested file edits or code execution.
+
+Databot’s crucial weakness turned out not to be that it was too dangerous, but too narrowly scoped. EDA does not happen in a vacuum. It’s often done in service of some larger project, and insights derived from EDA typically immediately lead to the creation of a reproducible cleaning script, interactive Shiny app, automated data transformation job, etc. As an EDA-focused agent harness, Databot did not have the tools needed to do those tasks well.
+
+More reading: https://opensource.posit.co/blog/2026-06-11_history-of-posit-data-science-agents/
+:::
+
+## Setup of LLMs in Positron
+
+- Enabled by default in positron since July, 2026.
+- Enable in `settings.json` using `assistant.enabled: true`
+- Enable model providers in `Configure Language Model Providers`.
+
+
+## LLM modes
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+### Ask
+You type a question, the model answers. No memory of previous messages, no back-and-forth. Like a search engine that understands natural language.
+
+**Use when:** You need a quick explanation, definition, or one-off answer.
+
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="30%" .fragment}
+
+### Chat
+A conversation. The model remembers what was said earlier in the session and can refine answers based on follow-up questions.
+
+**Use when:** You need to iterate, clarify, or build on previous answers — e.g. debugging a problem step by step.
+
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="30%" .fragment}
+
+### Agentic
+The model doesn't just answer — it **acts**. It can write and execute code, read files, call tools, and loop through steps autonomously to complete a goal.
+
+**Use when:** You want the LLM to carry out a multi-step task, not just describe how to do it.
+
+:::
+
+::::
+
+::: {.notes}
+Ask - early 2022. Even here we had already had autocomplete for a while.
+
+Chat - late 2022, early 2023.
+
+Agentic - late 2023, but reliable was in 2024. Multiple LLMs taking different roles and working as a team.
+
+Generated by gemini:
+Analogy: > * Ask / Chat Mode is like having an exceptionally smart consultant standing at your desk. You give them a prompt, they hand you a document, and then they wait for you to read it and tell them what to do next.
+
+Agentic Mode is like giving that consultant a goal ("Research our top three competitors, compile a summary table, and email it to the team"), handing them the keys to your tools, and letting them execute, troubleshoot, and finish the job while you do something else.
+:::
+
+## Posit Assistant modes
+
+| Mode | Purpose |
+|------|---------|
+| **Normal** | Default mode — safe operations auto-approved, risky ones prompt for confirmation |
+| **Plan** (`/plan`) | Read-only exploration and planning before any code changes are made |
+| **Auto** (`/auto`) | A classifier reviews tool calls before they run, blocking actions outside the task scope |
+| **Cleaning** (`/clean`) | Guided data audit and cleaning, with every judgment call routed to the user for approval |
+
+::: {.fragment}
+**Sandbox** (`/sandbox`): OS-level isolation for bash commands — restricts filesystem writes to the workspace, blocks network access, and protects sensitive paths like `~/.ssh`. Off by default.
+:::
+
+::: {.notes}
+**Normal mode** (default)
+
+- Purpose: Balanced day-to-day use. Low-risk operations (reading files, listing directories) are auto-approved; higher-risk ones (editing files, running shell commands) prompt for confirmation.
+- Capabilities: Full access to all tools — code execution, file editing, session context, skills.
+- Pros: Fast and fluid for most tasks; you only get interrupted when it matters.
+- Examples: "Fix this bug", "Explain this function", "Build a Shiny app".
+- LIVE: Introduce verbose comments, fix a bug.
+
+**Plan mode** (`/plan`)
+
+- Purpose: Think before acting. The assistant explores the codebase using read-only tools, asks clarifying questions, and writes a step-by-step plan — but makes no code changes until you approve the plan.
+- Capabilities: File reading, directory listing, grep/search. Writes only to the plan file. No code execution or edits.
+- Pros: Great for complex or risky tasks where you want to align on approach first. Avoids surprises.
+- Cons: Slower — adds an extra review step before anything happens.
+- Examples: "Refactor the data pipeline across multiple files", "Add a new feature to this package", "Redesign the app layout".
+- LIVE: Create a function that does something cool.
+
+**Auto mode** (`/auto`)
+
+- Purpose: Autonomous operation with a safety net. A classifier model reviews each tool call before it executes, blocking actions that exceed the task scope or target unrecognized infrastructure.
+- Capabilities: Same as Normal, but with an automatic classifier gating tool calls instead of user prompts.
+- Pros: Hands-free for long-running tasks; the classifier catches scope creep automatically.
+- Examples: Long exploratory analysis sessions, batch processing tasks, running in a CI-like context.
+
+Auto mode (/auto) is a classifier-based tool approval mode. When enabled, Posit Assistant automatically decides whether each tool call should be approved or requires your confirmation, based on a built-in classifier that assesses the risk of the action.
+
+It sits between the two extremes:
+
+/yolo — approves all tool calls automatically, no prompts
+/restricted — requires approval for every tool call
+
+Auto mode is appropriate when you want hands-off assistance for routine tasks (reading files, running code, installing packages) while still getting prompted for higher-risk actions (deleting files, running shell commands that could be destructive, etc.). It's a good default for most development and analysis work where you trust the assistant but don't want to rubber-stamp everything blindly.
+
+**Cleaning mode** (`/clean`)
+
+- Purpose: Structured, collaborative data cleaning. The assistant audits column names, types, distributions, duplicates, outliers, and data-entry errors — then surfaces every substantive decision to the user before acting.
+- Capabilities: Reads data, generates summary statistics, produces visualizations, proposes cleaning steps, and ultimately generates a reusable documented cleaning script.
+- Pros: Keeps the analyst in control of all judgment calls; produces reproducible output.
+- Cons: Designed specifically for EDA/cleaning — not suitable for general coding tasks.
+- Examples: "Clean this survey dataset", "Check for data quality issues in df", "Recode these categorical variables".
+- LIVE: library(messy), messy_penguins <- messy::messy(penguins, messiness = 0.2)
+
+**Sandbox**
+
+- Not a mode itself, but a security layer that can be toggled on top of any mode with `/sandbox`.
+- Uses OS-level enforcement: Seatbelt on macOS, bubblewrap on Linux.
+- Restricts: filesystem writes outside the workspace, network access, and reading of sensitive paths (`~/.ssh`, `~/.aws`, `~/.gnupg`).
+- Use when: running untrusted code, working with sensitive data, or in shared/multi-user environments.
+:::
+
+## Some useful commands
+
+| Command | What it does |
+|---|---|
+| `/report` | Turns your conversation into a tidy Quarto document you can save and share |
+| `/notebook` | Exports the conversation as a Jupyter notebook |
+| `/savememory` | Saves information about your project so the assistant remembers it next time |
+| `/compact` | Squishes the conversation history to save space when it gets too long |
+| `/clear` | Starts a fresh conversation (keeps your current model settings) |
+| `/yolo` | Lets the assistant do everything without asking for your OK each time |
+| `/restricted` | Makes the assistant ask for your approval before doing anything |
+
+::: {.notes}
+report and notebook can be handy for example when you have used plan mode and implemented a large change or feature and want to generate a report detailing what has been done.
+:::
+
+## Prompt engineering 101
 
 - Be specific and clear about what you want
-- Give examples
 - Avoid ambiguity
+- Give examples
 - Break down complex tasks into smaller steps
 - Follow best coding practices
 
+::: {.fragment}
+**Bad prompt** ❌
+
+> *"Fix my RNA-seq code"*
+
+:::
+
+::: {.fragment}
+**Good prompt** ✅
+
+> *"I have a data frame `counts` with genes as rows and samples as columns. Write an R function using DESeq2 to run differential expression between two groups defined by a `condition` column in `coldata`. Return a results table sorted by adjusted p-value. Follow tidyverse style conventions."*
+
+:::
 
 ::: {.notes}
 https://docs.github.com/en/copilot/using-github-copilot/copilot-chat/prompt-engineering-for-copilot-chat
+
+https://www.ibm.com/think/prompt-engineering#1580786329
+
+"Be specific and clear", this is one part where knowing R is very powerful. Your ability to explain technical concepts and use the language of R can greatly increase the chance that you get desired output.
+"avoid ambiguity" sounds like being specific and clear but it is more about avoiding vague terms like "fix this" or "make it better" without context. Instead, specify what needs to be fixed or improved and how.
+"Follow best coding practices", AI will already do this to a certain extent with variable names, function names, formatting, but for example it may be up to the users prompt to make sure the scope of a requested function is narrow enough.
+
+Bad example: Vague, no context, unclear goal
+
+Good example: Specific, unambiguous, includes an example structure, scoped task, requests best practices
 :::
 
-:::
+## Some LLM specific packages in R
 
-::: {.column width="25%"}
-
-
-:::
+::::: {.columns}
+:::: {.column width="75%"}
+**ellmer** — Chat with LLMs from R. Supports providers such as OpenAI, Anthropic, Google Gemini, and Ollama. Handles tool calling, streaming, and structured data extraction.
 ::::
+:::: {.column width="25%"}
+![](https://ellmer.tidyverse.org/logo.png){width=120}
+::::
+:::::
 
-## R packages for LLMs in R
+::::: {.columns}
+:::: {.column width="75%"}
+**shinychat** — Add a chat UI component to Shiny apps. Provides a ready-made chat interface that integrates with ellmer or any streaming LLM backend.
+::::
+:::: {.column width="25%"}
+![](https://posit-dev.github.io/shinychat/logo.svg){width=120}
+::::
+:::::
+
+::::: {.columns}
+:::: {.column width="74%"}
+**kuzco** — Computer vision for R. Describe, classify, and extract structured information from images using multimodal LLMs.
+::::
+:::: {.column width="26%"}
+![](https://github.com/frankiethull/kuzco/blob/main/man/figures/logo.png?raw=true){width=160}
+::::
+:::::
+
+
+::: {.callout-tip}
+There are many other R packages for RAG's, skills, MCP, custom assistants, speech and audio processing etc.
+:::
 
 ## Testing
 
-## Lab instruction
+Why test?
+  Fewer bugs
+  Better code structure
+Informal testing (testing interactively to see that code does what we want)
+Automated testing (storing tests to re-run)
+implement automated testing using testthat
+  Setup:
+  usethis::use_testthat(3)
+    create test/testthat directory
+    Add testthat to Suggests field in DESCRIPTION
+    create tests/testthat.R with which runs with R CMD check
+  Create test:
+    Function foobar() lives in R/foobar.R and the test in test/testthat/test-foobar.R
+    usethis::use_test("foobar") creates and opens tests/testthat/test-foobar.R
+  How a test looks:
+    Example
+    A test file holds one or more test_that() tests.
+    Each test describes what it’s testing: e.g. “multiplication works”.
+    Each test has one or more expectations: e.g. expect_equal(2 * 2, 4).
+    expect_equal()
+    expect_identical()
+    expect_true()
+    expect_false()
+    expect_match()
+    expect_type()
+    expect_error()
+    expect_message()
+    expect_warning()
+    Make example showing the short function and test file using expect_equal() and expect_error().
+    Expand the example showing that the output dataframe is the expected datastructure and that the columns have the correct types.
+  Running the test:
+    testthat::test_file("test/testthat/test-foobar.R")
+    devtools::test() runs all tests in test/testthat
+    devtools::check() runs all tests in test/testthat and checks package
+
+## Some "do this" exercises suggestions
+
+<br><br><br><br><br><br>
+
+
+
 <!--
-
-## Rough draft of topics
-
-IDEA: Very few slides, mostly live coding with a script of things to show.
-
-  
-Setting up github copilot in R (demo)
-https://docs.posit.co/ide/user/ide/guide/tools/copilot.html
-
 Using AI in positron (demo)
   - how it works in Positron
   - Best to split big problems into smaller pieces
@@ -119,9 +357,6 @@ Using AI in positron (demo)
     - Write questions
     - Find bugs
     - Use positron AI
-
-
-querying llms in R using ellmer (demo), ADD OTHER PACKAGES
 
 -->
 
