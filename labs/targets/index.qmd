@@ -1,0 +1,716 @@
+---
+title: "Pipelines with **targets**"
+author: "Roy Francis"
+description: "Hands-on exercises with targets"
+image: "assets/featured.webp"
+format: html
+---
+
+```{r}
+#| echo: false
+```
+
+::: {.callout-note}
+Welcome to the hands-on lab on **targets**. In this lab you will practice using `targets` for pipeline orchestration, and  a bit of `tarchetypes` for higher-level target patterns.
+
+Each section builds on the previous one. Complete the exercises in order. When you are stuck, expand the **Hints** or **Solution** blocks — but try on your own first!
+:::
+
+## Setup
+
+Before starting, make sure the required packages are available:
+
+```{r}
+#| eval: false
+install.packages(c(
+  "targets", "tarchetypes", "tidyverse", "broom",
+  "palmerpenguins", "qs2", "quarto", "knitr", "crew"
+))
+```
+
+Work in a new directory throughout this lab. All exercises should be done inside that project directory.
+
+## Your first pipeline
+
+Create `_targets.R` at the root of your project and add supporting functions in `R/functions.R` with the following content:
+
+```{r}
+#| eval: false
+# R/functions.R
+
+library(palmerpenguins)
+library(tidyverse)
+library(broom)
+
+fn_load <- function() {
+  penguins |> drop_na()
+}
+
+fn_model <- function(data) {
+  lm(body_mass_g ~ flipper_length_mm + bill_length_mm + species,
+     data = data)
+}
+
+fn_summarize <- function(model) {
+  tidy(model)
+}
+```
+
+Now create `_targets.R`:
+
+```{r}
+#| eval: false
+# _targets.R
+library(targets)
+source("R/functions.R")
+
+list(
+  tar_target(penguins,  fn_load()),
+  tar_target(model,     fn_model(penguins)),
+  tar_target(summary,   fn_summarize(model))
+)
+```
+
+## Explore the pipeline
+
+```{r}
+#| eval: false
+tar_outdated()
+tar_manifest()
+tar_visnetwork()
+```
+
+**Questions:**
+
+1. What does `tar_outdated()` return before running the pipeline?
+2. What does `tar_manifest()` show about the targets and their dependencies?
+3. What does `tar_visnetwork()` show before running the pipeline? Note the colour and shape of the nodes.
+
+## Run the pipeline
+
+```{r}
+#| eval: false
+tar_make()
+```
+
+**Questions:**
+
+1. Which targets ran on the first `tar_make()`?
+2. What happens when you call `tar_make()` a second time without changing anything?
+3. Inspect the `_targets/` directory. What is stored there?
+
+::: {.callout-tip collapse="true"}
+
+#### Hint
+
+The first call to `tar_make()` will run all three targets. Look at the console output — it shows which targets ran. Then run `tar_make()` again and it shows 'skipped pipeline'.
+
+:::
+
+Check the status of the pipeline after running:
+
+```{r}
+#| eval: false
+tar_outdated()
+tar_visnetwork()
+```
+
+**Questions:**
+
+1. What does `tar_outdated()` return after everything is up to date?
+2. What colour are the nodes in `tar_visnetwork()` after a successful run?
+
+## Load and inspect targets
+
+```{r}
+#| eval: false
+tar_load(summary)
+print(summary)
+
+# Equivalent read-only access
+coef(tar_read(model))
+```
+
+**Tasks:**
+
+1. Load the `penguins` target and count the rows.
+2. What's the difference between `tar_load()` and `tar_read()`? Check what happens to `ls()` after each.
+
+::: {.callout-note collapse="true"}
+
+#### Solution
+
+```{r}
+#| eval: false
+tar_load(penguins)
+nrow(penguins)  # should be 333 after dropping NAs
+
+# equivalent read-only access
+nrow(tar_read(penguins))
+
+# tar_load() adds 'penguins' to the global environment (visible in ls())
+# tar_read() returns the value but does not assign it to the environment
+```
+
+:::
+
+Clean up your environment by removing `summary` and `penguins` objects.
+
+```{r}
+#| eval: false
+rm(summary, penguins)
+```
+
+### Trigger invalidation
+
+Modify a function and observe which targets become outdated.
+
+Edit `R/functions.R` — change `fn_summarize()` to also return `glance()` output:
+
+```{r}
+#| eval: false
+fn_summarize <- function(model) {
+  list(
+    tidy  = tidy(model),
+    glance = glance(model)
+  )
+}
+```
+
+Then:
+
+```{r}
+#| eval: false
+tar_outdated()
+tar_visnetwork()
+```
+
+**Questions:**
+
+1. Before `tar_make()`, which targets does `tar_outdated()` list?
+2. Inspect the graph network.
+
+Run the pipeline again:
+
+```{r}
+#| eval: false
+tar_make()
+```
+
+1. Check the status again
+2. Does `targets` re-run `penguins` or `model`? Why or why not?
+3. What does this tell you about `targets`' dependency tracking?
+
+::: {.callout-tip collapse="true"}
+
+#### Hint
+
+`targets` hashes function bodies. Changing `fn_summarize` only invalidates `summary` (and anything downstream of it). `penguins` and `model` are unaffected because their commands and upstream inputs have not changed.
+
+:::
+
+## File targets
+
+Track an external file so the pipeline re-runs when the file changes.
+
+1. Save the penguins data to a CSV file:
+
+```{r}
+#| eval: false
+dir.create("data", showWarnings = FALSE)
+write.csv(palmerpenguins::penguins, "data/penguins.csv", row.names = FALSE)
+```
+
+2. Update `_targets.R` to track the file:
+
+```{r}
+#| eval: false
+library(targets)
+source("R/functions.R")
+
+list(
+  tar_target(
+    file_input,
+    "data/penguins.csv",
+    format = "file"
+  ),
+  tar_target(penguins,  read.csv(file_input) |> drop_na()),
+  tar_target(model,     fn_model(penguins)),
+  tar_target(summary,   fn_summarize(model))
+)
+```
+
+3. Run `tar_make()`, then open the CSV, change one value, save it, and run `tar_make()` again.
+
+**Questions:**
+
+1. Which targets re-ran after you modified the CSV?
+2. What is stored in the `file_input` target object?
+
+::: {.callout-note collapse="true"}
+
+#### Solution
+
+```{r}
+#| eval: false
+tar_read(file_input)
+# "data/penguins.csv" — the path string
+# But targets stores the file hash internally, so any file change triggers re-run
+
+# After modifying the CSV:
+tar_outdated()
+# file_input, penguins, model, summary — all four are outdated
+# because all depend on the file
+```
+:::
+
+## Configuration
+
+Add global pipeline options at the top of `_targets.R`:
+
+::: {.callout-note}
+
+The `format = "qs"` option requires the `qs2` package. Install that first.
+
+:::
+
+```{r}
+#| eval: false
+library(targets)
+source("R/functions.R")
+
+tar_option_set(
+  packages = c("tidyverse", "broom", "palmerpenguins"),
+  format   = "qs",
+  seed     = 42
+)
+
+list(
+  tar_target(file_input, "data/penguins.csv", format = "file"),
+  tar_target(penguins,   read.csv(file_input) |> drop_na()),
+  tar_target(model,      fn_model(penguins)),
+  tar_target(summary,    fn_summarize(model))
+)
+```
+
+Then remove the `library()` calls from `R/functions.R`.
+
+**Questions:**
+
+1. What does `packages` in `tar_option_set()` do? How does it differ from putting `library()` at the top of `_targets.R`?
+2. What is the purpose of `seed = 42`?
+
+::: {.callout-tip collapse="true"}
+
+#### Hint
+
+After adding `tar_option_set()`, run `tar_outdated()`. If `format` changed from the default `"rds"` to `"qs"`, existing targets may be invalidated because the storage format changed. This is expected — run `tar_make()` to rebuild with the new format.
+
+The seed ensures that any random number generation in the pipeline is reproducible.
+
+:::
+
+## Dynamic branching
+
+Dynamic branching runs the same target once for each value produced by an upstream target. Here, create one summary branch for each penguin species.
+
+Add this function to `R/functions.R`:
+
+```{r}
+#| eval: false
+fn_species_summary <- function(data) {
+  summarise(
+    data,
+    species = first(species),
+    penguins = n(),
+    mean_body_mass_g = mean(body_mass_g),
+    mean_flipper_length_mm = mean(flipper_length_mm)
+  )
+}
+```
+
+Then update `_targets.R`:
+
+```{r}
+#| eval: false
+library(targets)
+source("R/functions.R")
+
+tar_option_set(
+  packages = c("tidyverse", "broom", "palmerpenguins")
+)
+
+list(
+  tar_target(file_input, "data/penguins.csv", format = "file"),
+  tar_target(penguins, read.csv(file_input) |> drop_na()),
+  tar_target(
+    species_names,
+    as.list(sort(unique(penguins$species))),
+    iteration = "list"
+  ),
+  tar_target(
+    species_summary,
+    fn_species_summary(filter(penguins, species == species_names)),
+    pattern = map(species_names),
+    iteration = "list"
+  ),
+  tar_target(all_species_summaries, bind_rows(species_summary))
+)
+```
+
+Run `tar_make()`, then inspect the result:
+
+```{r}
+#| eval: false
+tar_visnetwork()
+tar_read(all_species_summaries)
+```
+
+**Questions:**
+
+1. How many `species_summary` branches were created?
+2. What target determines the number of branches?
+3. How would adding a fourth species to the input data affect the pipeline?
+
+::: {.callout-note collapse="true"}
+
+#### Solution
+
+There are three `species_summary` branches: Adelie, Chinstrap, and Gentoo. `species_names` determines the number of branches because `pattern = map(species_names)` runs the downstream target once for each element. If the input data contained a fourth species, the next `tar_make()` would create and run a fourth branch automatically.
+
+```r
+tar_meta(
+  starts_with("species_summary"),
+  fields = c(name, parent)
+)
+```
+
+:::
+
+## Branching with groups
+
+`tar_group_by()` from `tarchetypes` is a convenient alternative when the branches come from groups in a data frame. Reuse the `fn_species_summary()` function from the dynamic branching exercise.
+
+Then update `_targets.R`:
+
+```{r}
+#| eval: false
+library(targets)
+library(tarchetypes)
+source("R/functions.R")
+
+tar_option_set(
+  packages = c("tidyverse", "broom", "palmerpenguins"),
+  format = "qs",
+  seed = 42
+)
+
+list(
+  tar_target(file_input, "data/penguins.csv", format = "file"),
+  tar_target(penguins, read.csv(file_input) |> drop_na()),
+
+  tar_group_by(penguins_by_species, penguins, species),
+  tar_target(
+    species_summary,
+    fn_species_summary(penguins_by_species),
+    pattern = map(penguins_by_species),
+    iteration = "list"
+  ),
+  tar_target(all_species_summaries, bind_rows(species_summary))
+)
+```
+
+::: {.callout-tip}
+Add `library(tarchetypes)` to the top of `_targets.R` if you haven't already.
+:::
+
+Run `tar_make()`, then inspect the result:
+
+```{r}
+#| eval: false
+tar_visnetwork()
+
+# Read the results
+tar_read(all_species_summaries)
+```
+
+**Questions:**
+
+1. How many `species_summary` branches were created?
+2. What does `tar_read(species_summary)` show? How does it differ from `tar_read(all_species_summaries)`?
+
+::: {.callout-note collapse="true"}
+
+#### Solution
+
+There are three branches: Adelie, Chinstrap, and Gentoo. `tar_group_by()` marks the data frame's row groups, and `pattern = map(penguins_by_species)` creates one branch for each group. Referencing `species_summary` as a whole aggregates all branches into a list, which `bind_rows()` combines.
+
+```r
+# List the individual dynamic branches and their common parent target.
+tar_meta(
+  starts_with("species_summary"),
+  fields = c(name, parent)
+)
+```
+
+:::
+
+### Parallelized branching
+
+The three species branches are independent, so they can run in parallel. Add a local controller to `tar_option_set()`:
+
+```{r}
+#| eval: false
+tar_option_set(
+  packages = c("tidyverse", "broom", "palmerpenguins"),
+  format   = "qs",
+  seed     = 42,
+  controller = crew_controller_local(workers = 2)
+)
+```
+
+::: {.callout-tip}
+Add `library(crew)` to the top of `_targets.R` if you haven't already.
+:::
+
+Run `tar_make()` again. This small example is too quick to show a meaningful speedup, but the same configuration allows expensive independent branches to run on separate workers.
+
+## Debugging
+
+Introduce a temporary typo in `fn_species_summary()`:
+
+```{r}
+#| eval: false
+mean_body_mass_g = mean(body_mass_gg)
+```
+
+Run the pipeline and inspect the failure:
+
+```{r}
+#| eval: false
+tar_make()
+tar_meta(fields = c(name, error))
+tar_visnetwork()
+
+# Run target commands in the main R session while debugging.
+tar_make(callr_function = NULL)
+```
+
+**Questions:**
+
+1. Which `species_summary` branch failed, and what error does `tar_meta()` report?
+2. How does the failed branch appear in `tar_visnetwork()`?
+3. What happens when you run `tar_make(callr_function = NULL)`? How does this help with debugging?
+
+::: {.callout-tip collapse="true"}
+
+#### Hint
+
+`tar_meta(fields = c(name, error))` lists recorded target errors. A failed branch is red in `tar_visnetwork()`.
+
+:::
+
+## Static branching
+
+Compare two modelling approaches using `tar_map()`.
+
+Update `R/functions.R`:
+
+```{r}
+#| eval: false
+fn_model <- function(data, formula_str) {
+  lm(as.formula(formula_str), data = data)
+}
+
+fn_metrics <- function(model) {
+  glance(model)
+}
+```
+
+Update `_targets.R`:
+
+```{r}
+#| eval: false
+library(targets)
+library(tarchetypes)
+source("R/functions.R")
+
+tar_option_set(packages = c("tidyverse", "broom", "palmerpenguins"))
+
+formulas <- list(
+  simple = "body_mass_g ~ flipper_length_mm",
+  full = "body_mass_g ~ flipper_length_mm + bill_length_mm + species"
+)
+
+model_targets <- tar_map(
+  values = list(
+    formula_str = formulas,
+    name_suffix = names(formulas)
+  ),
+  names  = name_suffix,
+  tar_target(model, fn_model(penguins, formula_str)),
+  tar_target(
+    metrics,
+    fn_metrics(model) |>
+      mutate(model = name_suffix, .before = 1)
+  )
+)
+
+list(
+  tar_target(file_input, "data/penguins.csv", format = "file"),
+  tar_target(penguins, read.csv(file_input) |> drop_na()),
+  model_targets
+)
+```
+
+Run:
+
+```{r}
+#| eval: false
+tar_visnetwork()
+tar_make()
+```
+
+**Questions:**
+
+1. How many targets does `tar_map()` generate?
+2. What are the names of the generated targets?
+3. Load `metrics_simple` and `metrics_full`. Which model has a higher R²?
+
+::: {.callout-note collapse="true"}
+
+#### Solution
+
+```{r}
+#| eval: false
+# tar_map() generates: model_simple, model_full, metrics_simple, metrics_full
+tar_manifest()
+
+tar_load(c(metrics_simple, metrics_full))
+metrics_simple$r.squared
+metrics_full$r.squared
+# The full model will have a higher R² because it has more predictors
+```
+
+:::
+
+## Aggregating results
+
+Combine the metrics from both models into a single data frame.
+
+Add to the end of the `list()` in `_targets.R`:
+
+```{r}
+#| eval: false
+tar_combine(
+  all_metrics,
+  model_targets[["metrics"]],
+  command = bind_rows(!!!.x)
+)
+```
+
+Check the network using `tar_visnetwork()`. Run `tar_make()`, then:
+
+```{r}
+#| eval: false
+tar_load(all_metrics)
+print(all_metrics)
+```
+
+**Questions:**
+
+1. What does the `!!!.x` syntax do in `tar_combine()`?
+2. What columns does `all_metrics` have?
+3. Which model performs better according to AIC?
+
+::: {.callout-tip collapse="true"}
+
+#### Hint
+
+The `!!!.x` is the rlang ["splicing" operator](https://rlang.r-lib.org/reference/splice-operator.html). Inside `tar_combine()`, `.x` is replaced with the list of target names, and `!!!` splices them as individual arguments to `bind_rows()`.
+
+:::
+
+## Quarto reporting
+
+Create a Quarto report that reads from the `targets` pipeline.
+
+1. Create `report.qmd`:
+
+````markdown
+---
+title: "Penguin Body Mass Analysis"
+format: html
+---
+
+```{{r}}
+#| echo: false
+library(targets)
+library(tidyverse)
+library(broom)
+library(knitr)
+```
+
+## Model Comparison
+
+```{{r}}
+metrics <- tar_read(all_metrics)
+kable(
+  metrics[, c("model", "r.squared", "AIC", "BIC")],
+  digits = 3,
+  caption = "Model fit statistics"
+)
+```
+
+## Best Model Coefficients
+
+```{{r}}
+best_model_name <- metrics$model[which.min(metrics$AIC)]
+best_model <- switch(
+  best_model_name,
+  simple = tar_read(model_simple),
+  full = tar_read(model_full)
+)
+tidy(best_model) |>
+  kable(digits = 3)
+```
+````
+
+2. Add the report target to `_targets.R`:
+
+```{r}
+#| eval: false
+tar_quarto(report, "report.qmd")
+```
+
+3. Run `tar_make()` and open the rendered HTML.
+
+**Questions:**
+
+1. What does `tar_quarto()` do differently from just calling `quarto::quarto_render()`?
+2. What targets does `report` depend on? Check `tar_visnetwork()`.
+3. What happens if you change the `fn_model()` function and re-run `tar_make()`? Does the report re-render automatically?
+4. Inspect the quarto report. Does it show the correct model comparison and coefficients?
+
+::: {.callout-note collapse="true"}
+
+#### Solution
+
+- `tar_quarto()` tracks the source document, output file, and target dependencies referenced with `tar_read()` / `tar_load()`. `quarto::quarto_render()` has no such pipeline integration.
+- In tar_visnetwork(), 'report' will have edges from all_metrics, model_simple, and model_full.
+- Yes — changing the `fn_model()` function invalidates the report, so `tar_make()` re-renders it.
+
+:::
+
+## Session
+
+<details>
+  <summary>Click here</summary>
+
+```{r}
+#| label: session
+
+sessionInfo()
+```
+
+</details>

@@ -1,0 +1,211 @@
+---
+title: "Managing R environment with renv"
+author: "Roy Francis"
+description: "Hands-on exercises with renv"
+image: "assets/featured.webp"
+format: html
+---
+
+```{r}
+#| echo: false
+```
+
+::: callout-note
+Welcome to the hands-on lab on **Managing R environment with renv**. In this lab you will practice using `renv` for package management.
+
+Each section builds on the previous one. Complete the exercises in order. When you are stuck, expand the **Hints** or **Solution** blocks — but try on your own first!
+:::
+
+---
+
+## Setup
+
+Before starting, make sure the required packages are available:
+
+```{r}
+#| eval: false
+install.packages(c(
+  "renv", "tidyverse", "broom", "palmerpenguins", "quarto", "knitr"
+))
+```
+
+Work in a new directory throughout this lab. All exercises should be done inside that project directory.
+
+## Initialise renv
+
+Initialise `renv` in your project and inspect what it creates.
+
+```{r}
+#| eval: false
+renv::init()
+```
+
+**Questions:**
+
+1. Which files and folders were created?
+2. What does the `.Rprofile` file contain, and why is it important?
+3. Open `renv.lock` in a text editor. What format is it? What information does it record?
+
+::: {.callout-tip collapse="true"}
+
+#### Hint
+
+After calling `renv::init()`, look at your project directory. You should see new files and folders. List them with `list.files(all.files = TRUE)` to include hidden files.
+
+:::
+
+## Install and Snapshot
+
+Create a new R script `test.r` in your project with the following content:
+
+```{r}
+#| eval: false
+library("palmerpenguins")
+```
+
+- Check status of the project with `renv::status()`
+
+Install the `palmerpenguins` package.
+
+```{r}
+#| eval: false
+renv::install("palmerpenguins")
+```
+
+- Check status again with `renv::status()`
+
+Snapshot the project to update the lock file.
+
+- Check status again with `renv::status()`
+
+**Questions:**
+
+1. What does `renv::status()` report before and after `renv::snapshot()`?
+2. Find the `palmerpenguins` entry in `renv.lock`. What fields does it have?
+3. How would a collaborator recreate this exact environment on their machine?
+
+::: {.callout-note collapse="true"}
+
+#### Solution
+
+```{r}
+#| eval: false
+# Check status before install
+renv::status()
+# The following package(s) are used in this project, but are not installed:
+# - palmerpenguins
+
+# Check status after install before snapshot
+renv::status()
+# The following package(s) are in an inconsistent state:
+#
+# package        installed recorded used
+# palmerpenguins y         n        y 
+
+renv::snapshot()
+
+# Check status after snapshot
+renv::status()
+# → "No issues found -- the project is in a consistent state."
+
+# Collaborator would run:
+renv::restore()
+```
+
+:::
+
+---
+
+## Simulate Restore
+
+Simulate what happens when a collaborator clones your project.
+
+1. Note the current `renv.lock` contents.
+2. Remove `palmerpenguins` from the library:
+
+```{r}
+#| eval: false
+renv::remove("palmerpenguins")
+renv::status()
+```
+
+3. Restore from the lock file:
+
+```{r}
+#| eval: false
+renv::restore()
+```
+
+4. Confirm `palmerpenguins` is back and `renv::status()` is clean.
+
+::: {.callout-tip collapse="true"}
+
+#### Hint
+
+`renv::remove()` removes a package from the private library but does **not** update the lock file. `renv::restore()` uses the lock file to reinstall everything that is missing.
+
+:::
+
+---
+
+## Detect Dependencies
+
+Create a script `analysis.r` in your project with the following content:
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(palmerpenguins)
+library(broom)
+
+penguins_clean <- penguins |> tidyr::drop_na()
+model <- lm(body_mass_g ~ flipper_length_mm + species, data = penguins_clean)
+tidy(model)
+```
+
+Then run:
+
+```{r}
+#| eval: false
+renv::dependencies()
+```
+
+**Questions:**
+
+1. Does `renv` detect all three packages (`tidyverse`, `palmerpenguins`, `broom`)?
+2. What happens if you add `library(ggplot2)` inside a function body? Does `renv` detect it?
+3. Snapshot again. Does the lock file change?
+
+::: {.callout-note collapse="true"}
+
+#### Solution
+
+```{r}
+#| eval: false
+# renv::dependencies() scans project files such as .R, .Rmd, .qmd,
+# .Rnw, and DESCRIPTION files, excluding ignored paths.
+deps <- renv::dependencies()
+print(deps)
+
+# ggplot2 inside a function body is still detected because renv parses
+# all R code, not just top-level statements.
+
+renv::snapshot()
+# If ggplot2 was already in the library (as a tidyverse dependency),
+# it may already be in the lock file. If it was new, the lock file updates.
+```
+
+:::
+
+## Session
+
+<details>
+  <summary>Click here</summary>
+
+```{r}
+#| label: session
+
+sessionInfo()
+```
+
+</details>

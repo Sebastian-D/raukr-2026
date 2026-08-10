@@ -19,27 +19,29 @@ execute:
 |[WEEK 1]{.badge .badge-primary}                                       |||
 |[10-Aug-2026 (Mon)]{.badge .badge-secondary}                          |||
 |Welcome                                |Marcin Kierczak               |[Slides](slides/welcome/index.html)|
-|Positron                               |Jenny Bryan (Posit)           ||
-|Introduction to Quarto                 |Christophe Dervieux (Posit)   ||
+|Positron                               |Jenny Bryan (Posit)           |[Materials](https://pos.it/ron-raukr)|
+|Introduction to Quarto                 |Christophe Dervieux (Posit)   |[Slides](https://cderv.github.io/raukr-2026-quarto/slides/quarto/index.html), [Lab](https://cderv.github.io/raukr-2026-quarto/labs/quarto/index.html)|
 |[11-Aug-2026 (Tue)]{.badge .badge-secondary}                          |||
 |Best Coding Practices                  |Sebastian DiLorenzo           |[Slides](slides/coding/index.html), [Lab](labs/coding/index.html)|
-|Reproducible research                  |Roy Francis                   |[Slides](slides/rr/index.html), [Lab](labs/rr/index.html)|
-|Quarto projects                        |Christophe Dervieux (Posit)   ||
+|Reproducible research                  |Roy Francis                   |[Slides](slides/rr/index.html)|
+|Managing R environment with renv       |Roy Francis                   |[Slides](slides/r-env/index.html), [Lab](labs/r-env/index.html)|
+|Pipelines with targets                 |Roy Francis                   |[Slides](slides/targets/index.html), [Lab](labs/targets/index.html)|
+|Quarto projects                        |Christophe Dervieux (Posit)   |[Slides](https://cderv.github.io/raukr-2026-quarto/slides/quarto-projects/index.html), [Lab](https://cderv.github.io/raukr-2026-quarto/labs/quarto-projects/index.html)|
 |[12-Aug-2026 (Wed)]{.badge .badge-secondary}                          |||
 |Git & GitHub                           |Nina Norgren                  |[Slides](slides/git/index.html), [Lab](labs/git/index.html)|
 |R Packages                             |Jenny Bryan (Posit)           ||
 |[13-Aug-2026 (Thu)]{.badge .badge-secondary}                          |||
-|Code Optimization                      |Marcin Kierczak               |[Slides](slides/debugging/index.html), [Lab](labs/debugging/index.html)|
-|Working with data.table                |Markus Mayrhofer              ||
+|Code Optimization                      |Marcin Kierczak               |Slides, Lab|
+|data.table                             |Markus Mayrhofer              |[Slides](slides/datatable/index.html), [Lab](labs/datatable/index.html)|
 |Neural networks in R                   |Marcin Kierczak               ||
 |R & AI                                 |Sebastian DiLorenzo           |[Slides](slides/ai/index.html)|
 |[14-Aug-2026 (Fri)]{.badge .badge-secondary}                          |||
-|Tidyverse                              |Marcin Kierczak               |[Slides](slides/tidyverse/index.html), [Lab](labs/tidyverse/index.html)|
-|Data visualization                     |Roy Francis                   |[Slides](slides/int-vis/index.html), [Lab](labs/int-vis/index.html)|
+|Tidyverse                              |Marcin Kierczak               |[Slides](slides/tidyverse/index.html), Lab|
+|Data visualization                     |Roy Francis                   ||
 |[WEEK 2]{.badge .badge-primary}                                       |||
 |[17-Aug-2026 (Mon)]{.badge .badge-secondary}                          |||
 |Statistics                             |Dania Machlab                 ||
-|Object-oriented programming            |Marcin Kierczak               |[Slides](slides/oop/index.html), [Lab](labs/oop/index.html)|
+|Object-oriented programming            |Marcin Kierczak               |Slides, Lab|
 |[18-Aug-2026 (Tue)]{.badge .badge-secondary}                          |||
 |Web apps with Shiny                    |Roy Francis                   |[Slides](slides/shiny/index.html), [Lab](labs/shiny/index.html)|
 |Projects                               |Guilherme Dias                |[Lab](labs/projects/index.html)|
@@ -47,7 +49,7 @@ execute:
 
 <br>
 
-[[Slides {{< fa circle-chevron-right >}}]{.btn .btn-sm .btn-primary}](slides/index.html) [[Labs {{< fa circle-chevron-right >}}]{.btn .btn-sm .btn-primary}](labs/index.html) 
+[[Slides {{< fa circle-chevron-right >}}]{.btn .btn-sm .btn-primary}](slides/index.html) [[Labs {{< fa circle-chevron-right >}}]{.btn .btn-sm .btn-primary}](labs/index.html) [[Quarto sessions {{< fa arrow-up-right-from-square >}}]{.btn .btn-sm .btn-primary}](https://cderv.github.io/raukr-2026-quarto/)
 
 ### Other materials
 
