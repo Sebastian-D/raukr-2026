@@ -44,7 +44,7 @@ format: revealjs
 
 :::
 
-## Exilir
+## Elixir
 
 ![](assets/elixir.webp)
 
@@ -65,7 +65,7 @@ format: revealjs
 
 #### Walking tour
 
-- 11th August (Tue) at 17:30
+- 10th August (Tue) at 17:30
 - Campus Gotland
 
 :::
@@ -91,7 +91,7 @@ format: revealjs
 ::: {style="background-color:#f8f9f9;padding:10px;border-radius:8px;opacity:0.85;"}
 - Bus trip to Hoburgs
 - 16th August (Sun) from 09:00 - 18:00
-- Leaving from Fenomenalen ([Skeppsbron 4, 621 57 Visby](https://maps.app.goo.gl/uBYS5n8eHVDsjQdJA))  
+- Leaving from front of the [campus library](https://maps.app.goo.gl/FiebEXobVRNeuLaP8)
 - Back to Visby at 18:00
 :::
 

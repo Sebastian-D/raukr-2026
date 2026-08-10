@@ -29,7 +29,7 @@ install.packages(c(
 ))
 ```
 
-Create a new **RStudio Project** (or any empty directory) to work in throughout this lab. All exercises should be done inside that project directory.
+Work in a new directory throughout this lab. All exercises should be done inside that project directory.
 
 ## Initialise renv
 
