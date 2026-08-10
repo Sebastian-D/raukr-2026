@@ -8,7 +8,6 @@ project:
     - "!slides/ai/*.qmd"
     - "!slides/debugging/*.qmd"
     - "!labs/debugging/*.qmd"
-    - "!labs/git/*.qmd"
     - "!slides/oop/*.qmd"
     - "!labs/oop/*.qmd"
     - "!slides/packages/*.qmd"
