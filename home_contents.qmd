@@ -18,15 +18,15 @@ execute:
 |---------------------------------------|------------------------------|-----|
 |[WEEK 1]{.badge .badge-primary}                                       |||
 |[10-Aug-2026 (Mon)]{.badge .badge-secondary}                          |||
-|Welcome                                |Sebastian DiLorenzo, Roy Francis,Marcin Kierczak               |[Slides](slides/welcome/index.html)|
+|Welcome                                |Marcin Kierczak               |[Slides](slides/welcome/index.html)|
 |Positron                               |Jenny Bryan (Posit)           |[Materials](https://pos.it/ron-raukr)|
-|Introduction to Quarto                 |Christophe Dervieux (Posit)   ||
+|Introduction to Quarto                 |Christophe Dervieux (Posit)   |[Slides](https://cderv.github.io/raukr-2026-quarto/slides/quarto/index.html), [Lab](https://cderv.github.io/raukr-2026-quarto/labs/quarto/index.html)|
 |[11-Aug-2026 (Tue)]{.badge .badge-secondary}                          |||
 |Best Coding Practices                  |Sebastian DiLorenzo           |[Slides](slides/coding/index.html), [Lab](labs/coding/index.html)|
 |Reproducible research                  |Roy Francis                   |[Slides](slides/rr/index.html)|
 |Managing R environment with renv       |Roy Francis                   |[Slides](slides/r-env/index.html), [Lab](labs/r-env/index.html)|
 |Pipelines with targets                 |Roy Francis                   |[Slides](slides/targets/index.html), [Lab](labs/targets/index.html)|
-|Quarto projects                        |Christophe Dervieux (Posit)   ||
+|Quarto projects                        |Christophe Dervieux (Posit)   |[Slides](https://cderv.github.io/raukr-2026-quarto/slides/quarto-projects/index.html), [Lab](https://cderv.github.io/raukr-2026-quarto/labs/quarto-projects/index.html)|
 |[12-Aug-2026 (Wed)]{.badge .badge-secondary}                          |||
 |Git & GitHub                           |Nina Norgren                  |[Slides](slides/git/index.html), [Lab](labs/git/index.html)|
 |R Packages                             |Jenny Bryan (Posit)           ||
@@ -49,7 +49,7 @@ execute:
 
 <br>
 
-[[Slides {{< fa circle-chevron-right >}}]{.btn .btn-sm .btn-primary}](slides/index.html) [[Labs {{< fa circle-chevron-right >}}]{.btn .btn-sm .btn-primary}](labs/index.html) 
+[[Slides {{< fa circle-chevron-right >}}]{.btn .btn-sm .btn-primary}](slides/index.html) [[Labs {{< fa circle-chevron-right >}}]{.btn .btn-sm .btn-primary}](labs/index.html) [[Quarto sessions {{< fa arrow-up-right-from-square >}}]{.btn .btn-sm .btn-primary}](https://cderv.github.io/raukr-2026-quarto/)
 
 ### Other materials
 

@@ -175,6 +175,8 @@ if (nrow(p_github) > 0) {
 
 Course materials will be made available on <https://nbisweden.github.io/raukr-2026/home_contents.html> once the workshop begins. You can copy-paste code from the website to your R session. 
 
+The two Quarto sessions (10-Aug and 11-Aug) have separate materials and exercise files. See <https://cderv.github.io/raukr-2026-quarto/setup.html> for what to install and download beforehand.
+
 Alternatively, you can also download/clone the materials from GitHub and run them locally. To do this, go to <https://github.com/NBISweden/raukr-2026> and click on the green **Code** button. You can either download the materials as a zip file (**Download ZIP**) or clone the repository using git. If you are using git, run the following command in your terminal:
 
 ```{sh}
