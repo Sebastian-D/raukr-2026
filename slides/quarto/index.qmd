@@ -442,9 +442,9 @@ $\sum\limits_{n=1}^{10} \frac{3}{2}\cdot n$
 
 Link to [this](somewhere.com)
 
-![](https://www.r-project.org/Rlogo.webp)
+![](https://www.r-project.org/Rlogo.png)
 
-![](https://www.r-project.org/Rlogo.webp){width="50%"}
+![](https://www.r-project.org/Rlogo.png){width="50%"}
 ```
 :::
 

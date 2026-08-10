@@ -519,7 +519,7 @@ Did you get any **NOTE**s, **ERROR**s or **WARNING**s? I know I did! Among other
 
 Well done! You have built a functional package. Maybe it is even time to update the version number in **DESCRIPTION** and take it out of development?
 
-If you want to know even more about this topic, I recommend Hadley Wickham and Jenny Bryan's excellent online resource [http://r-pkgs.had.co.nz/check.html](http://r-pkgs.had.co.nz/check.html).
+If you want to know even more about this topic, I recommend Hadley Wickham and Jenny Bryan's excellent online resource <https://r-pkgs.org/>.
 
 The next sections are optional and cover vignettes, testing,  including C++ code in your package using `Rcpp` and pushing your R package to github and setting up github actions for it.
 

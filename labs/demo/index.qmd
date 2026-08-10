@@ -714,7 +714,7 @@ This is a call-out.
 
 ## Accordions
 
-Accordion support is provided through the [accordion](https://github.com/royfrancis/accordion) extension.
+Accordion support is provided through the [accordion](https://github.com/royfrancis/quarto-accordion) extension.
 
 Accordion contents can be defined in the YAML header as shown below.
 
@@ -1403,7 +1403,7 @@ plot(cars)
 
 ### ggplot2
 
-R package [`ggplot2`](http://ggplot2.org/) is one of the most versatile and complete plotting solutions.
+R package [`ggplot2`](https://ggplot2.tidyverse.org/) is one of the most versatile and complete plotting solutions.
 
 ```{r}
 #| fig-height: 6

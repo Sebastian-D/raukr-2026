@@ -7,19 +7,19 @@ format: html
 ---
 
 ::: callout-note
-In this tutorial, we will build a quarto website from scratch. It is assumed that you are in an environment with Quarto and R.
+In this tutorial, we will build a quarto blog website from scratch. It is assumed that you are in an environment with Quarto and R.
 
 We will cover the following topics:
 
-- Setup a quarto website project
+- Setup a quarto blog website project
 - Website structure and pages
 - Setting site configuration
 - Setup and using GitHub for hosting
 
-Refer to the official quarto documentation at <https://quarto.org> for help. 
+This is a preview of the [final website](https://royfrancis.github.io/site/). Refer to the official quarto documentation at <https://quarto.org> for help. 
 :::
 
-## Github
+## GitHub
 
 We will start by creating a GitHub repository to host our website. If you don't have a GitHub account, create one now. Once you have an account, create a new repository. I will name it `site`. You can call it anything you like. Make sure to initialize it with a README file. Then copy the SSH URL of the repository for later use.
 
@@ -29,14 +29,14 @@ We will start by creating a GitHub repository to host our website. If you don't 
 
 ![Copy repo URL](assets/init-copy-url.webp){group="repo-init"}
 
-Initilialize a repository on GitHub and copy the SSH URL.
+Initialize a repository on GitHub and copy the SSH URL.
 
 :::
 
 Open up the terminal and clone the repository to your local machine using the command:
 
 ```bash
-git clone git@github.com:royfrancis/site.git
+git clone git@github.com:username/site.git
 ```
 
 This will create a new directory named `site` in your current working directory. Open this directory in your preferred code editor. We will be working in this directory for the rest of the tutorial.
@@ -99,7 +99,7 @@ website:
       - text: About
         href: about.qmd
   page-footer:
-    left: &#169; 2026 Jane Doe
+    left: (c) 2026 Jane Doe
     right: Made with [Quarto](https://quarto.org)
 ```
 
@@ -150,7 +150,7 @@ When I'm not coding, you can find me hiking, reading, or experimenting with new 
 
 Create a directory named `assets/images` in the root directory of your project and add an image named `profile.webp` to it. This image will be used as the profile picture on the about page. If you don't have an image, you can download this image:
 
-<a class="btn btn-primary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2025/refs/heads/main/labs/quarto-site/assets/profile.webp" role="button" target="_blank">{{< fa download >}} profile.webp</a>
+<a class="btn btn-primary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2026/refs/heads/main/labs/quarto-site/assets/profile.webp" role="button" target="_blank">{{< fa download >}} profile.webp</a>
 
 If you have the live preview running, you should see the about page when you navigate to `/about` in your web browser.
 
@@ -184,7 +184,7 @@ page-layout: article
 image: featured.webp
 ---
 
-Images can be arranged side by side in Quarto using the `columns` layout. Here's how you can do it:
+Images can be arranged side by side in Quarto using the figure layout. Here's how you can do it:
 
 ```
 ::: {#fig-mylabel layout-ncol=2}
@@ -210,7 +210,7 @@ This is a common caption.
 
 Add an image named `featured.webp` in the same directory. This image will be used as the featured image for the blog post. If you don't have an image, you can download this image:
 
-<a class="btn btn-primary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2025/refs/heads/main/labs/quarto-site/assets/featured.webp" role="button" target="_blank">{{< fa download >}} post-1 featured.webp</a>
+<a class="btn btn-primary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2026/refs/heads/main/labs/quarto-site/assets/featured.webp" role="button" target="_blank">{{< fa download >}} post-1 featured.webp</a>
 
 ![View of a blog post](assets/post1.webp){#fig-post1}
 
@@ -300,7 +300,7 @@ Make sure that the listed R packages are installed in your R environment.
 
 Add an image named `featured.webp` in the same directory. This image will be used as the featured image for the blog post. If you don't have an image, you can download this image:
 
-<a class="btn btn-primary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2025/refs/heads/main/labs/quarto-site/assets/patchwork/featured.webp" role="button" target="_blank">{{< fa download >}} post-2 featured.webp</a>
+<a class="btn btn-primary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2026/refs/heads/main/labs/quarto-site/assets/patchwork/featured.webp" role="button" target="_blank">{{< fa download >}} post-2 featured.webp</a>
 
 Blog documentation can be found [here](https://quarto.org/docs/websites/website-blog.html). Now that we have 2 blog posts, we can create a listing page to display them.
 
@@ -337,7 +337,7 @@ The `index.qmd` file in the root directory of your project is the home page of y
 
 We will create a simple home page with a welcome message and a list of recent blog posts. I will use an from [freepik.com](https://www.freepik.com/free-vector/programming-concept-illustration_7118756.htm) as a hero image. You can download this image:
 
-<a class="btn btn-primary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2025/refs/heads/main/labs/quarto-site/assets/hero.webp" role="button" target="_blank">{{< fa download >}} hero.webp</a>
+<a class="btn btn-primary btn-sm" href="https://raw.githubusercontent.com/NBISweden/raukr-2026/refs/heads/main/labs/quarto-site/assets/hero.webp" role="button" target="_blank">{{< fa download >}} hero.webp</a>
 
 ````markdown
 ---
@@ -471,19 +471,19 @@ Commit the changes to the repository:
 ```bash
 git add .
 git commit -m "Added website files"
-git push origin
+git push origin main
 ```
 
 ### Manually
 
 Follow this if you plan to manually push the rendered materials to the remote repository. This is a little bit more involved.
 
-Commit all changes to the repository:
+Commit all changes (including **docs** folder) to the repository:
 
 ```bash
 git add .
 git commit -m "Added website files"
-git push origin
+git push origin main
 ```
 
 This will push the changes to the remote repository on GitHub.

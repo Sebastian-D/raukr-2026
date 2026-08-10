@@ -451,6 +451,10 @@ div.callout-important .callout-icon::before {
   white-space: pre-wrap;  
 }
 
+.toastui-calendar-popup-container {
+  font-weight: 400 !important;
+}
+
 /* typeform signup form */
 .tf-v1-sidetab .tf-v1-sidetab-button-text {
   font-family: $font-family-sans-serif;

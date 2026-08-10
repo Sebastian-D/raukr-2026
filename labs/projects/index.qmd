@@ -64,42 +64,26 @@ The projects might be a good chance to explore parts of the course that didn't n
 - Data from a national survey on the drinking habits of american citizens in 2001 and 2002.
 - Data description: <https://vincentarelbundock.github.io/Rdatasets/doc/stevedata/nesarc_drinkspd.html>
 
-::: {.callout appearance="minimal"}
-
-## {{< fa download >}} Download
-
 ```{r}
 # this will download the csv file directly from the web
 drinks <- read.table("https://vincentarelbundock.github.io/Rdatasets/csv/stevedata/nesarc_drinkspd.csv", header = T, sep = ",")
 str(drinks)
 ```
 
-:::
-
 ### Car crashes 🚗
 
 - Data from car accidents in the US between 1997-2002.
 - Data description: <https://vincentarelbundock.github.io/Rdatasets/doc/DAAG/nassCDS.html>
-
-::: {.callout appearance="minimal"}
-
-## {{< fa download >}} Download
 
 ```{r}
 crashes <- read.table("https://vincentarelbundock.github.io/Rdatasets/csv/DAAG/nassCDS.csv", header = T, sep = ",")
 str(crashes)
 ```
 
-:::
-
 ### Gapminder health and wealth 📈
 
 - This is a collection of country indicators from the Gapminder dataset.
 - Data description: <https://vincentarelbundock.github.io/Rdatasets/doc/dslabs/gapminder.html>
-
-::: {.callout appearance="minimal"}
-
-## {{< fa download >}} Download
 
 ```{r}
 
@@ -107,49 +91,31 @@ gapminder <- readr::read_csv("https://vincentarelbundock.github.io/Rdatasets/csv
 str(gapminder)
 ```
 
-:::
-
 ### StackOverflow survey 🖥️
 
 - This is a downsampled and modified version of one of StackOverflow's annual surveys where users respond to a series of questions related to careers in technology and coding.
 - Data description: <https://vincentarelbundock.github.io/Rdatasets/doc/modeldata/stackoverflow.html>
-
-::: {.callout appearance="minimal"}
-
-## {{< fa download >}} Download
 
 ```{r}
 stackoverflow <- read.table("https://vincentarelbundock.github.io/Rdatasets/csv/modeldata/stackoverflow.csv", header = T, sep = ",")
 str(stackoverflow)
 ```
 
-:::
-
 ### Doctor visits 🤒
 
 - Data on the frequency of doctor visits in the past two weeks in Australia for the years 1977 and 1978.
 - Data description: <https://vincentarelbundock.github.io/Rdatasets/doc/AER/DoctorVisits.html>
-
-::: {.callout appearance="minimal"}
-
-## {{< fa download >}} Download
 
 ```{r}
 doctor <- read.table("https://vincentarelbundock.github.io/Rdatasets/csv/AER/DoctorVisits.csv", header = T, sep = ",")
 str(doctor)
 ```
 
-:::
-
 ### Video Game Sales 🎮
 
 - This data set contains sales figures for video games titles released from 1971 through 2024.
 - Data description: <https://mavenanalytics.io/data-playground?order=date_added%2Cdesc&search=Video%20Game%20Sales> 
   - Click on "Preview Data" and "VG Data Dictionary" to see the description for each column.
-
-::: {.callout appearance="minimal"}
-
-## {{< fa download >}} Download
 
 ```{r}
 
@@ -160,17 +126,11 @@ videogames <- read.table(unz(filename = "vgchartz-2024.csv", "video_game_sales.z
 str(videogames)
 ```
 
-:::
-
 ### LEGO Sets 🏗️
 
 - This data set contains the description of all LEGO sets released from 1970 to 2022
 - Data description: <https://mavenanalytics.io/data-playground?order=date_added%2Cdesc&search=lego>
   - Click on "Preview Data" and "VG Data Dictionary" to see the description for each column.
-
-::: {.callout appearance="minimal"}
-
-## {{< fa download >}} Download
 
 ```{r}
 
@@ -181,17 +141,11 @@ lego <- read.table(unz(filename = "lego_sets.csv", "lego.csv.zip"), header = T, 
 str(lego)
 ```
 
-:::
-
 ### Shark attacks 🦈
 
 - This data set contains information on shark attack records from all over the world.
 - Data description: <https://mavenanalytics.io/data-playground?order=date_added%2Cdesc&search=shark>
   - Click on "Preview Data" and "VG Data Dictionary" to see the description for each column.
-
-::: {.callout appearance="minimal"}
-
-## {{< fa download >}} Download
 
 ```{r}
 # this will download the file to your working directory
@@ -200,8 +154,6 @@ download.file(url = "https://maven-datasets.s3.amazonaws.com/Shark+Attacks/attac
 sharks <- read.table(unz(filename = "attacks.csv", "attacks.csv.zip"), header = T, sep = ",", quote = "\"", fill = T)
 str(sharks)
 ```
-
-:::
 
 ## APIs
 
@@ -240,6 +192,18 @@ Read more here:
 With this API you can retrieve info for each Pokemon. Completely free and no authentication required.
 
 <https://pokeapi.co/>
+
+### Our World in Data 🌍
+
+You can use the R package [`owidR`](https://github.com/piersyork/owidR) to access the [Our World in Data](https://ourworldindata.org/) API. This API aggregates data on many topics, including health, environment, and economics.
+
+### Statistics Sweden (SCB) 🇸🇪
+
+You can use the R package [`pxweb`](https://github.com/rOpenGov/pxweb/) to access the [Statistics Sweden](https://www.scb.se) API. This API aggregates data on many topics, including health, environment, and economics.
+
+## TidyTuesday
+
+[TidyTuesday](https://github.com/rfordatascience/tidytuesday) is a project where a dataset is selected weekly for the R community to practice data analysis. You can browse their repository and find tons of interesting datasets.
 
 ## Visualization
 

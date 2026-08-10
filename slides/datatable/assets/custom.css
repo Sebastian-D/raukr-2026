@@ -1,0 +1,9 @@
+/* Topic-local overrides for the data.table slides.
+   The shared RaukR theme shrinks code hard on .smaller slides
+   (pre: 1.75rem -> 1.12rem, inline code: 0.80em -> 0.51em).
+   These rules restore a readable code size without changing prose sizing.
+   `section.smaller` outranks the theme's `.smaller`, so no !important war. */
+
+.reveal section.smaller pre { font-size: 1.55rem !important; }
+.reveal section.smaller pre code { font-size: 1em !important; }
+.reveal section.smaller :not(pre) > code { font-size: 0.7em !important; }
