@@ -201,16 +201,17 @@ A project needs **several layers** of reproducibility:
 - Use a data repository (Zenodo, Dryad, OSF, Dataverse, Figshare) to share data
 
 :::
+::: {.fragment}
+
+> "Your downloads folder is not a data repository."
+
+:::
 :::
 ::: {.column width="40%"}
 
 ![](assets/fair-care.webp)
 
 :::
-:::
-
-::: {.fragment}
-> "Your downloads folder is not a data repository."
 :::
 
 ## Further Reading
