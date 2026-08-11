@@ -1,0 +1,135 @@
+# Render the participant materials and check their delivery constraints.
+name: render-check
+
+on:
+  push:
+    branches: [main, "raukr-*"]
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1"   # Mondays 06:17 UTC -- weekly rot canary
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # --- structural invariants ---
+      - name: Assert NO _quarto.yml at or above the day starters
+        run: |
+          set -eu
+          # Project files above the starters would capture their renders.
+          for f in _quarto.yml day1-intro/_quarto.yml day2-projects/_quarto.yml; do
+            if [ -f "$f" ]; then echo "::error::$f must not exist (nested-project trap)"; exit 1; fi
+          done
+          echo "ok: no _quarto.yml at or above the starters"
+
+      - name: Assert the ZIP payload stays tiny (bad-WiFi budget)
+        run: |
+          set -eu
+          # Catch accidentally committed build artifacts or vendored files.
+          bytes=$(git archive --format=zip HEAD | wc -c)
+          echo "archive: $bytes bytes"
+          if [ "$bytes" -gt 2000000 ]; then echo "::error::ZIP is $bytes B (> 2 MB) -- something heavy got committed"; exit 1; fi
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # Test the latest package versions declared in DESCRIPTION.
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      # --- render everything a participant renders ---
+      - name: Render Day-1 Typst payoff (also warms the brand font)
+        run: quarto render day1-intro/sample-typst.qmd
+
+      - name: Render Day-1 solution (cited HTML report)
+        run: quarto render solutions/day1/penguins-report.qmd
+
+      # Inspect the Typst output to confirm that citeproc places the references and the Session
+      # appendix stays in HTML.
+      - name: Render Day-1 solution to Typst (cited PDF, no Session appendix)
+        run: |
+          set -eu
+          command -v pdftotext >/dev/null || sudo apt-get install -y -qq poppler-utils
+          quarto render solutions/day1/penguins-report.qmd --to typst
+          pdf=solutions/day1/penguins-report.pdf
+          test -f "$pdf" || { echo "::error::$pdf not produced"; exit 1; }
+          pdftotext -layout "$pdf" _report.txt
+          # DOIs appear only in the entries, never in an in-text citation, and only the text after
+          # the heading counts -- so this fails on a References section that came out empty.
+          refs=$(awk '/^[[:space:]]*References[[:space:]]*$/ {seen = 1; next} seen' _report.txt |
+                 tr -d '[:space:]')
+          for doi in 10.1371/journal.pone.0090081 10.5281/zenodo.3960218; do
+            if ! printf '%s' "$refs" | grep -qF "$doi"; then
+              echo "::error::$doi is missing from the References section of the PDF"
+              exit 1
+            fi
+          done
+          # Without citeproc, Typst adds a Bibliography section and leaves References empty.
+          if grep -qE "^[[:space:]]*Bibliography[[:space:]]*$" _report.txt; then
+            echo "::error::Typst added its own Bibliography: citeproc is not active"
+            exit 1
+          fi
+          if grep -qi "sessionInfo" _report.txt; then
+            echo "::error::PDF includes the Session appendix: HTML-only wrapper did not apply"
+            exit 1
+          fi
+          echo "ok: References populated and Session appendix absent"
+
+      - name: Render Day-1 authoring starter (the Part-1 starting point)
+        run: quarto render day1-intro/authoring-starter.qmd
+
+      - name: Render Day-1 authoring checkpoint (the Part-2 fallback document)
+        run: quarto render day1-intro/authoring-checkpoint.qmd
+
+      - name: Render Day-1 parameters starter
+        run: quarto render day1-intro/parameters-starter.qmd
+
+      # Self-contained output prevents the two reports from sharing a figure directory.
+      - name: Render Day-1 parameterized report (exercises !expr options, -P, per-species output)
+        run: |
+          set -eu
+          quarto render solutions/day1/penguins-by-species.qmd -P species:Adelie \
+            --embed-resources
+          mv solutions/day1/penguins-by-species.html _pbs-adelie.html
+          quarto render solutions/day1/penguins-by-species.qmd -P species:Chinstrap \
+            --embed-resources
+          mv solutions/day1/penguins-by-species.html _pbs-chinstrap.html
+          for s in adelie chinstrap; do
+            f="_pbs-$s.html"
+            test -f "$f" || { echo "::error::$f not produced"; exit 1; }
+            if grep -q 'src="[^"]*penguins-by-species_files' "$f"; then
+              echo "::error::$f references the shared _files/ dir -- the two reports share one figure"
+              exit 1
+            fi
+          done
+          if diff -q _pbs-adelie.html _pbs-chinstrap.html >/dev/null; then
+            echo "::error::the two per-species reports are identical -- the parameter did not take"
+            exit 1
+          fi
+          echo "ok: two self-contained, distinct per-species reports"
+
+      - name: Render Day-2 solution (the website project)
+        run: quarto render solutions/day2
+
+      # No project file ships with the Day-2 starter, so render each page directly.
+      - name: Render Day-2 starter pages (each stands alone, pre-project)
+        run: |
+          set -eu
+          for f in day2-projects/index.qmd day2-projects/analysis.qmd \
+                   day2-projects/reports/methods.qmd day2-projects/reports/data-notes.qmd; do
+            quarto render "$f"
+            out="${f%.qmd}.html"
+            test -f "$out" || { echo "::error::$out not produced"; exit 1; }
+          done
+          echo "ok: all four Day-2 starter pages render standalone"
+
+      - name: Confirm the Typst PDF was produced
+        run: test -f day1-intro/sample-typst.pdf || { echo "::error::sample-typst.pdf missing"; exit 1; }

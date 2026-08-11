@@ -34,15 +34,19 @@ format: revealjs
 
 ::: {.large}
 
-- Introduction to Data Management Practices, 09-11 Sep 2025, Lund
-- Population genomics in practice, 15-19 Sep 2025, Uppsala
-- Epigenomics Data Analysis: from Bulk to Single Cell, 22-26 Sep 2025, Online
+- Statistical Methods in Life Sciences [7-11 Sep 2026]{.badge} [Uppsala]{.badge .badge-secondary}
+- Epigenomics Data Analysis: from Bulk to Single Cell [5-9 Oct 2026]{.badge} [Online]{.badge .badge-secondary}
+- Spatial Omics Data Analysis [6-9 Oct 2026]{.badge} [Uppsala]{.badge .badge-secondary}
+- Machine Learning for Life Sciences [12-16 Oct 2026]{.badge} [Uppsala]{.badge .badge-secondary}
+- Python Programming [19-23 Oct 2026]{.badge} [Uppsala, Umeå, Lund]{.badge .badge-secondary}
 - <https://nbis.se/training>
 - <https://training.scilifelab.se/events>
 
 :::
 
-## {background-image="assets/elixir.webp"}
+## Elixir
+
+![](assets/elixir.webp)
 
 ## Venue {background-image="assets/campus.webp"}  
 
@@ -61,7 +65,7 @@ format: revealjs
 
 #### Walking tour
 
-- 10th June (Tue) at 17:30
+- 10th August (Tue) at 17:30
 - Campus Gotland
 
 :::
@@ -85,10 +89,10 @@ format: revealjs
 ## Excursion {background-image="assets/casper-van-battum-3eOMkWeWVUc-unsplash.webp"}  
 
 ::: {style="background-color:#f8f9f9;padding:10px;border-radius:8px;opacity:0.85;"}
-- Bus trip to När & Ljugarn
-- 16th August (Sun) from 09:15 - 18:00
-- Leaving from Fenomenalen ([Skeppsbron 4, 621 57 Visby](https://maps.app.goo.gl/uBYS5n8eHVDsjQdJA))  
-- Back to Visby at 18:00  
+- Bus trip to Hoburgs
+- 16th August (Sun) from 09:00 - 18:00
+- Leaving from front of the [campus library](https://maps.app.goo.gl/FiebEXobVRNeuLaP8)
+- Back to Visby at 18:00
 :::
 
 ## Instagram
@@ -112,9 +116,9 @@ Instagram: [**raukr_nbis**]{.badge}
 ## Zoom lecture
 
 ::: {.large}
-**Introduction to Quarto** by Christophe Dervieux  
+**Working with data.table** by Markus Mayrhofer  
 Classroom B24?  
-10th June (Tue) at 09:00  
+13th August (Thu) at 11:00  
 :::
 
 ## Technical

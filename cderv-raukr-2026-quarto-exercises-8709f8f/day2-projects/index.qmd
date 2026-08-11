@@ -1,0 +1,12 @@
+---
+title: "Penguin Lab"
+---
+
+Welcome. This is a small site about the **Palmer penguins**: three species measured at Palmer
+Station, Antarctica, included in base R as `datasets::penguins` (R ≥ 4.5).
+
+Head to the **[analysis](analysis.qmd)** for the figures and a summary table.
+
+> This folder is your starting point for the Day-2 lab: four pages that render on their own but are
+> **not yet a project**. Your job is to add a `_quarto.yml` (and a `_brand.yml`) that turn them into a
+> navigable, branded website, then prepare it for publishing.

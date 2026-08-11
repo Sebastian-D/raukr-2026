@@ -85,7 +85,12 @@ nbisweden/raukr-2026:main <- you/raukr-2026:main
 nbisweden/raukr-2026:main <- you/raukr-2026:your-branch
 ```
 
-- Note that qmd rendering can be selectively disabled in _quarto.yml.
+- Note that qmd rendering can be selectively disabled in _quarto.yml
+
+## Updating schedule
+
+- In raukr-2026 google drive, make changes to **schedule-vertical** tab in the **schedule** google sheet
+- Then re-render **home_schedule.qmd** and push the contents of *_freeze*
 
 ## Tips & Conventions
 
@@ -169,6 +174,8 @@ quarto add mcanouil/quarto-collapse-output
 quarto add royfrancis/quarto-accordion
 # Top logos in revealjs slides
 quarto add royfrancis/quarto-reveal-logo
+# shinylive
+quarto add quarto-ext/shinylive
 ```
 
 ---

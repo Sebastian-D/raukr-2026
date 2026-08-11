@@ -1,0 +1,51 @@
+---
+title: "Penguins — single-species report"
+format: html
+# TODO 1: Add a `params` block with `species: Gentoo` as the default.
+---
+
+```{r}
+#| label: setup
+#| message: false
+library(dplyr)
+library(ggplot2)
+
+data(penguins)
+
+# TODO 2: Filter for `species == params$species` as well as the missing values.
+one <- penguins |>
+  filter(!is.na(bill_len), !is.na(bill_dep))
+```
+
+<!-- TODO 3a: Replace "one species" with inline code that displays params$species. -->
+This report covers **one species** only. The same source can render a different report when the
+parameter changes.
+
+## Species at a glance
+
+```{r}
+#| label: fig-bill
+#| echo: false
+#| fig-cap: "Bill length versus depth for one species."
+#| fig-alt: "Scatter plot of bill depth against bill length for one penguin species."
+# TODO 3b: Make `fig-cap` and `fig-alt` use `params$species` with `!expr`.
+ggplot(one, aes(bill_len, bill_dep)) +
+  geom_point(alpha = 0.8) +
+  labs(x = "Bill length (mm)", y = "Bill depth (mm)") +
+  theme_minimal(base_size = 12)
+```
+
+<!-- TODO 3c: Name the species in this sentence too. -->
+`{r} nrow(one)` penguins had both bill measurements recorded.
+
+## Session {.appendix .unnumbered}
+
+<details>
+<summary>Session info</summary>
+
+```{r}
+#| label: session
+sessionInfo()
+```
+
+</details>

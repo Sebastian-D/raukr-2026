@@ -8,10 +8,8 @@ listing:
   image-placeholder: "/assets/images/featured.webp"
   contents:
     - "*.qmd"
-    - "!quarto/sample/sample-html.qmd"
-    - "!quarto/sample/sample-pdf.qmd"
-    - "!quarto/sample/sample-revealjs.qmd"
     - "!welcome/*.qmd"
+    - "!quarto/sample/*.qmd"
 date: ""
 toc: false
 sidebar: false
