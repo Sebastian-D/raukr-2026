@@ -1,29 +1,19 @@
 ---
-title: "Debugging, Profiling, and a Bit of Optimization"
+title: "Debugging, Profiling, and Optimization"
 author: "Marcin Kierczak"
 image: "assets/featured.webp"
-format: revealjs
+format:
+  revealjs:
+    df-print: default
 ---
 
 ## {visibility="hidden"}
 
 ```{r}
-library(tictoc)
-library(DT)
-library(profvis)
-library(Rgraphviz)
-library(proftools) # depends on "graph" and "Rgraphviz" packages
-library(profr)
-library(pryr)
-library(microbenchmark)
-library(ggplot2)
-# remotes::install_github("hadley/emo")
-library(emo)
-# remotes::install_github("cdeterman/gpuR")
-#library(gpuR)
+library(tidyverse)
 ```
 
-## Run Forrest, run!
+## What will we be talking about?
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -89,19 +79,17 @@ IMHO those are the hardest `r emo::ji('skull')` to debug!
 
 ::: {.incremental}
 
-- Encapsulate your code in smaller units `r emo::ji('bento_box')` (functions), you can test.<br><br>
-- Use classes and type checking `r emo::ji('ok')`.<br><br>
+- Encapsulate your code in smaller units `r emo::ji('bento_box')` (functions), you can test, AI can easily evaluate etc.<br><br>
+- Use classes (OOP module next week) and type checking `r emo::ji('ok')`.<br><br>
 - Test `r emo::ji('test_tube')` at the boundaries, e.g. loops at min and max value.<br><br>
-- Feed your functions with test data `r emo::ji('floppy_disk')` that should result with a known output.<br><br>
-- Use *antibugging* `r emo::ji('spider_web')`: `stopifnot(y <= 75)`
-
+- Feed your functions with test data `r emo::ji('floppy_disk')` that should result with a known output.
 :::
 
-## Floating confusion
+## Zoo of errors: the floating point trap
 
 <br><br>
 
-```{r arithmetic_bugs1}
+```{r floating_point_trap1}
 #| results: false
 #| code-line-numbers: "1|2-3"
 (vec <- seq(0.1, 0.9, by=0.1))
@@ -111,7 +99,7 @@ vec == 0.5
 
 . . .
 
-```{r arithmetic_bugs2}
+```{r floating_point_trap2}
 #| echo: false
 (vec <- seq(0.1, 0.9, by=0.1))
 vec == 0.7 
@@ -138,11 +126,7 @@ vec == 0.5
 
 <br/>
 
-<div style="text-align:center;"/>
-`r emo::ji('skull')` Beware of floating point arithmetic! `r emo::ji('skull')`
-</div/>
-
-## How to float `r emo::ji('person_swimming')`
+## How to avoid the trap
 <br><br>
 
 ```{r floating_rounding}
@@ -151,7 +135,7 @@ round((0.7 + 0.1) , digits = 2) - 0.8
 
 . . .
 
-Comparing floating point numbers: 
+When comparing floating point numbers, instead of this: 
 
 ```{r float_comparisons}
 #| echo: true
@@ -161,14 +145,16 @@ vec == 0.7
 
 . . .
 
+Write this: 
+
 ```{r float_comparisons_epsilon}
 epsilon <- 0.001
 abs(vec - 0.7) <= epsilon
 ```
 
-## Final thoughts on floating 
+## Floating point technicalities
 
-```{r double_epsilon}
+```{r}
 head(unlist(.Machine))
 ```
 
@@ -178,97 +164,62 @@ head(unlist(.Machine))
 head(unlist(.Platform))
 ```
 
-## Handling Errors
-
-Let us generate some errors:
+## Handling Errors with `try()`
 
 ```{r error_log}
 #| error: true
-input <- c(1, 10, -7, -2/5, 0, 'char', 100, pi, NaN)
-for (val in input) {
-  (paste0('Log of ', val, 'is ', log10(val)))
+inputs <- list(10, -10, "ten", 42)
+```
+
+. . .
+
+```{r error_no_try}
+#| error: true
+for (i in inputs) {
+  print(paste0("log10 of ", i, " is ", log10(i)))
 }
 ```
 
 . . .
 
-:::: {.columns}
-::: {.column width="30%"}
-
-<img src = "assets/ui_ux_error.webp" style="width: 100%"/>
-
-:::
-::: {.column width="70%"}
-
-<br><br><br><br>So, how to handle this mess?
-
-:::
-::::
-
-## Handling Errors -- `try`
-<br><br>
-
-```{r error_log_try1}
-#| eval: false
-try(
-  print(
-    paste0('Log of ', input, ' is ', log10(as.numeric(input)))
+```{r error_try}
+#| error: true
+for (i in inputs) {
+  try(
+    print(paste0("log10 of ", i, " is ", log10(i)))
   )
-)
+}
 ```
 
-. . .
-
-```{r error_log_try2}
-#| echo: false
-try(
-  print(
-    paste0('Log of ', input, ' is ', log10(as.numeric(input)))
-  )
-)
-```
-
-## Handling Errors -- `tryCatch` block:
+## Handling Errors with `tryCatch`
 
 ```{r error_log_tryCatch1}
-#| eval: false
-result <- tryCatch(log10(val), 
-            warning = function(w) { 
-              print('Warning! Negative argument supplied. Negating.') 
-              log10(-val) }, 
-            error = function(e) { 
-              print('ERROR! Not a number!')
-              NaN
-            }
-          )
-```
-
-. . .
-
-```{r error_log_tryCatch2}
-#| echo: false
-for (val in input) {
-  val <- as.numeric(val)
-  result <- tryCatch(log10(val), 
-              warning = function(w) { 
-                print('Warning! Negative argument supplied. Negating.') 
-                log10(-val) }, 
-              error = function(e) { 
-                print('ERROR! Not a number!')
-                NaN
-              }
-            )
-  print(paste0('Log of ', val, ' is ', result))
+#| error: false
+#| warning: false
+for (i in inputs) {
+  tryCatch(
+    {
+      result <- log10(i)
+      print(paste0("log10 of ", i, " is ", result))
+    },
+    warning = function(w) {
+      print(paste0("A warning occured: ", w$message))
+    },
+    error = function(e) {
+      print(paste0("An error occured: ", e$message))
+    }
+  )
 }
 ```
+
 
 ## Debugging -- errors and warnings
 
 ::: {.incremental}
 
 - An error in your code will result in a call to the `stop()` function that:
-  - Breaks the execution of the program (loop, if-statement, etc.)
-  - Performs the action defined by the global parameter `error`.
+  - breaks the execution of the program (loop, if-statement, etc.)
+  - performs the action defined by the global parameter `error`.
 - A warning just prints out the warning message (or reports it in another way)
 
 :::
@@ -426,14 +377,34 @@ system.time(rnorm(n = 10e6))
 
 . . .
 
-An alternative approach is to use `tic` and `toc` statements from the `tictoc` package.
+An alternative approaches include `tic` and `toc` statements from the `tictoc` package.
 
 ```{r tictoc}
 #| cache: true
-library(tictoc)
-tic()
+tictoc::tic()
 tmp1 <- runif(n = 10e6)
-toc()
+tictoc::toc()
+```
+
+## Profiling -- `bench::mark()`
+
+or `mark()` from `bench` package:
+
+```{r}
+#| echo: true
+#| eval: true
+dat <- data.frame(
+  x = runif(10000, 1, 1000),
+  y = runif(10000, 1, 1000)
+)
+```
+
+```{r bench}
+bench::mark(
+  dat[dat$x > 500, ],
+  dat[which(dat$x > 500), ],
+  subset(dat, x > 500)
+)
 ```
 
 ## Profiling in action
@@ -446,7 +417,7 @@ These 4 functions fill a **large vector** with values supplied by function `f`.
 
 ```{r profiling_fundef1}
 #| code-line-numbers: "2|3-5"
-fun_fill_loop1 <- function(n = 10e6, f) {
+fun_fill_loop <- function(n = 10e6, f) {
   result <- NULL
   for (i in 1:n) {
     result <- c(result, eval(call(f, 1)))
@@ -461,7 +432,7 @@ fun_fill_loop1 <- function(n = 10e6, f) {
 
 ```{r profiling_fundef2}
 #| code-line-numbers: "2|3-5"
-fun_fill_loop2 <- function(n = 10e6, f) {
+fun_fill_loop_alloc <- function(n = 10e6, f) {
   result <- vector(length = n)
   for (i in 1:n) {
     result[i] <- eval(call(f, 1))
@@ -484,7 +455,7 @@ vectorization!
 
 ```{r profiling_fundef3}
 #| code-line-numbers: "2|3"
-fun_fill_vec1 <- function(n = 10e6, f) {
+fun_fill_vec <- function(n = 10e6, f) {
   result <- NULL
   result <- eval(call(f, n))
   return(result)
@@ -496,7 +467,7 @@ fun_fill_vec1 <- function(n = 10e6, f) {
 4 -- vectorized with memory allocation.
 ```{r profiling_fundef4}
 #| code-line-numbers: "2|3"
-fun_fill_vec2 <- function(n = 10e6, f) {
+fun_fill_vec_alloc <- function(n = 10e6, f) {
   result <- vector(length = n)
   result <- eval(call(f, n))
   return(result)
@@ -508,31 +479,21 @@ fun_fill_vec2 <- function(n = 10e6, f) {
 
 ```{r profile_loop}
 #| cache: true
-p1 <- system.time(fun_fill_loop1(n = 10e4, "runif")) # 1 - loop, no alloc
-p2 <- system.time(fun_fill_loop2(n = 10e4, "runif")) # 2 - loop, alloc 
-p3 <- system.time(fun_fill_vec1(n = 10e4, "runif"))  # 3 - vector, no alloc
-p4 <- system.time(fun_fill_vec2(n = 10e4, "runif"))  # 4 - vector, alloc
-```
 
-```{r profile_plot}
-#| echo: false
-#| results: asis
-
-p <- data.frame(fn = paste0(rep('fn', 4), c(1,2,3,4)),
-                user.self = 1*(c(p1[1], p2[1], p3[1], p4[1])),
-                sys.self = 1*(c(p1[2], p2[2], p3[2], p4[2])),
-                elapsed = 1*(c(p1[3], p2[3], p3[3], p4[3]))
+benchmark <- microbenchmark::microbenchmark(
+  fun_fill_vec_alloc(n = 1e4, "runif"),
+  fun_fill_vec(n = 1e4, "runif"),
+  fun_fill_loop_alloc(n = 1e4, "runif"),
+  fun_fill_loop(n = 1e4, "runif"),
+  times = 10L
 )
 
-#barplot(log10(elapsed) ~ fn, data = p, horiz = T, las=1)
-knitr::kable(p)
+ggplot2::autoplot(benchmark)
 ```
 
-The `system.time()` function is not the most accurate though. During the lab, we will experiment with package `microbenchmark`.
+## Memory profiling
 
-## More advanced profiling
-
-We can also do a bit more advanced profiling, including the memory profiling, using, e.g. `Rprof()` function.
+We can include the memory profiling, using, e.g. `Rprof()` function.
 
 ```{r Rprof}
 #| include: true
@@ -541,84 +502,18 @@ We can also do a bit more advanced profiling, including the memory profiling, us
 
 Rprof('profiler_test.out', interval = 0.01, memory.profiling = T)
 for (i in 1:5) {
-  result <- fun_fill_loop2(n = 10e4, "runif")
+  result <- fun_fill_loop_alloc(n = 1e4, "runif")
   print(head(result))
 }
 Rprof(NULL)
 ```
 
-And let us summarise:
+## Memory profiling cted.
 
 ```{r summaryRprof}
 summary <- summaryRprof("profiler_test.out", memory = "both")
 knitr::kable(summary$by.self)
 unlink("profiler_test.out")
-```
-
-## Profiling -- `profr` package
-
-There are also packages available that enable even more advanced profiling:
-
-```{r profr_package}
-#| eval: true
-
-library(profr)
-Rprof("profiler_test2.out", interval = 0.01)
-tmp <- table(sort(rnorm(1e5)))
-Rprof(NULL)
-profile_df <- parse_rprof('profiler_test2.out')
-```
-
-This returns a table that can be visualised:
-
-```{r}
-#| include: false
-save(profile_df, file = 'profiler_test2.Rdat')
-load("profiler_test2.Rdat")
-unlink("profiler_test2.Rdat")
-```
-
-```{r show_profr_result}
-#| echo: false
-knitr::kable(profile_df)
-```
-
-## Profiling -- `profr` package cted.
-
-We can also plot the results using -- `proftools` package-
-
-```{r show_profr_result_plot}
-#| fig-align: center
-#| fig-height: 4
-#| fig-width: 4
-
-library(proftools)
-profile_df2 <- readProfileData("profiler_test2.out")
-plotProfileCallGraph(profile_df2, style = google.style, score = "total")
-unlink("profiler_test2.out")
-```
-
-## Profiling with `profvis`
-
-Yet another nice way to profile your code is by using Hadley Wickham's `profvis` package:
-
-```{r profviz_demo}
-#| eval: false
-
-library(profvis)
-profvis({fun_fill_loop2(1e4, 'runif')
-  fun_fill_vec2(1e4, 'runif')
-})
-```
-
-## Profiling with `profvis` cted.
-
-```{r profviz_run}
-#| echo: false
-library(profvis)
-profvis({fun_fill_loop2(1e4, 'runif') 
-  c()
-})
 ```
 
 ## Optimizing your code
@@ -647,25 +542,23 @@ We should forget about small efficiencies, say about 97% of the time: premature 
 :::
 ::::
 
-## Ways to optimize the code
+## Optimize your code
 
 ::: {.incremental}
 
-- write it in a more efficient way, e.g. use vectorization or `*apply` family instead of loops etc.,
-- allocating memory to avoid copy-on-modify,
+- use DT `data.table` or `tibble` instead of `data.frame`
+- avoid loops, use vectorization or `*apply` when possible
+- allocate memory to avoid copy-on-modify,
+- use `futures` or `mirai` for multicore/parallel execution
 - use package `BLAS` for linear algebra,
 - use `bigmemory` package,
-- GPU computations,
-- multicore support, e.g. `multicore`, `snow`
-- use `futures`
-- use `data.table` or `tibble` instead of `data.frame`
+- for large matrices consider GPU computations,
 
 :::
 
 ## Copy-on-modify
 
 ```{r copy_on_modify}
-library(pryr)
 order <- 1024
 matrix_A <- matrix(rnorm(order^2), nrow = order)
 matrix_B <- matrix_A
@@ -678,8 +571,8 @@ Check where the objects are in the memory:
 . . .
 
 ```{r}
-address(matrix_A)
-address(matrix_B)
+lobstr::obj_addr(matrix_A)
+lobstr::obj_addr(matrix_B)
 ```
 
 . . .
@@ -690,8 +583,8 @@ What happens if we modify a value in one of the matrices?
 
 ```{r}
 matrix_B[1,1] <- 1
-address(matrix_A)
-address(matrix_B)
+lobstr::obj_addr(matrix_A)
+lobstr::obj_addr(matrix_B)
 ```
 
 ## Avoid copying by allocating memory
@@ -703,9 +596,9 @@ No memory allocation
 f1 <- function(to = 3, silent=F) {
   tmp <- c()
   for (i in 1:to) {
-    a1 <- address(tmp)
+    a1 <- lobstr::obj_addr(tmp)
     tmp <- c(tmp, i)
-    a2 <- address(tmp)
+    a2 <- lobstr::obj_addr(tmp)
     if (!silent) { print(paste0(a1, " --> ", a2)) } 
   }
 }
@@ -721,9 +614,9 @@ With memory allocation
 f2 <- function(to = 3, silent = FALSE) {
   tmp <- vector(length = to, mode='numeric')
   for (i in 1:to) {
-    a1 <- address(tmp)
+    a1 <- lobstr::obj_addr(tmp)
     tmp[i] <- i
-    a2 <- address(tmp)
+    a2 <- lobstr::obj_addr(tmp)
     if(!silent) { print(paste0(a1, " --> ", a2)) }
   }
 }
@@ -745,7 +638,49 @@ benchmrk <- microbenchmark(f1(to = 1e3, silent = T),
 ggplot2::autoplot(benchmrk)
 ```
 
-## GPU
+## Function vectorization &mdash; the problem
+
+```{r is_a_droid}
+#| error: true
+is_a_droid <- function(x) {
+  droids <- c("2-1B", "4-LOM", "8D8", "0-0-0", "AP-5", "AZI-3", "Mister Bones", "BB-8", "BB-9E", "BD-1", "BT-1", "C1-10P", "C-3PO", "R2-D2")
+  if (x %in% droids) {
+    return(T)
+  } else {
+    return(F)
+  }
+}
+
+test <- c("Anakin", "Vader", "R2-D2", "AZI-3", "Luke")
+is_a_droid(test)
+```
+
+## Function vectorization &mdash; possible solution(s)
+
+The `base::Vectorize` way:
+
+```{r vec_is_a_droid}
+vectorized_is_a_droid <- base::Vectorize(is_a_droid, vectorize.args = c("x"))
+vectorized_is_a_droid(test)
+```
+
+. . .
+
+`vapply` way:
+
+```{r}
+vapply(test, is_a_droid, FUN.VALUE = TRUE) # value type-safe sapply
+```
+
+. . .
+
+`purrr` way:
+
+```{r}
+purrr::map(test, is_a_droid) %>% unlist()
+```
+
+## GPU with `gpuR`
 
 ```{r gpu_R}
 #| cache: true
@@ -780,21 +715,16 @@ ggplot2::autoplot(bch)
 
 ![](assets/gpu.webp)
 
-## Parallelization using package `parallel`
+## Parallel execution using `future`
+```{r}
+future::plan('multisession')
 
-Easiest to parallelize is `lapply`:
-
-```{r parallel_lapply}
-result <- lapply(1:2, function(x) { c(x, x^2, x^3) })
-result
-```
-
-```{r parallellized}
-library(parallel)
-num_cores <- detectCores() - 1
-cl <- makeCluster(num_cores) # Init cluster
-parLapply(cl, 1:2, function(x) { c(x, x^2, x^3)} )
-stopCluster(cl)
+benchmark <- microbenchmark::microbenchmark(
+  future::future(fun_fill_loop(n = 1e4, "runif")),
+  fun_fill_loop(n = 1e4, "runif"),
+  times = 10L
+)
+ggplot2::autoplot(benchmark)
 ```
 
 ## {background-image="/assets/images/network.svg"}

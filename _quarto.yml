@@ -6,7 +6,6 @@ project:
     - "*.md"
     - "!slides/quarto/sample/*.qmd"
     - "!slides/ai/*.qmd"
-    - "!slides/debugging/*.qmd"
     - "!labs/debugging/*.qmd"
     - "!slides/oop/*.qmd"
     - "!labs/oop/*.qmd"
