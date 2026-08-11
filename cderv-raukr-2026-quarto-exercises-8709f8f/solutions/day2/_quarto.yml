@@ -1,0 +1,22 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Penguin Lab"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: analysis.qmd
+        text: Analysis
+      - href: my-report.qmd
+        text: My report
+
+format:
+  html:
+    # Later theme layers win, so apply the brand after cosmo.
+    theme: [cosmo, brand]
+
+execute:
+  freeze: auto

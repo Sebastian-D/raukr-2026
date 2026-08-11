@@ -1,0 +1,42 @@
+---
+title: "Analysis"
+---
+
+```{r}
+#| label: setup
+#| message: false
+library(dplyr)
+library(ggplot2)
+library(ggokabeito)   # color-blind-safe (Okabe-Ito) scale
+data(penguins)
+penguins <- penguins |> filter(!is.na(bill_len), !is.na(bill_dep), !is.na(body_mass))
+```
+
+## Body mass by species
+
+```{r}
+#| label: fig-mass
+#| fig-cap: "Body mass by species."
+#| fig-alt: "Boxplot of penguin body mass in grams by species. Gentoo is the heaviest, Adelie and Chinstrap overlap."
+ggplot(penguins, aes(species, body_mass, fill = species)) +
+  geom_boxplot(show.legend = FALSE) +
+  scale_fill_okabe_ito() +
+  labs(x = NULL, y = "Body mass (g)")
+```
+
+@fig-mass shows that Gentoo penguins are clearly the heaviest of the three species.
+
+## Mean measurements
+
+```{r}
+#| label: tbl-means
+#| tbl-cap: "Mean measurements by species."
+penguins |>
+  summarise(
+    bill_len = mean(bill_len),
+    bill_dep = mean(bill_dep),
+    body_mass = mean(body_mass),
+    .by = species
+  ) |>
+  knitr::kable(digits = 1)
+```

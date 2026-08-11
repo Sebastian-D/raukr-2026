@@ -1,0 +1,115 @@
+
+
+Fri Aug  7 16:49:26 2026
+Command line: TestDisk
+
+TestDisk 7.2, Data Recovery Utility, February 2024
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Darwin, kernel 25.5.0 (Darwin Kernel Version 25.5.0: Tue Jun  9 22:26:15 PDT 2026; root:xnu-12377.121.10~1/RELEASE_ARM64_T6031) arm64
+Compiler: GCC 4.2
+ext2fs lib: none, ntfs lib: none, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.0
+Hard disk list
+Disk /dev/disk4 - 4026 MB / 3840 MiB - 7864320 sectors, sector size=512
+Disk /dev/disk5 - 4026 MB / 3840 MiB - 7864320 sectors (RO), sector size=512
+Disk /dev/rdisk1 - 524 MB / 500 MiB - 128000 sectors (RO), sector size=4096
+Disk /dev/rdisk4 - 4026 MB / 3840 MiB - 7864320 sectors, sector size=512
+Disk /dev/rdisk5 - 4026 MB / 3840 MiB - 7864320 sectors (RO), sector size=512
+
+Partition table type defaults to EFI GPT
+Media is opened in read-only.
+Disk /dev/disk5 - 4026 MB / 3840 MiB (RO)
+Partition table type: EFI GPT
+
+Analyse Disk /dev/disk5 - 4026 MB / 3840 MiB - 7864320 sectors (RO)
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+Current partition structure:
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+
+search_part()
+Disk /dev/disk5 - 4026 MB / 3840 MiB - 7864320 sectors (RO)
+
+Results
+Can't open backup.log file: No such file or directory
+interface_load
+
+interface_write()
+ 
+No partition found or selected for recovery
+simulate write!
+Partition table type defaults to EFI GPT
+Partition table type defaults to EFI GPT
+Media is opened in read-only.
+Partition table type defaults to EFI GPT
+Disk /dev/disk4 - 4026 MB / 3840 MiB
+Partition table type: EFI GPT
+
+Analyse Disk /dev/disk4 - 4026 MB / 3840 MiB - 7864320 sectors
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+Current partition structure:
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+
+search_part()
+Disk /dev/disk4 - 4026 MB / 3840 MiB - 7864320 sectors
+SIGINT detected! PhotoRec has been killed.
+Search for partition aborted
+
+Results
+
+interface_write()
+ 
+No partition found or selected for recovery
+
+interface_write()
+ 
+No partition found or selected for recovery
+simulate write!
+
+Interface Advanced
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+
+Analyse Disk /dev/disk4 - 4026 MB / 3840 MiB - 7864320 sectors
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+Current partition structure:
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+
+search_part()
+Disk /dev/disk4 - 4026 MB / 3840 MiB - 7864320 sectors
+Search for partition aborted
+
+Results
+
+interface_write()
+ 
+No partition found or selected for recovery
+simulate write!
+Partition table type defaults to EFI GPT
+Disk /dev/rdisk4 - 4026 MB / 3840 MiB
+Partition table type: EFI GPT
+
+Analyse Disk /dev/rdisk4 - 4026 MB / 3840 MiB - 7864320 sectors
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+Current partition structure:
+Bad GPT partition, invalid signature.
+Trying alternate GPT
+Bad GPT partition, invalid signature.
+
+search_part()
+Disk /dev/rdisk4 - 4026 MB / 3840 MiB - 7864320 sectors
+SIGINT detected! PhotoRec has been killed.

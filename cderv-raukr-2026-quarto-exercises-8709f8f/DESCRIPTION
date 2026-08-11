@@ -1,0 +1,20 @@
+Package: raukrquartoexercises
+Type: Project
+Title: RaukR 2026 Quarto Exercise Dependencies
+Version: 0.0.0.9000
+Description: Declares the R packages required to render the RaukR 2026
+    Quarto exercises.
+Depends: R (>= 4.5)
+Imports:
+    knitr,
+    rmarkdown,
+    ggplot2,
+    dplyr,
+    gt,
+    ggokabeito,
+    brand.yml,
+    ggrepel,
+    prismatic
+SystemRequirements: Quarto (>= 1.9.0)
+Encoding: UTF-8
+Language: en

@@ -1,0 +1,154 @@
+---
+title: "Bill shape distinguishes Antarctic penguin species"
+subtitle: "The Day-1 result — one source, a branded Typst PDF"
+author:
+  - name: Christophe Dervieux
+    affiliation: Posit, PBC
+date: last-modified
+bibliography: references.bib
+csl: apa.csl
+citeproc: true
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 2cm
+      y: 2.5cm
+    toc: true
+    number-sections: true
+    linestretch: 1.4
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+library(gt)
+library(brand.yml)
+library(prismatic)
+
+brand <- read_brand_yml()
+pal <- function(x) brand_color_pluck(brand, x)
+# clr_darken returns an alpha-channel hex (#RRGGBBAA). Truncate to #RRGGBB.
+tint <- function(x, f) substr(as.character(clr_darken(pal(x), f)), 1, 7)
+
+brand_style <- function(t) {
+  t |>
+    theme_brand_gt(brand) |>
+    opt_table_font(font = "Albert Sans") |>
+    opt_row_striping() |>
+    tab_style(
+      style = list(cell_fill(color = pal("teal_lighter")),
+                   cell_text(weight = "bold", color = pal("foreground"))),
+      locations = cells_title(groups = "title")
+    ) |>
+    tab_style(
+      style = list(cell_fill(color = pal("primary")),
+                   cell_text(color = pal("background"), weight = "bold")),
+      locations = cells_column_labels()
+    ) |>
+    tab_options(
+      row.striping.background_color     = pal("teal_lighter"),
+      table_body.hlines.color           = tint("teal_lighter", 0.12),
+      table.border.top.color            = pal("primary"),
+      table.border.top.width            = px(2),
+      table.border.bottom.color         = pal("primary"),
+      table.border.bottom.width         = px(2),
+      column_labels.border.bottom.color = pal("primary"),
+      column_labels.border.bottom.width = px(2),
+      heading.align                     = "left"
+    )
+}
+
+data(penguins)
+penguins <- penguins |> filter(!is.na(bill_len), !is.na(bill_dep), !is.na(body_mass))
+```
+
+# Introduction
+
+The base-R `penguins` dataset records body measurements for `r nrow(penguins)` penguins of three
+species collected at Palmer Station, Antarctica [@gorman2014]. It reached the R community first
+through the **palmerpenguins** package [@horst2020]. Here we ask a simple question: **does bill
+shape tell the species apart?** We render the answer as a branded PDF with **Typst**, a modern
+typesetting system bundled with Quarto that does not require LaTeX.
+
+# Species at a glance
+
+```{r}
+#| label: tbl-species
+summary_tbl <- penguins |>
+  summarise(
+    n = n(),
+    bill_len = mean(bill_len),
+    bill_dep = mean(bill_dep),
+    body_mass = mean(body_mass),
+    .by = species
+  )
+
+summary_tbl |>
+  gt() |>
+  tab_header(
+    title = "Penguins of the Palmer Archipelago",
+    subtitle = "Mean measurements per species"
+  ) |>
+  tab_spanner(label = md("**Bill (mm)**"), columns = c(bill_len, bill_dep)) |>
+  cols_label(
+    species = "Species", n = "N",
+    bill_len = "Length", bill_dep = "Depth", body_mass = "Body mass (g)"
+  ) |>
+  fmt_number(columns = c(bill_len, bill_dep), decimals = 1) |>
+  fmt_number(columns = body_mass, decimals = 0, sep_mark = " ") |>
+  brand_style()
+```
+
+Of the three species, `r summary_tbl$species[which.max(summary_tbl$body_mass)]` has the
+`#highlight(fill: rgb("#D1E5E6"))[highest mean body mass]`{=typst}
+(`r format(round(max(summary_tbl$body_mass)), big.mark = " ")` g).
+
+# Bill length versus depth
+
+```{r}
+#| label: fig-bill
+#| fig-cap: "Bill length versus depth by species. The single heaviest penguin is labeled."
+#| fig-alt: >-
+#|   Scatter plot of bill depth against bill length for penguins of three species, each drawn in a
+#|   distinct teal shade and point shape. The three species form separate clusters. The single
+#|   heaviest penguin in the dataset is highlighted and labeled with its species.
+heaviest <- penguins |> slice_max(body_mass, n = 1)
+
+ggplot(penguins, aes(x = bill_len, y = bill_dep, color = species, shape = species)) +
+  geom_point(alpha = 0.9, size = 2) +
+  geom_text_repel(
+    data = heaviest,
+    aes(label = paste0(species, " · ", body_mass, " g")),
+    color = pal("foreground"), fontface = "bold",
+    size = 3, min.segment.length = 0, show.legend = FALSE
+  ) +
+  scale_color_manual(values = c(
+    "Adelie"    = pal("code_blue"),   # dark
+    "Chinstrap" = pal("primary"),     # mid teal
+    "Gentoo"    = pal("teal_light")   # light teal
+  )) +
+  labs(x = "Bill length (mm)", y = "Bill depth (mm)",
+       color = "Species", shape = "Species") +
+  theme_minimal(base_size = 12) +
+  theme_brand_ggplot2(brand)
+```
+
+The three species separate cleanly in bill shape. This is the same figure from the HTML report, now
+shown in the branded PDF.
+
+# Conclusion
+
+One `.qmd`, one `_brand.yml`, and `format: typst` give a typeset document with citations. They apply
+the RaukR typography and palette to the document, tables, and figures.
+
+## References {.unnumbered}
+
+::: {#refs}
+:::
