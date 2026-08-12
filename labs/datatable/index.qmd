@@ -23,7 +23,10 @@ library(readr)        # read_tsv(), for the file-reading benchmark
 library(bench)        # benchmarking
 library(ggplot2)      # benchmark plots
 theme_set(theme_minimal())
-setDTthreads(percent = 100)   # use all cores; check with getDTthreads()
+
+# data.table is multi-threaded and picks a sensible number of threads by default
+# (half the logical CPUs). getDTthreads() reports what it will use.
+getDTthreads()
 ```
 
 ## Introduction
@@ -438,8 +441,9 @@ the binding constraint, that difference decides whether the job runs at all.
 
 Time is less stable. `data.table` spreads grouping across cores, while base R and
 `dplyr` do this work on a single core -- so the time ranking depends on the
-machine: how many cores it has, how fast one core is, and which package versions
-are installed. Expect your own numbers to differ from those above, possibly in a
+machine: how many cores it has, how fast one core is, how many threads
+`data.table` is actually using (see `getDTthreads()` above), and which package
+versions are installed. Expect your own numbers to differ from those above, possibly in a
 different order.
 
 That is why we measure rather than assert: which tool wins depends on the
