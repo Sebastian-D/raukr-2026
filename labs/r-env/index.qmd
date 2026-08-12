@@ -40,6 +40,8 @@ Initialise `renv` in your project and inspect what it creates.
 renv::init()
 ```
 
+Remember to restart the R session after calling `renv::init()` to ensure the private library is used.
+
 **Questions:**
 
 1. Which files and folders were created?
@@ -87,6 +89,8 @@ Snapshot the project to update the lock file.
 ::: {.callout-note collapse="true"}
 
 #### Solution
+
+This may not look exactly the same for everyone depending on your local setup. If you already had `palmerpenguins` installed, the first `renv::status()` may not report it as missing. 
 
 ```{r}
 #| eval: false

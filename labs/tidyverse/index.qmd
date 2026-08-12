@@ -15,9 +15,6 @@ library(eulerr)
 #remotes::install_github("rstudio/EDAWR")
 library(EDAWR)
 library(here)
-library(tidyverse)
-#BiocManager::install("ShortRead")
-library(ShortRead)
 library(lubridate)
 library(microbenchmark)
 ```
@@ -36,9 +33,11 @@ Datasets are available [here](https://www.dropbox.com/s/dxxt959g6iefeaf/tidyvers
 
 ### Pipes
 
+Use the base R pipe `|>` throughout the lab. We use a few magrittr pipes (`%T>%` and `%$%`) only in exercises that specifically demonstrate side effects or exposition.
+
 #### Chunk 1
 
-Rewrite the following code chunks as pipes (Load package `magrittr` because `tidyverse` supports only the `%>%` pipe!):
+Rewrite the following code chunks as pipes:
 
 ```{r}
 #| eval: false
@@ -52,9 +51,9 @@ This is our solution:
 ```{r}
 #| code-fold: true
 #| eval: false
-mtcars %>%
-  select(c(1:4, 10)) %>%
-  filter(disp > mean(disp)) %>%
+mtcars |> 
+  select(c(1:4, 10)) |>
+  filter(disp > mean(disp)) |>
   colMeans() -> my_cars
 ```
 
@@ -63,6 +62,14 @@ What is wrong with our solution?
 ::: {.callout-tip collapse="true"}
 - It is better to have the result assigned on the left hand side: result <- expression. In this case the expression is the **whole** pipe.
 - Our 'expression -> result' is correct but can easily be missed when reading the code.
+- Even better would be to replace `colMeans` with `summarise` as the former one drops the tibble structure.
+```{r}
+#| eval: false
+my_cars <- mtcars |> 
+  select(1:4, 10) |> 
+  filter(disp > mean(disp)) |> 
+  summarise(across(everything(), mean))
+```
 :::
 
 #### Chunk 2
@@ -78,7 +85,15 @@ colSums(cars)
 ```{r}
 #| code-fold: true
 #| eval: false
-cars %T>% {print(summary(.))} %>% colSums()
+cars %T>% {print(summary(.))} |> colSums()
+```
+There is also a way of solving this using so-called anonymous function `\(x)`, that is a function without a name (anonymous) that is used only once:
+```{r}
+#| code-fold: true
+#| eval: false
+cars |> 
+  {\(x) {print(summary(x)); x}}() |> 
+  colSums()
 ```
 
 #### Chunk 3
@@ -94,6 +109,10 @@ cor(mtcars$gear, mtcars$mpg)
 #| code-fold: true
 #| eval: false
 mtcars %$% cor(gear, mpg)
+# or using modern tidyverse syntax and pull():
+mtcars |> 
+  summarise(cor = cor(gear, mpg)) |> 
+  pull(cor)
 ```
 
 ```{r}
@@ -104,7 +123,7 @@ cor(mtcars)
 ```{r}
 #| code-fold: true
 #| eval: false
-mtcars %>% cor()
+mtcars |> cor()
 ```
 
 #### Chunk 4
@@ -164,22 +183,22 @@ dim_summary <- function(nrows, ncols) {
   print(paste0('Matrix M has: ', nrows, ' rows and ', ncols, ' columns.'))
 }
 
-M <- rnorm(16) %>%
+M <- rnorm(16) |>
   matrix(ncol = 4) %T>%
-  plot() %>%
+  plot() |>
   `+`(., sample(.)) %T>%
   {dim_summary(nrow(.), ncol(.))}
 
-N <- rnorm(16) %>%
-  matrix(ncol = 4) %>%
+N <- rnorm(16) |>
+  matrix(ncol = 4) |>
   `colnames<-`(letters[1:4]) %T>%
-  summary() %>% `+`(., 0)
+  summary() |> `+`(., 0)
 
-P <- M %>%
+P <- M |>
   `%x%`(., t(N)) %T>%
-  heatmap() %>%
-  `colnames<-`(letters[1:dim(.)[2]]) %>%
-  as_data_frame() %$%
+  heatmap() |>
+  `colnames<-`(letters[1:dim(.)[2]]) |>
+  as_tibble() %$%
   cor(a, i)
 ```
 
@@ -205,7 +224,7 @@ P <- M %>%
 #| eval: false
 
 # 1
-vehicles <- mtcars %>% as_tibble()
+vehicles <- mtcars |> as_tibble()
 
 # 2
 vehicles[['cyl']]
@@ -215,14 +234,14 @@ vehicles$cyl
 # 3
 vehicles %T>%
   {print(.[['cyl']])} %T>%
-  {print(.[[2]])} %>%
+  {print(.[[2]])} |>
   .$cyl
 
 # 4
 vehicles
 
 # 5
-vehicles %>% head(n = 30)
+vehicles |> head(n = 30)
 
 # 6
 options(tibble.print_min = 15, tibble.print_max = 30)
@@ -363,20 +382,20 @@ library('nycflights13')
 
 flights
 
-flights %>% select(-carrier, -arr_time)
+flights |> select(-carrier, -arr_time)
 
-flights %>% select(carrier, tailnum, origin)
+flights |> select(carrier, tailnum, origin)
 
-flights %>% select(-(day:carrier))
+flights |> select(-(day:carrier))
 
-flights %>% select(contains('arr_')) # or
+flights |> select(contains('arr_')) # or
 
 v <- c("arr_time", "sched_arr_time", "arr_delay")
-flights %>% select(v) # ambiguous, or better
-flights %>% select(all_of(v))
+flights |> select(v) # ambiguous, or better
+flights |> select(all_of(v))
 
-flights %>% select(destination = dest)
-flights %>% rename(destination = dest)
+flights |> select(destination = dest)
+flights |> rename(destination = dest)
 # select keeps only the renamed column while rename returns the whole dataset
 # with the column renamed.
 ```
@@ -388,7 +407,7 @@ flights %>% rename(destination = dest)
 ```{r}
 #| eval: false
 #| code-fold: true
-flights %>% filter(arr_delay < 0)
+flights |> filter(arr_delay < 0)
 ```
 
 - Filter the flights that had departure delay between 10 and 33.
@@ -396,8 +415,8 @@ flights %>% filter(arr_delay < 0)
 ```{r}
 #| eval: false
 #| code-fold: true
-flights %>% filter(dep_delay >= 10, dep_delay <= 33) # or
-flights %>% filter(between(dep_delay, 10, 33))
+flights |> filter(dep_delay >= 10, dep_delay <= 33) # or
+flights |> filter(between(dep_delay, 10, 33))
 ```
 
 - Fish out all flights with unknown arrival time.
@@ -405,7 +424,7 @@ flights %>% filter(between(dep_delay, 10, 33))
 ```{r}
 #| eval: false
 #| code-fold: true
-flights %>% filter(is.na(arr_time))
+flights |> filter(is.na(arr_time))
 ```
 
 - Retrieve rows 1234:1258 (hint: `?slice`).
@@ -413,7 +432,7 @@ flights %>% filter(is.na(arr_time))
 ```{r}
 #| eval: false
 #| code-fold: true
-flights %>% slice(1234:1258)
+flights |> slice(1234:1258)
 ```
 
 - Sample (`?sample_n()`) 3 random flights per day in March.
@@ -421,8 +440,8 @@ flights %>% slice(1234:1258)
 ```{r}
 #| eval: false
 #| code-fold: true
-nycflights13::flights %>% filter(month == 3) %>%
-  group_by(day) %>%
+nycflights13::flights |> filter(month == 3) |>
+  group_by(day) |>
   slice_sample(n = 3)
 ```
 
@@ -431,9 +450,9 @@ nycflights13::flights %>% filter(month == 3) %>%
 ```{r}
 #| eval: false
 #| code-fold: true
-nycflights13::flights %>%
-  filter(month == 1) %>%
-  group_by(carrier) %>%
+nycflights13::flights |>
+  filter(month == 1) |>
+  group_by(carrier) |>
   slice_max(dep_delay, n = 5)
 ```
 
@@ -442,14 +461,14 @@ nycflights13::flights %>%
 ```{r}
 #| eval: false
 #| code-fold: true
-nycflights13::flights %>%
-  select(origin, dest) %>%
-  unique() %>%
+nycflights13::flights |>
+  select(origin, dest) |>
+  unique() |>
   arrange(dest)
 
-nycflights13::flights %>%
-  mutate(route = paste(origin, dest, sep="-")) %>%
-  select(route) %>%
+nycflights13::flights |>
+  mutate(route = paste(origin, dest, sep="-")) |>
+  select(route) |>
   unique()
 ```
 
@@ -458,75 +477,52 @@ nycflights13::flights %>%
 ```{r}
 #| eval: false
 #| code-fold: true
-nycflights13::flights %>%
-  select(origin, dest) %>%
-  distinct() %>%
+nycflights13::flights |>
+  distinct(origin, dest) |>
   arrange(dest)
-# or
-flights %>%
-  mutate(route = paste(origin, dest, sep="-"))  %>%
-  distinct(route)
 ```
 
-- Is `unique()` more efficient than `distinct()`?
-
-```{r}
-#| eval: false
-#| code-fold: true
-microbenchmark::microbenchmark(
-   unique = nycflights13::flights %>%
-     select(origin, dest) %>%
-     unique() %>%
-     arrange(dest),
-   distinct = nycflights13::flights %>%
-     distinct(origin, dest) %>%
-     arrange(dest),
-   times = 10L
-)
-
-# Distinct is faster.
-```
-
-### Task 3: Trans(mutations)
+### Task 3: Trans(mutations) and `pick()`s
 
 - `air_time` is the amount of time in minutes spent in the air. Add a new column `air_spd` that will contain aircraft's airspeed in mph.
 - As above, but keep only the new `air_spd` variable.
 - Use `rownames_to_column()` on `mtcars` to add car model as an extra column.
+- Use `pick()` on `flights` to select specific columns beginning with "air" and the "distance" column
 
 ```{r}
 #| code-fold: true
 #| eval: false
-flights %>% mutate(air_spd = distance/(air_time / 60))
-flights %>% transmute(air_spd = distance/(air_time / 60))
-mtcars %>% rownames_to_column('model')
+flights |> mutate(air_spd = distance/(air_time / 60))
+flights |> transmute(air_spd = distance/(air_time / 60))
+mtcars |> rownames_to_column('model')
+flights |> mutate(air_spd = distance/(air_time / 60)) |> select(pick(starts_with("air")), distance)
 ```
 
 ### Task 4: Groups and counts
 
-- Use `group_by()`, `summarise()` and `n()` to see how many planes were delayed (departure) every month.
+- Use `.by` or `group_by()`, `summarise()` and `n()` to see how many planes were delayed (departure) every month.
 
 ```{r}
 #| code-fold: true
 #| eval: false
-flights %>%
-  filter(dep_delay > 0) %>%
-  group_by(month) %>%
+flights |>
+  filter(dep_delay > 0) |>
+  group_by(month) |>
   summarise(num_dep_delayed = n())
+# or even better:
+flights |>
+  filter(dep_delay > 0) |>
+  summarise(num_dep_delayed = n(), .by = month)
 ```
 
-- Do the same but using `tally()` and `count()`.
+- Do the same but using `count()`.
 
 ```{r}
 #| code-fold: true
 #| eval: false
-flights %>%
-  filter(dep_delay > 0) %>%
-  group_by(month) %>%
-  tally()
-
-flights %>%
-  filter(dep_delay > 0) %>%
-  count(month)
+flights |>
+  filter(dep_delay > 0) |>
+  count(month, name = "num_dep_delayed")
 ```
 
 - What was the mean `dep_delay` per month?
@@ -534,9 +530,9 @@ flights %>%
 ```{r}
 #| code-fold: true
 #| eval: false
-flights %>%
-  group_by(month) %>%
-  summarise(mean_dep_delay = mean(dep_delay, na.rm = T))
+flights |>
+  summarise(mean_dep_delay = mean(dep_delay, na.rm = T), 
+            .by = month)
 ```
 
 - Count the number of incoming delayed flights from each unique origin and sort origins by this count (descending).
@@ -544,22 +540,10 @@ flights %>%
 ```{r}
 #| code-fold: true
 #| eval: false
-flights %>%
-  filter(arr_delay > 0) %>%
-  group_by(origin) %>%
-  summarise(cnt = n()) %>%
+flights |>
+  filter(arr_delay > 0) |>
+  summarise(cnt = n(), .by = origin) |>
   arrange(desc(cnt))
-```
-
-- Do the same using `tally()`
-
-```{r}
-#| code-fold: true
-#| eval: false
-flights %>%
-  filter(arr_delay > 0) %>%
-  group_by(origin) %>%
-  tally(sort = T)
 ```
 
 - Use `summarise()` to sum total `dep_delay` per month in hours.
@@ -567,18 +551,18 @@ flights %>%
 ```{r}
 #| code-fold: true
 #| eval: false
-flights %>%
- group_by(month) %>%
- summarize(tot_dep_delay = sum(dep_delay/60, na.rm = T))
+flights |>
+ summarise(tot_dep_delay = sum(dep_delay/60, na.rm = T), 
+           .by = month)
 ```
 
-- Use the `wt` parameter of `count()` (works with `tally()` too) to achieve the same.
+- Use the `wt` parameter of `count()` to achieve the same.
 
 ```{r}
 #| code-fold: true
 #| eval: false
-flights %>%
- group_by(month) %>%
+flights |>
+ group_by(month) |>
  count(wt = dep_delay/60)
 ```
 
@@ -587,8 +571,8 @@ flights %>%
 ```{r}
 #| eval: false
 #| code-fold: true
-flights %>%
-    group_by(carrier) %>%
+flights |>
+    group_by(carrier) |>
     group_size()
 ```
 
@@ -597,8 +581,8 @@ flights %>%
 ```{r}
 #| eval: false
 #| code-fold: true
-flights %>%
-    group_by(carrier) %>%
+flights |>
+    group_by(carrier) |>
     n_groups()
 ```
 
@@ -609,12 +593,12 @@ Depending on the version of `dplyr`, you may or may need to use the `ungroup()` 
 
 ```{r}
 #| eval: false
-flights %>%
-  group_by(origin) %>%
-  mutate(mean_delay_orig = (mean(dep_delay, na.rm = T) + mean(arr_delay, na.rm = T)) / 2) %>%
-  ungroup() %>%
-  group_by(carrier) %>%
-  mutate(mean_delay_carr = (mean(dep_delay, na.rm = T) + mean(arr_delay, na.rm = T)) / 2) %>%
+flights |>
+  group_by(origin) |>
+  mutate(mean_delay_orig = (mean(dep_delay, na.rm = T) + mean(arr_delay, na.rm = T)) / 2) |>
+  ungroup() |>
+  group_by(carrier) |>
+  mutate(mean_delay_carr = (mean(dep_delay, na.rm = T) + mean(arr_delay, na.rm = T)) / 2) |>
   select(origin, carrier, mean_delay_orig, mean_delay_carr)
 ```
 :::
@@ -659,6 +643,8 @@ plot(fit1, fills=c('grey', 'white', 'grey'), labels=c('set1', 'set2'))
 ```{r}
 #| code-fold: true
 #| eval: false
+left_join(set1, set2, by = join_by('id'))
+# or the old but still valid way:
 left_join(set1, set2, by = 'id')
 ```
 
@@ -672,7 +658,7 @@ plot(fit1, fills=c('white', 'grey', 'grey'), labels=c('set1', 'set2'))
 ```{r}
 #| code-fold: true
 #| eval: false
-right_join(set1, set2, by = 'id')
+right_join(set1, set2, by = join_by('id'))
 ```
 
 ```{r}
@@ -685,8 +671,8 @@ plot(fit1, fills=c('white', 'white', 'grey'), labels=c('set1', 'set2'))
 ```{r}
 #| code-fold: true
 #| eval: false
-inner_join(set1, set2, by = 'id') # or
-semi_join(set1, set2, by = 'id') # semi_join removes duplicates in x
+inner_join(set1, set2, by = join_by('id')) # or
+semi_join(set1, set2, by = join_by('id')) # semi_join removes duplicates in x
 # and also returns only columns from x.
 ```
 
@@ -730,7 +716,7 @@ library(EDAWR)
 ```{r}
 #| code-fold: true
 #| eval: false
-tidy_cases <- cases %>%
+tidy_cases <- cases |>
   pivot_longer(-country, names_to = "year", values_to = "count")
 ```
 
@@ -739,7 +725,7 @@ tidy_cases <- cases %>%
 ```{r}
 #| code-fold: true
 #| eval: false
-tidy_pollution <- pollution %>%
+tidy_pollution <- pollution |>
   pivot_wider(city, names_from = size, values_from = amount)
 ```
 
@@ -748,7 +734,7 @@ tidy_pollution <- pollution %>%
 ```{r}
 #| code-fold: true
 #| eval: false
-tidy_storms <- storms %>%
+tidy_storms <- storms |>
   separate(col = date,
            into = c("year", "month", "day"),
            sep = "-")
@@ -759,370 +745,7 @@ tidy_storms <- storms %>%
 ```{r}
 #| code-fold: true
 #| eval: false
-tidy_storms %>% unite(col = "date", 4:6, sep = "/")
-```
-
-## Nanopore Channel Activity Challenge
-
-### Introduction
-
-You will be given a `fastq` file coming from Oxford Nanopore MinION sequencer This file contains test reads from the chicken genome. The flow-cell used here has 512 channels, each channel consists of 4 pores and only one pore is active at a time. Once your sequence gets stuck for some reason, the device will attempt to remove it from the pore by playing with reversing polarity on that pore. If this was successful, the pore will be re-used. Your task will be to visualize reading events from the meta-data in the `fastq` dataset and to see how each and every channel behaved. Also, you will plot the distribution of reading times.
-
-Datasets are available [here](https://www.dropbox.com/s/dxxt959g6iefeaf/tidyverse_lab_data.zip?dl=0).
-
-### Preparations
-
-First, we will need to load the necessary libraries. I will give you a hint -- you need the following libraries:
-
-- `here` -- not necessary, but it is an elegant way of reading the data locally from the project folder,
-- `tidyverse` -- well, quite obvious why,
-- `ShortRead` from Bioconductor -- to deal with short reads in `fastq`,
-- `lubridate` -- to figure out reading times.
-
-```{r loading_libraries}
-library(here)
-library(tidyverse)
-#BiocManager::install("ShortRead")
-library(ShortRead)
-library(lubridate)
-```
-
-### Reading data
-
-Now, let's read the fastq data. Check `ShortRead` documentation to see how to read our `fastq` file. Also, try to use package `here`. If you write: `data <- here::here('data/my.fastq')`, the `my.fastq` file will be read from the `data` folder which is a sub folder of your project root, i.e. the folder where your r script is. It is a good practice and also prevents [Jenny Bryan from coming to your office and setting your computer on fire](https://github.com/jennybc/here_here).
-
-Now think a bit, to plot reading events, do we need all the data in the file or only some specific part? You may want to see some few first lines of the `fastq` to learn about the data structure.
-
-Download fastq file.
-
-```{r}
-raw_data <- "assets/FUL1_fastqs_GRID2.fastq"
-
-# if file doesn't exist, download and uncompress it
-if (!file.exists(raw_data)) {
-  library(googledrive)
-  drive_deauth()
-  drive_user()
-  drive_download(
-      drive_get(as_id("1FCKf19JtiI-OJMKLKHfsC2X2TMuwddzJ")),
-      path = "assets/FUL1_fastqs_GRID2.fastq.gz",
-      overwrite = TRUE
-  )
-  R.utils::gunzip("assets/FUL1_fastqs_GRID2.fastq.gz")
-}
-```
-
-Read fastq file.
-
-```{r read_data_fastq}
-f <- ShortRead::FastqFile(raw_data)
-rfq <- ShortRead::readFastq(f)
-headers <- rfq@id
-close(f)
-```
-
-### Extracting information you need
-
-In this step, we are extracting data from fastq headers of each and every read in the fastq file. Not super efficient and perhaps the slowest step of the whole analyses. Can you do it better than our example solution?
-
-Desired output: a table (tibble/data.frame) with reads as rows and meta-data as columns.
-
-::: {.callout-tip}
-We will use the `stringr` package for string manipulation. Use `str_split()` to explode string data into columns and `str_remove_all()` to get rid of unwanted characters.
-
-- To split string on a particular character, group of characters use `str_split`. Here we split on comma.
-
-```         
-text <- "This text is long, or not?"
-str_split(text, ',')
-```
-
-- To remove everything following a given character, e.g. comma:
-
-```         
-str_remove_all(text, ",.*")
-```
-
-```{r extract_headers}
-#| code-fold: true
-
-data <- dplyr::as_tibble(matrix(NA_character_, ncol = 6, nrow = length(headers)), .name_repair = 'minimal')
-colnames(data) <- c('id', 'run_id', 'sample_id', 'read', 'channel', 'start_time')
-for (i in 1:length(headers)) {
-  data[i,] <- toString(headers[[i]]) %>%
-    strsplit(' ') %>%
-    unlist() %>%
-    str_remove_all(".*=") %>% t()
-}
-```
-:::
-
-### Preparing tidy dataset
-
-Now, the fun part begins:
-
-- Add column `start_dttm` that represents start time for a given read as proper `datetime` object (read `lubridate` docs) and
-- Add column `chan` that is the proper numeric representation of the channel,
-- Group reads by channel,
-- Arrange them by time,
-- Add time to next read (NA if this was the last read) and
-- Sort by channel again.
-
-::: {.callout-tip}
-Read about `lead()`
-:::
-
-```{r process_data_1}
-#| code-fold: true
-data2 <- data %>%
-  mutate(start_dttm = as_datetime(start_time)) %>%
-  mutate(chan=as.numeric(channel)) %>%
-  group_by(chan) %>%
-  arrange(start_dttm) %>%
-  mutate(time_diff = lead(start_dttm) - start_dttm) %>%
-  arrange(chan)
-```
-
-### Plotting events per channel
-
-Here, we want to see what was happening in each channel over time. Plot the data you have just prepared so that:
-
-- Each point is the start of a new read,
-- Colour corresponds to the lag to the next read.
-
-Can you visualize this in a better way? Different geometry?
-
-```{r plot_events}
-#| code-fold: true
-ggplot(data2, mapping = aes(x = start_dttm,
-                            y = as.factor(chan),
-                            col = as.numeric(time_diff)
-                            )
-       ) +
-  geom_point(size = .5) +
-  theme_bw()
-```
-
-### Distribution of time intervals
-
-Now, we want to see how time-to-next-read is distributed. Since it has a veeeeery long right tail, I am cutting off everything above 200 seconds (just by eyeballing).
-
-- Plot time-to-next-read is distribution (you can use base-R `histogram`),
-- Can you find a better cutoff value?
-
-```{r time_to_next_1}
-#| code-fold: true
-# Show time-to-next read distribution
-# thr <- mean(data2$time_diff, na.rm = T) + 3 * sd(data2$time_diff, na.rm = T)
-tmp <- data2 %>%
-  ungroup() %>%
-  filter(time_diff < 200) %>%
-  select(time_diff)
-
-hist(as.numeric(tmp$time_diff), breaks = 1000, las=1)
-```
-
-## Species Identification Challenge
-
-In this challenge, your task will be to analyze species composition of some samples. The samples, were actual products containing parts of plants. DNA has been isolated form the samples and an amplicon metabarcoding was performed using two sets of primers: for the ITS1 and the ITS2 region. Each sample had 3 technical replicates. Your task will be to transform BLAST output to a tidy form suitable for further analyses or visualization.
-
-### Load necessary libraries
-
-We will obviously need `tidyverse`, we will also do some string manipulations with `stringr` also `here` package is good to have.
-
-```{r}
-library(tidyverse)
-library(stringr)
-library(here)
-```
-
-### Input variables
-
-Here, we will define our input variables. We need:
-
-- `file` that contains the path to the dataset,
-- `sample_name` is a string, the name of the sample you want to analyze,
-- `threshold` is an integer saying what is a the minimal number of replicates that have to contain an OTU in order to call it a true positive (TP),
-- `strict` a logical. If set to TRUE, only the OTUs deemed TP will be shown.
-
-Below we set some example values:
-
-```{r params}
-#| echo: false
-file <- here::here("labs/tidyverse/assets/blast_result.csv")
-sample_name <- 'SAMPLE12'
-threshold <- 1
-strict <- F
-```
-
-```         
-# Change the path to your project path, where your data is
-file <- here::here("docs/tidyverse_Marcin/lab/assets/blast_result.csv")
-sample_name <- 'SAMPLE12'
-threshold <- 1
-strict <- F
-```
-
-### Reading the data
-
-Now, you should read the data:
-
-```{r}
-#| code-fold: true
-species_orig <- read_csv(file, col_names = c("sample","its","replicate","OTU","size","hit","perc_ident","score","family","species")) %>%
-  select(-score)
-
-head(species_orig,n = 10)
-```
-
-As you see, the following information are included in the data:
-
-- `sample` is simply the name of the sample,
-- `its` is either ITS1 or ITS2 and tells which set of PCR primers has been used,
-- `replicate` contains information on which replicate the sequences come from,
-- `OTU` is a unique identifier of the so-called Operational Taxonomic Unit, an OTU often corresponds to one species but not always. Sometimes 2 OTUs represent the same species, sometimes 1 OTU consists of more than one species,
-- `size` is the number of reads that support that particular OTU,
-- `hit` is the BLAST hit identifier. The 4 top BLAST hits are reported per OTU,
-- `perc_identity` is the percentage identity of the sequence to the BLAST hit,
-- `family` is the identified plant family,
-- `species` is the identified plant species.
-
-### Number of replicates per species
-
-Create a new dataset `species` that contains an extra column `n_replicates`. The column contains number of replicates this particular species is present in. Do it per sample and its.
-
-```{r}
-#| code-fold: true
-species <- species_orig %>%
-  group_by(sample, its, species) %>%
-  mutate(n_replicates = n_distinct(replicate)) %>%
-  ungroup()
-
-head(species,n = 10)
-```
-
-### Filter out unwanted samples
-
-Now, your task is to filter out all but your `sample_name` samples from the dataset. Call the resulting dataset `my_sample`.
-
-```{r}
-#| code-fold: true
-my_sample <- species %>%
-  filter(sample == sample_name)
-```
-
-### Missing observations
-
-What happens if a set of primers failed to amplify or if one replicate was lost? Use `complete()` to make sure you have `NA` values in such cases.
-
-```{r}
-#| code-fold: true
-my_sample <- my_sample %>%
-  complete(its = c("ITS1", "ITS2"),
-           replicate = c("R1","R2","R3"))
-```
-
-### Sorting issue
-
-Look, the first sample in the table is `SAMPLE10`. Why not `SAMPLE1`? That's a sorting issue: if sorted as character, 10 will come before 1. WE have to fix this by adding trailing zero to the values in `OTU`. We do not expect more than 99 OTUs in a sample, so it is ok with only one trailing 0 (otherwise the 100th sample will spoil our sorting and come out like: SAMPLE100, SAMPLE01, SAMPLE10). We will need to use regular expression:
-
-- All values in the `OTU` column that follow pattern "OTU*digit*" we need to change to "OTU0*digit*". Regular expression that matches this is `OTU([0-9]$)` and it should be replaced by: `OTU0\\1`. Ask your TAs to explain this if you do not know much about regular expressions and pattern matching.
-
-```{r}
-my_sample <- my_sample %>%
-  mutate(OTU = str_replace(OTU,pattern = "OTU([0-9]$)",
-                          replacement = "OTU0\\1"))
-head(my_sample,n = 10)
-```
-
-### Supporting reads
-
-Sometimes, an OTU generates two or more top BLAST hits that come from the same species. We have decided to sum reads in such cases. Do it!
-
-```{r}
-#| code-fold: true
-my_sample <- my_sample %>%
-  ungroup() %>%
-  group_by(sample, its, replicate, OTU, species, n_replicates) %>%
-  summarise(n_reads = sum(size)) %>%
-  ungroup() %>%
-  group_by(its, species, OTU)
-
-head(my_sample,n=10)
-```
-
-### Within-OTU species diversity
-
-Now, we want to see how many identifications an OTU got. Implement this. Store the result in a new tibble `diversity`.
-
-```{r}
-#| code-fold: true
-diversity <- my_sample %>%
-  ungroup() %>%
-  group_by(its, replicate, OTU) %>%
-  summarise(n_species = n())
-
-head(diversity,n=10)
-```
-
-### Adding diversity data
-
-Add the `diversity` data to `my_sample` using appropriate `join` function. Also, remove the column with sample names since we are dealing with only one sample.
-
-```{r}
-#| code-fold: true
-my_sample <- my_sample %>%
-  left_join(diversity) %>%
-  select(-sample)
-
-head(my_sample,n=10)
-```
-
-- What columns did we join on in our example solution?
-
-### Visualising the data
-
-Can you think of a good way of visualizing the data? Think of:
-
-- Type of plot you want. The simpler the better?
-- Which variables you would like to visualize? We have chosen `ITS`, `replicate`, `n_reads`, `n_replicates`, `OTU`, `threshold`, `n_species` and `specie`. Well, pretty much all of them :-)
-- How do you represent variables: colors, shapes, separate plots, sizes?
-- What transformations do you need to apply before visualizing the data?
-
-Our example solution involves some `ggplot2` magics. But would base-R be good enough for this type of plot?
-
-```{r}
-#| echo: false
-#| fig-width: 9
-#| code-fold: true
-#| fig-cap: "Red -- only one species in the current OTU, blue -- identification above the threshold, grey -- identification below the threshold"
-
-strict <- F
-
-if (strict) {
-  my_sample <- my_sample %>% filter(n_replicates > threshold)
-}
-
-if (dim(my_sample)[1] > 0) {
-  sc <- scale_color_manual(values = c('tomato','slateblue'),
-                           limits=c(0, 1),
-                           labels=c('No', 'Yes')
-                           )
-  pl <- ggplot(my_sample,
-               mapping = aes(x = OTU, y = species, size = log(n_reads))) +
-               geom_point(data = (my_sample %>%
-                                    filter(n_replicates <= threshold & n_reads !=0)
-                                  ), color='lightgrey') +
-      geom_point(data=(my_sample %>% filter(n_replicates > threshold & n_reads !=0 & n_species > 1)), color='slateblue') +
-      geom_point(data=(my_sample %>% filter(n_replicates > threshold & n_reads !=0 & n_species<=1)), color='red') +
-      facet_wrap(facets = ~its + replicate, ncol = 6) +
-      scale_y_discrete(limits = rev(levels(as.factor(my_sample$species)))) +
-      theme_bw() +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1))
-} else {
-    pl <- NULL
-}
-pl
+tidy_storms |> unite(col = "date", 4:6, sep = "/")
 ```
 
 ## Wildlife Aircraft Strikes Challenge

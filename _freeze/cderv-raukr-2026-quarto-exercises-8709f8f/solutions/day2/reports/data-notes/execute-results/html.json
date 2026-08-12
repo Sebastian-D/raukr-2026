@@ -1,0 +1,15 @@
+{
+  "hash": "0b7d9c0f379499a06dad41690a6f0b8d",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Data notes\"\ndescription: \"Where the data comes from, and what is missing.\"\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\ndata(penguins)\n```\n:::\n\n\nThe data are included in base R as `datasets::penguins` (R ≥ 4.5), so there is nothing to download. It\nis the Palmer Station penguin survey, the same data used in the analysis page.\n\nHere is what is missing, by column:\n\n\n::: {#tbl-missing .cell tbl-cap='Missing values per measurement column.'}\n\n```{.r .cell-code}\npenguins |>\n  summarise(across(c(bill_len, bill_dep, body_mass), \\(x) sum(is.na(x)))) |>\n  knitr::kable()\n```\n\n::: {.cell-output-display}\n\n\n| bill_len| bill_dep| body_mass|\n|--------:|--------:|---------:|\n|        2|        2|         2|\n\n\n:::\n:::\n\n\nDropping incomplete rows removes only a few observations.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

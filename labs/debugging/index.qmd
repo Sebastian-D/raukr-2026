@@ -77,7 +77,7 @@ for (i in 0:length(input)) {
 
 ### Task: Debugger.
 
-Play with debugger as described in lecture slides.
+Play with debugger as described in lecture slides to get the feel of how does it work.
 
 ### Task: Floating-point Arithmetics.
 
@@ -86,8 +86,6 @@ Can you fix the code below so that it produces more reliable result?
 ::: {.callout-tip}
 Think in terms of system-specific representation $\epsilon$.
 :::
-
-Put the value of your double $\epsilon$ into [this spreadsheet](https://docs.google.com/spreadsheets/d/1_2tDeEkDVS06RkB437yBI1XEB5SUebtHWyxAf_aRJu4/edit?usp=sharing) (Debugging Lab sheet). Keep this spreadsheet open as you will be entering more values into this.
 
 ```{r}
 #| eval: false
@@ -127,8 +125,10 @@ is_equal(0.7, 0.8 - 0.1)
 
 ### Task: Filling A Large Matrix.
 
-Create a 10 000 x 10 000 matrix and fill it with random numbers (from 1 to 42), first row by row and later column by column. Use `proc.time` to see if there is any difference. Is the measurement reliable? Record the values you got in the same spreadsheet.
+Create a 10 000 x 10 000 matrix and fill it with random numbers (from 1 to 42), first row by row and later column by column. Use, e.g. `proc.time` or `microbenchmark` to see if there is any difference. Is the measurement reliable? 
 
+::: {.callout-tip collapse="true"}
+## Example Solution
 ```{r}
 #| eval: false
 #| cache: true
@@ -146,17 +146,18 @@ M <- matrix(sample(1:42, size = N, replace = T), nrow = sqrt(N), byrow = F)
 t2 <- proc.time()
 (t2 - t1)
 ```
+:::
 
 ### Task: Timing Reliability.
 
-In the lecture slides, you have seen how to time sampling from Normal Gaussian distribution:
+In the lecture slides, you have seen how to time sampling from the normal distribution:
 
 ```{r}
 #| eval: false
 system.time(rnorm(n = 10e6))
 ```
 
-Is such single measurement reliable? Run the code 100 times, plot and record the mean and the variance of the `elapsed` time. Put these values (elapsed.time mean and variance) into the same spreadsheet (Debugging Lab sheet).
+Is such single measurement reliable? Run the code 100 times, plot and record the mean and the variance of the `elapsed` time. 
 
 ::: {.callout-tip collapse="true"}
 
@@ -202,7 +203,9 @@ While `system.time` might be sufficient most of the time, there is also a packag
 
 Begin by installing the `microbenchmark` package.
 
-NOTE! We have noticed that for, e.g. M1 and M2 architectures on newer MacBooks it does not work well!
+::: {.callout-note}
+We have noticed that for, e.g. M1 and M2 architectures on MacBooks it does not work well!
+:::
 
 #### Checking System Time.
 
@@ -224,8 +227,6 @@ for (i in 1:100) {
 }
 boxplot(timing)
 ```
-
-Put the mean and the variance into the same spreadsheet (Debugging Lab sheet, Microbenchmark -- loop)
 
 ::: {.callout-tip collapse="true"}
 
@@ -250,13 +251,12 @@ boxplot(timing)
 
 #### Microtiming Precision.
 
-There is an experimental function in the `microbenchmark` package that helps the package estimate granularity and resolution of your particular timing subsystem. According to the documentation, *the function measures the overhead of timing a C function call rounds times and returns all non-zero timings observed.*
+There is a function in the `microbenchmark` package that helps the package estimate granularity and resolution of your particular timing subsystem. According to the documentation, *the function measures the overhead of timing a C function call rounds times and returns all non-zero timings observed.*
 
 <br>
 Run the `microtiming_precision` function and put the mean and the variance of the resulting vector into the same spreadsheet (Debugging Lab sheet, Microbenchmark -- precision)
 
 ::: {.callout-tip collapse="true"}
-
 ## Example Solution
 
 ```{r}
@@ -265,23 +265,6 @@ precision <- microbenchmark::microtiming_precision()
 mean(precision)
 var(precision)
 ```
-
-:::
-
-Run the function one time without assigning its value to a variable and consult the documentation. Compare the output of running the function without assigning the value to a variable, the values stored in the variable by the function upon assignment and the value specified in the documentation.
-
-::: {.callout-tip collapse="true"}
-
-## Example Solution
-
-```{r}
-#| eval: false
-# In version 1.4-4 of the package, all three ways give different results!
-microbenchmark::microtiming_precision()
-precision <- microbenchmark::microtiming_precision()
-?microbenchmark::microtiming_precision
-```
-
 :::
 
 #### The Microbenchmark Way.
@@ -446,7 +429,7 @@ fill_noloops <- function(N, bag, seed = 42) {
 
 :::
 
-### Optiona Task: Using the `profr` package.
+### Optional task: Using the `profr` package.
 
 - Install and load the `profr` package.
 - Use `profr` to profile `fill_noloop`, `fill_noloops` and `fill_alloc_opt`.
@@ -508,7 +491,7 @@ profr::ggplot.profr(profile_alloc_opt_df)
 
 :::
 
-### Optional Task: Using the `profvis` package.
+### Optional task: Using the `profvis` package.
 
 - Install and load the `profvis` package.
 - Use `profvis` to profile `fill_noloop`, and `fill_alloc` functions.

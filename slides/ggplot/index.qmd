@@ -839,10 +839,6 @@ The coordinate system defines the surface used to represent numbers. Most plots 
 :::
 :::
 
-##
-
-![](assets/meme-plotting-takes-long.webp)
-
 ## Theming
 
 :::: {.columns}

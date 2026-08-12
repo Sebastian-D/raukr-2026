@@ -1,0 +1,17 @@
+{
+  "hash": "55057412e953002596b4cd332029a0f0",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Penguins dashboard\"\nsubtitle: \"RaukR 2026 · Day 2 — Dashboards demo\"\nformat: dashboard\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(ggokabeito)\ndata(penguins)\npenguins <- penguins |> filter(!is.na(bill_len), !is.na(bill_dep), !is.na(body_mass))\n```\n:::\n\n\n<!-- `##` starts a row, `###` a column. The heading text (\"Row\"/\"Column\") is only a label. -->\n## Row {height=\"20%\"}\n\n\n::: {.cell content='valuebox' title='Species'}\n\n```{.r .cell-code}\nlist(\n  color = \"primary\",\n  icon = \"tags\",\n  value = n_distinct(penguins$species)\n)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n$color\n[1] \"primary\"\n\n$icon\n[1] \"tags\"\n\n$value\n[1] 3\n```\n\n\n:::\n:::\n\n\n\n::: {.cell content='valuebox' title='Penguins measured'}\n\n```{.r .cell-code}\nlist(\n  color = \"secondary\",\n  icon = \"clipboard-data\",\n  value = nrow(penguins)\n)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n$color\n[1] \"secondary\"\n\n$icon\n[1] \"clipboard-data\"\n\n$value\n[1] 342\n```\n\n\n:::\n:::\n\n\n## Row {height=\"80%\"}\n\n### Column\n\n<!-- Each code cell becomes a `.card`. Its `#| title:` sets the card header. -->\n\n\n::: {.cell title='Body mass by species'}\n\n```{.r .cell-code}\nggplot(penguins, aes(species, body_mass, fill = species)) +\n  geom_boxplot(show.legend = FALSE) +\n  scale_fill_okabe_ito() +\n  labs(x = NULL, y = \"Body mass (g)\")\n```\n\n::: {.cell-output-display}\n![](dashboard_files/figure-html/unnamed-chunk-3-1.png){fig-alt='Boxplot of penguin body mass in grams by species. Gentoo is clearly the heaviest, Adelie and Chinstrap overlap around 3,700 g.' width=672}\n:::\n:::\n\n\n### Column {.tabset}\n\n\n::: {.cell title='Bill scatter'}\n\n```{.r .cell-code}\nggplot(penguins, aes(bill_len, bill_dep, color = species)) +\n  geom_point(alpha = 0.8) +\n  scale_color_okabe_ito() +\n  labs(x = \"Bill length (mm)\", y = \"Bill depth (mm)\", color = NULL)\n```\n\n::: {.cell-output-display}\n![](dashboard_files/figure-html/unnamed-chunk-4-1.png){fig-alt='Scatter plot of bill depth versus bill length in millimeters, colored by species. The three species form separate clusters.' width=672}\n:::\n:::\n\n\n\n::: {.cell title='Mean measurements'}\n\n```{.r .cell-code}\npenguins |>\n  summarise(\n    bill_len = mean(bill_len),\n    bill_dep = mean(bill_dep),\n    body_mass = mean(body_mass),\n    .by = species\n  ) |>\n  knitr::kable(digits = 1)\n```\n\n::: {.cell-output-display}\n\n\n|species   | bill_len| bill_dep| body_mass|\n|:---------|--------:|--------:|---------:|\n|Adelie    |     38.8|     18.3|    3700.7|\n|Gentoo    |     47.5|     15.0|    5076.0|\n|Chinstrap |     48.8|     18.4|    3733.1|\n\n\n:::\n:::\n\n",
+    "supporting": [
+      "dashboard_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
