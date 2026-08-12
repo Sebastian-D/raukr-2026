@@ -31,9 +31,9 @@ execute:
 |Git & GitHub                           |Nina Norgren                  |[Slides](slides/git/index.html), [Lab](labs/git/index.html)|
 |R Packages                             |Jenny Bryan (Posit)           |[Materials](https://pos.it/ron-raukr)|
 |[13-Aug-2026 (Thu)]{.badge .badge-secondary}                          |||
-|Code Optimization                      |Marcin Kierczak               |Slides, Lab|
+|Debugging, profiling, optimization                      |Marcin Kierczak               |[Slides](slides/debugging/index.html), [Lab](labs/debugging/index.html)|
 |data.table                             |Markus Mayrhofer              |[Slides](slides/datatable/index.html), [Lab](labs/datatable/index.html)|
-|Neural networks in R                   |Marcin Kierczak               ||
+|Neural networks in R                   |Marcin Kierczak               |[Livecode](http://livecode.kierczak.net:7777), Materials|
 |R & AI                                 |Sebastian DiLorenzo           |[Slides](slides/ai/index.html)|
 |[14-Aug-2026 (Fri)]{.badge .badge-secondary}                          |||
 |Tidyverse                              |Marcin Kierczak               |[Slides](slides/tidyverse/index.html), Lab|

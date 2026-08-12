@@ -11,7 +11,7 @@ load('slides/ai_models/genodata_5k.Rd')
 
 orig_pheno <- readr::read_csv(
   "slides/ai_models/autosomal_5k_phenos.csv",
-  col_names = TRUE
+  col_names = TRUE,
 ) |>
   dplyr::select(-1)
 
