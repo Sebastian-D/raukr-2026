@@ -172,9 +172,12 @@ head(genotypes, 4)
 ::: {.callout-tip}
 Exactly 2,000,000 rows (500 samples x 4000 variants), the same on every machine
 because the seed is fixed. The size is intentional: small examples hide the
-memory and copying behaviour that matters in real analyses. Only the benchmark
-*timings* later will differ from one computer to another; the data and the
-results will not.
+memory and copying behaviour that matters in real analyses.
+
+The **data** and every **analysis result** below -- allele frequencies, call rates,
+gene counts -- are identical wherever you run this. The **benchmark numbers** are
+not: times and memory allocations both depend on your hardware and package
+versions, and the ranking between the three styles can change with them.
 :::
 
 ## Core operations
@@ -428,19 +431,20 @@ bench_fig(bench_agg, c("base_R", "tidyverse", "data.table"))
 
 ::: {.callout-note}
 ## Reading this result
-On this run `dplyr` is the **fastest** on time: a
-grouped `summarise()` over a few thousand groups is well optimised, so
-`data.table` has little headroom left on time for this particular task.
+The consistent, reproducible win here is **memory**: `data.table` allocates
+several times less than either alternative, because it groups without
+materialising large intermediate copies. If your table is big enough that RAM is
+the binding constraint, that difference decides whether the job runs at all.
 
-Where `data.table` does win here is **memory**: it allocates several times less
-than either alternative, because it groups without materialising large
-intermediate copies. If your table is big enough that RAM is the binding
-constraint, that difference decides whether the job runs at all.
+Time is less stable. `data.table` spreads grouping across cores, while base R and
+`dplyr` do this work on a single core -- so the time ranking depends on the
+machine: how many cores it has, how fast one core is, and which package versions
+are installed. Expect your own numbers to differ from those above, possibly in a
+different order.
 
-`data.table`'s *time* advantage shows up in the next two benchmarks, the join and the file
-read. This is why we measure instead of asserting: which tool wins depends
-on the operation, the shape of the data, and whether time or memory is scarce.
-Run this on your own machine and the results may differ slightly.
+That is why we measure rather than assert: which tool wins depends on the
+operation, the shape of the data, the hardware, and whether time or memory is
+scarce.
 :::
 
 ### Three-table join
