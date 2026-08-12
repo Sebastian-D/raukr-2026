@@ -29,7 +29,7 @@ execute:
 |Quarto projects                        |Christophe Dervieux (Posit)   |[Slides](https://cderv.github.io/raukr-2026-quarto/slides/quarto-projects/index.html), [Lab](https://cderv.github.io/raukr-2026-quarto/labs/quarto-projects/index.html)|
 |[12-Aug-2026 (Wed)]{.badge .badge-secondary}                          |||
 |Git & GitHub                           |Nina Norgren                  |[Slides](slides/git/index.html), [Lab](labs/git/index.html)|
-|R Packages                             |Jenny Bryan (Posit)           ||
+|R Packages                             |Jenny Bryan (Posit)           |[Materials](https://pos.it/ron-raukr)|
 |[13-Aug-2026 (Thu)]{.badge .badge-secondary}                          |||
 |Code Optimization                      |Marcin Kierczak               |Slides, Lab|
 |data.table                             |Markus Mayrhofer              |[Slides](slides/datatable/index.html), [Lab](labs/datatable/index.html)|
