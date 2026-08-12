@@ -37,7 +37,7 @@ execute:
 |R & AI                                 |Sebastian DiLorenzo           |[Slides](slides/ai/index.html)|
 |[14-Aug-2026 (Fri)]{.badge .badge-secondary}                          |||
 |Tidyverse                              |Marcin Kierczak               |[Slides](slides/tidyverse/index.html), Lab|
-|Data visualization                     |Roy Francis                   ||
+|Interactive data visualization         |Roy Francis                   |[Slides](slides/ivis/index.html), [Lab](labs/ivis/index.html)|
 |[WEEK 2]{.badge .badge-primary}                                       |||
 |[17-Aug-2026 (Mon)]{.badge .badge-secondary}                          |||
 |Statistics                             |Dania Machlab                 ||
@@ -56,3 +56,4 @@ execute:
 - Literate programming with Quarto [Lab](labs/quarto/index.html)
 - Creating websites with Quarto [Lab](labs/quarto-site/index.html)
 - Functions & Scripts [Slides](slides/scripting/index.html), [Lab](labs/scripting/index.html)
+- Plotting with ggplot2 [Slides](slides/ggplot/index.html), [Lab](labs/ggplot/index.html)
