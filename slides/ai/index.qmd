@@ -1,5 +1,5 @@
 ---
-title: "R, AI and Testing"
+title: "R & AI (& Testing)"
 author: "Sebastian DiLorenzo"
 image: "assets/featured.webp"
 format: revealjs
@@ -15,13 +15,13 @@ format: revealjs
 ## What this sessions will cover
 
 :::: {.columns}
-::: {.column width="40%"}
+::: {.column width="50%"}
 
 <br>
 
 - A brief history of Posit data science agents
-- Setup of LLMs in Positron
-- LLM modes
+- Provider setup
+- AI types
 - Posit Assistant modes
 - Some useful commands
 - Prompt engineering 101
@@ -35,7 +35,11 @@ format: revealjs
 <br>
 
 :::
-::: {.column width="50%"}
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="45%"}
 
 ![](assets/robot.webp)
 
@@ -93,14 +97,14 @@ Databot’s crucial weakness turned out not to be that it was too dangerous, but
 More reading: https://opensource.posit.co/blog/2026-06-11_history-of-posit-data-science-agents/
 :::
 
-## Setup of LLMs in Positron
+## Provider setup
 
 - Enabled by default in positron since July, 2026.
 - Enable in `settings.json` using `assistant.enabled: true`
 - Enable model providers in `Configure Language Model Providers`.
 
 
-## LLM modes
+## AI types
 
 :::: {.columns}
 
@@ -234,24 +238,32 @@ report and notebook can be handy for example when you have used plan mode and im
 
 ## Prompt engineering 101
 
+::::: {.columns}
+:::: {.column width="40%"}
+<br><br><br>
+
 - Be specific and clear about what you want
 - Avoid ambiguity
 - Give examples
 - Break down complex tasks into smaller steps
 - Follow best coding practices
+::::
+
+:::: {.column width="60%"}
+!["Create an image depicting a maestro directing a handful of robots that are building a machine. The maestro should have a blueprint rather than musical notes. The style should be realistic cartoonish, with a white background so it works well to insert on a white slide."](/slides/ai/assets/prompt_director.png)
+::::
+:::::
 
 ::: {.fragment}
 **Bad prompt** ❌
 
 > *"Fix my RNA-seq code"*
-
 :::
 
 ::: {.fragment}
 **Good prompt** ✅
 
 > *"I have a data frame `counts` with genes as rows and samples as columns. Write an R function using DESeq2 to run differential expression between two groups defined by a `condition` column in `coldata`. Return a results table sorted by adjusted p-value. Follow tidyverse style conventions."*
-
 :::
 
 ::: {.notes}
@@ -304,61 +316,136 @@ There are many other R packages for RAG's, skills, MCP, custom assistants, speec
 
 ## Testing
 
-Why test?
-  Fewer bugs
-  Better code structure
-Informal testing (testing interactively to see that code does what we want)
-Automated testing (storing tests to re-run)
-implement automated testing using testthat
-  Setup:
-  usethis::use_testthat(3)
-    create test/testthat directory
-    Add testthat to Suggests field in DESCRIPTION
-    create tests/testthat.R with which runs with R CMD check
-  Create test:
-    Function foobar() lives in R/foobar.R and the test in test/testthat/test-foobar.R
-    usethis::use_test("foobar") creates and opens tests/testthat/test-foobar.R
-  How a test looks:
-    Example
-    A test file holds one or more test_that() tests.
-    Each test describes what it’s testing: e.g. “multiplication works”.
-    Each test has one or more expectations: e.g. expect_equal(2 * 2, 4).
-    expect_equal()
-    expect_identical()
-    expect_true()
-    expect_false()
-    expect_match()
-    expect_type()
-    expect_error()
-    expect_message()
-    expect_warning()
-    Make example showing the short function and test file using expect_equal() and expect_error().
-    Expand the example showing that the output dataframe is the expected datastructure and that the columns have the correct types.
-  Running the test:
-    testthat::test_file("test/testthat/test-foobar.R")
-    devtools::test() runs all tests in test/testthat
-    devtools::check() runs all tests in test/testthat and checks package
+**Where:** Your R package.
+
+<br>
+Writing tests might feel like extra work, but it pays off quickly:
+
+- **Fewer bugs** — Tests catch mistakes early, before they silently corrupt results downstream.
+- **Better code structure** — Testable code tends to be modular and well-defined; writing tests often reveals design problems.
+
+<br>
+
+::: {.fragment}
+**Informal testing**
+
+Running code interactively to check that it does what you expect — printing outputs, inspecting objects, trying edge cases in the console. Fast and intuitive, but not repeatable: you have to re-run it manually every time something changes.
+:::
+<br>
+
+::: {.fragment}
+**Automated testing**
+
+Storing tests as code so they can be re-run at any time. If you change a function and a test breaks, you know immediately. This makes refactoring safer and collaboration easier.
+:::
+
+## Automated testing
+
+### Setup
+
+```r
+usethis::use_testthat(3)
+```
+
+1. Creates `tests/testthat/`
+2. Adds `testthat` to `Suggests` in `DESCRIPTION`
+3. Creates `tests/testthat.R`.
+<br><br>
+
+::: {.fragment}
+
+### Create a test
+
+```r
+usethis::use_test("foobar")
+```
+
+Creates and opens `tests/testthat/test-foobar.R`.
+<br><br>
+
+:::
+
+::: {.fragment}
+
+### Run tests
+
+| Command | What it does |
+|---|---|
+| `testthat::test_file("tests/testthat/test-foobar.R")` | Run a single test file |
+| `devtools::test()` | Run all tests in `tests/testthat/` |
+| `devtools::check()` | Run all tests + full package check |
+
+:::
+
+## Parts of a test
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+**R/foobar.R:**
+```r
+foobar <- function(x) {
+  if (!is.numeric(x)) {
+    stop("Input must be numeric")
+  }
+  x + 1
+}
+```
+
+**tests/testthat/test-foobar.R:**
+```r
+test_that("numeric values work", {
+  expect_equal(foobar(2), 3)
+  expect_equal(foobar(-2), -1)
+})
+
+test_that("non-numeric input throws an error", {
+  expect_error(foobar("a"), "must be numeric")
+})
+```
+
+- A test file holds one or more `test_that()` tests.
+- Each test describes what it’s testing: e.g. "multiplication works".
+- Each test has one or more expectations: e.g. `expect_equal(2 * 2, 4)`.
+:::
+
+::: {.column width="50%"}
+### Expectations
+
+| Function | Brief Description |
+|---|---|
+| `expect_equal()` | Equality with numeric tolerance |
+| `expect_identical()` | Exact identity (strict type check) |
+| `expect_true()` | Check if expression is `TRUE` |
+| `expect_false()` | Check if expression is `FALSE` |
+| `expect_match()` | Match character string against a regex |
+| `expect_type()` | Check underlying type of object |
+| `expect_error()` | Check if code throws an error |
+| `expect_message()` | Check if code produces a message |
+| `expect_warning()` | Check if code produces a warning |
+:::
+
+::::
+
+::: {.notes}
+**Live Coding Example:**
+1. **Short function & test file**:
+   - Write a short function `add_one` (or similar) in the package.
+   - Run `usethis::use_test()` to create the test file.
+   - Add tests using `expect_equal()` and `expect_error()`.
+2. **Expand the example**:
+   - Show/write a function returning a data frame.
+   - Assert that the output data frame is the expected data structure.
+   - Assert that columns have the correct types.
+3. **Show "Testing" Activity Bar**:
+   - Show the "Testing" panel in Positron.
+   - Run the tests using the interactive UI and discuss.
+:::
 
 ## Some "do this" exercises suggestions
 
 <br><br><br><br><br><br>
-
-
-
-<!--
-Using AI in positron (demo)
-  - how it works in Positron
-  - Best to split big problems into smaller pieces
-    - write a high-level goal at the start of the file
-    - View(penguins)
-    - Write code, whole function
-    - write code, just a line
-    - Write comments
-    - Write questions
-    - Find bugs
-    - Use positron AI
-
--->
 
 ## {background-image="/assets/images/network.svg"}
 
