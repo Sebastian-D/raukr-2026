@@ -53,7 +53,7 @@ Install [Miniforge](https://github.com/conda-forge/miniforge). Test that it work
 ```{sh}
 #| eval: false
 #| filename: Terminal
-conda create -n raukr -c conda-forge -c bioconda r-base=4.5 r-tidyverse r-essentials r-svglite r-ragg r-systemfonts quarto freetype libpng libxml2 pkg-config zlib xz bioconda::htslib gdal proj
+conda create -n raukr -c conda-forge -c bioconda r-base=4.5 r-tidyverse r-essentials r-svglite r-ragg r-systemfonts quarto freetype libpng libxml2 pkg-config zlib xz bioconda::htslib gdal proj libzmq3-dev
 conda activate raukr
 ```
 
@@ -89,8 +89,10 @@ Then, restore packages from the lockfile.
 #| eval: false
 install.packages(c("renv", "pak", "gitcreds"))
 options(renv.config.pak.enabled = TRUE)
-renv::restore("renv.lock")
+renv::init()
 ```
+
+Select '1: Restore the project from the lockfile.'
 
 Based on missing system libraries, you may need to install additional system dependencies and re-run installation.
 
