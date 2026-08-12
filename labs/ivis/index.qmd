@@ -1,0 +1,656 @@
+---
+title: "Interactive Visualization in R"
+author: "Roy Francis"
+description: "Hands-on exercises with plotly and highcharter."
+format: html
+---
+
+::: {.callout-note}
+This lab focuses on practical interactive charting with `plotly` and `highcharter`.
+You will build and refine charts step-by-step using the `iris` and `mtcars` datasets.
+:::
+
+## Learning Objectives
+
+- Build interactive scatter, line, and bar charts with `plotly`.
+- Build interactive charts with `highcharter` using both quick and explicit APIs.
+- Customize tooltips, legends, axes, themes, and interactions.
+- Combine charts, expose controls, and choose an appropriate chart type.
+
+## Setup
+
+Install packages if not already installed.
+
+```{r}
+#| eval: false
+install.packages(c("plotly", "highcharter", "dplyr", "ggplot2"))
+```
+
+Load packages.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(highcharter)
+```
+
+Load datasets.
+
+```{r}
+data("iris")
+data("mtcars")
+mtcars$model <- rownames(mtcars)
+```
+
+## **plotly** 
+
+### Basics
+
+Create an interactive scatter plot of `Sepal.Length` vs `Sepal.Width`, colored by `Species`. Refer to the [plotly R reference](https://plotly.com/r/) for information.
+
+```{r}
+plot_ly(
+  data = iris,
+  x = ~Sepal.Length,
+  y = ~Sepal.Width,
+  color = ~Species,
+  type = "scatter",
+  mode = "markers"
+)
+```
+
+Add custom hover text that shows species and petal dimensions.
+
+
+::: {.callout-tip}
+
+HTML tag `<br>` is used to create line breaks in the hover text.
+
+:::
+
+```{r}
+plot_ly(
+  data = iris,
+  x = ~Sepal.Length,
+  y = ~Sepal.Width,
+  color = ~Species,
+  text = ~paste(
+    "Species:", Species,
+    "<br>Petal Length:", Petal.Length,
+    "<br>Petal Width:", Petal.Width
+  ),
+  hoverinfo = "text",
+  type = "scatter",
+  mode = "markers"
+)
+```
+
+### Customization
+
+Add a title, axis labels, and place the legend horizontally.
+
+```{r}
+plot_ly(
+  data = iris,
+  x = ~Sepal.Length,
+  y = ~Sepal.Width,
+  color = ~Species,
+  type = "scatter",
+  mode = "markers"
+) |>
+  layout(
+    title = "Iris Sepal Dimensions",
+    xaxis = list(title = "Sepal Length"),
+    yaxis = list(title = "Sepal Width"),
+    legend = list(orientation = "h")
+  )
+```
+
+### ggplotly
+
+Convert a ggplot to plotly with `ggplotly()`.
+
+```{r}
+p <- ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) +
+  geom_point()
+
+ggplotly(p)
+```
+
+### Mapping variables and hover templates
+
+Map multiple variables to marker appearance. Here, point color shows the number
+of cylinders and marker size shows horsepower. The `customdata` argument keeps
+the model name available for the hover template without displaying it as a
+separate aesthetic.
+
+```{r}
+plot_ly(
+  data = mtcars,
+  x = ~wt,
+  y = ~mpg,
+  color = ~factor(cyl),
+  size = ~hp,
+  sizes = c(8, 32),
+  customdata = ~model,
+  type = "scatter",
+  mode = "markers",
+  marker = list(opacity = 0.75)
+) |>
+  layout(
+    title = "Fuel economy, weight, and engine size",
+    xaxis = list(title = "Weight (1000 lb)"),
+    yaxis = list(title = "Miles per gallon"),
+    legend = list(title = list(text = "Cylinders"))
+  ) |>
+  style(
+    hovertemplate = paste0(
+      "<b>%{customdata}</b><br>",
+      "Weight: %{x:.2f}<br>",
+      "MPG: %{y:.1f}<br>",
+      "Horsepower: %{marker.size}<extra></extra>"
+    )
+  )
+```
+
+### Time-series charts
+
+Use `add_lines()` to make a time-series-style chart. `economics` is included
+with ggplot2 and gives us a date variable to work with.
+
+```{r}
+economics_small <- economics |>
+  filter(date >= as.Date("2005-01-01")) |>
+  transmute(date, unemployment = unemploy / 1000, population = pop / 1000)
+
+plot_ly(economics_small, x = ~date) |>
+  add_lines(y = ~unemployment, name = "Unemployed (millions)") |>
+  layout(
+    title = "US unemployment after 2005",
+    xaxis = list(title = "Date", rangeslider = list(visible = TRUE)),
+    yaxis = list(title = "People (millions)")
+  )
+```
+
+### Subplots
+
+Combine two related iris scatter plots side-by-side with `subplot()`. Both use the species color mapping, so one legend describes the points in both
+panels. `highlight_key()` assigns each flower a unique identifier.
+
+::: {.column-body-outset}
+
+```{r}
+iris_keyed <- iris |>
+  mutate(id = row_number()) |>
+  highlight_key(~id)
+
+sepal_plot <- plot_ly(
+  iris_keyed,
+  x = ~Sepal.Length,
+  y = ~Sepal.Width,
+  color = ~Species,
+  type = "scatter",
+  mode = "markers"
+) |>
+  layout(
+    xaxis = list(title = "Sepal length"),
+    yaxis = list(title = "Sepal width")
+  )
+
+petal_plot <- plot_ly(
+  iris_keyed,
+  x = ~Petal.Length,
+  y = ~Petal.Width,
+  color = ~Species,
+  type = "scatter",
+  mode = "markers",
+  showlegend = FALSE
+) |>
+  layout(
+    xaxis = list(title = "Petal length"),
+    yaxis = list(title = "Petal width")
+  )
+
+subplot(
+  sepal_plot, petal_plot,
+  nrows = 1,
+  titleX = TRUE,
+  titleY = TRUE
+) |>
+  layout(title = "Iris sepal and petal dimensions")
+```
+
+:::
+
+### Linked subplots
+
+Continue with the same plot objects and add `highlight()`. With `dragmode =
+"select"`, draw a box around points in either panel to brush the same flowers
+in the other panel. Double-click an empty area to clear the selection.
+
+::: {.column-body-outset}
+
+```{r}
+subplot(sepal_plot, petal_plot, nrows = 1, titleX = TRUE, titleY = TRUE) |>
+  layout(
+    title = "Brush flowers across sepal and petal measurements",
+    dragmode = "select"
+  ) |>
+  highlight(
+    on = "plotly_selected",
+    off = "plotly_doubleclick",
+    dynamic = TRUE
+  )
+```
+
+:::
+
+### Dropdown controls
+
+Add a dropdown control with `updatemenus`. This lets the reader switch between
+two y variables without recreating the chart.
+
+```{r}
+plot_ly(
+  mtcars, 
+  x = ~wt, 
+  y = ~mpg, 
+  type = "scatter", 
+  mode = "markers"
+) |>
+  layout(
+    title = "Choose a response variable",
+    xaxis = list(title = "Weight (1000 lb)"),
+    yaxis = list(title = "Miles per gallon"),
+    updatemenus = list(list(
+      type = "dropdown",
+      x = 1.05,
+      y = 1,
+      buttons = list(
+        list(
+          method = "update",
+          args = list(list(y = list(mtcars$mpg)), 
+                      list("yaxis.title.text" = "Miles per gallon")),
+          label = "MPG"
+        ),
+        list(
+          method = "update",
+          args = list(list(y = list(mtcars$hp)), 
+                      list("yaxis.title.text" = "Horsepower")),
+          label = "Horsepower"
+        )
+      )
+    ))
+  )
+```
+
+### Heatmaps
+
+This example shows the correlations between the four numeric iris measurements. Hovering over a cell reveals the exact correlation.
+
+```{r}
+iris_correlations <- iris |>
+  select(where(is.numeric)) |>
+  cor()
+
+plot_ly(
+  x = colnames(iris_correlations),
+  y = rownames(iris_correlations),
+  z = iris_correlations,
+  type = "heatmap",
+  colors = "Blues",
+  zmin = -1,
+  zmax = 1,
+  hovertemplate = "%{y} vs %{x}: %{z:.2f}<extra></extra>"
+) |>
+  layout(
+    title = "Correlation between iris measurements",
+    xaxis = list(title = NULL),
+    yaxis = list(title = NULL, autorange = "reversed")
+  )
+```
+
+### Three-dimensional scatter plots
+
+Explore three continuous dimensions with a 3D scatter plot. Use the mouse to
+rotate the chart, then decide whether the additional dimension improves the
+comparison over a 2D chart.
+
+```{r}
+plot_ly(
+  iris,
+  x = ~Sepal.Length,
+  y = ~Sepal.Width,
+  z = ~Petal.Length,
+  color = ~Species,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 4, opacity = 0.8)
+) |>
+  layout(
+    title = "Iris measurements in three dimensions",
+    scene = list(
+      xaxis = list(title = "Sepal length"),
+      yaxis = list(title = "Sepal width"),
+      zaxis = list(title = "Petal length")
+    )
+  )
+```
+
+### Point selection
+
+Enable box or lasso selection with `dragmode`. The selected points stay
+highlighted, which is useful for inspecting a subset before exporting or
+linking it to another view in a Shiny application.
+
+```{r}
+plot_ly(
+  mtcars,
+  x = ~wt,
+  y = ~mpg,
+  text = ~model,
+  type = "scatter",
+  mode = "markers",
+  marker = list(size = 10, opacity = 0.75),
+  hovertemplate = "<b>%{text}</b><br>Weight: %{x:.2f}<br>MPG: %{y:.1f}<extra></extra>"
+) |>
+  layout(
+    title = "Select vehicles with a box or lasso",
+    dragmode = "select",
+    xaxis = list(title = "Weight (1000 lb)"),
+    yaxis = list(title = "Miles per gallon")
+  )
+```
+
+### Challenge
+
+1. Create a `Sepal.Width` vs `Sepal.Length` scatter plot of `iris`, colored by
+   `Species`. Add an overall regression line by creating predictions with
+   `lm()` and adding them with `add_lines()`.
+2. Change the marker colors to a palette of your choice with `colors`.
+
+::: {.callout-tip collapse="true"}
+
+## Solution
+
+```{r}
+iris_model <- lm(Sepal.Width ~ Sepal.Length, data = iris)
+
+iris_predictions <- tibble(
+  Sepal.Length = seq(
+    min(iris$Sepal.Length),
+    max(iris$Sepal.Length),
+    length.out = 100
+  )
+)
+iris_predictions$Sepal.Width <- predict(iris_model, newdata = iris_predictions)
+
+plot_ly(
+  iris,
+  x = ~Sepal.Length,
+  y = ~Sepal.Width,
+  color = ~Species,
+  colors = c("#0072B2", "#D55E00", "#009E73"),
+  type = "scatter",
+  mode = "markers"
+) |>
+  add_lines(
+    data = iris_predictions,
+    x = ~Sepal.Length,
+    y = ~Sepal.Width,
+    name = "Overall linear fit",
+    inherit = FALSE,
+    line = list(color = "#333333")
+  ) |>
+  layout(
+    title = "Iris sepal dimensions with an overall linear fit",
+    xaxis = list(title = "Sepal length"),
+    yaxis = list(title = "Sepal width")
+  )
+```
+
+The points remain grouped by species, while the line summarizes the linear
+relationship across all 150 flowers. Fitting separate lines by species would
+answer a different question.
+
+:::
+
+## **highcharter**
+### Basics
+
+Create a scatter plot of the `iris` data using `hchart()`.
+
+```{r}
+iris |>
+  hchart("scatter", hcaes(x = Sepal.Length, y = Sepal.Width, group = Species))
+```
+
+Create a bar chart from `mtcars` counting cars by number of cylinders.
+
+```{r}
+mtcars |>
+  count(cyl) |>
+  hchart("column", hcaes(x = as.character(cyl), y = n))
+```
+
+### Customization
+
+Build the same cylinder bar chart using `highchart()` + `hc_add_series()`.
+
+```{r}
+count_tbl <- mtcars |>
+  count(cyl)
+
+highchart() |>
+  hc_add_series(
+    data = count_tbl$n,
+    type = "column",
+    name = "Cars"
+  ) |>
+  hc_xAxis(categories = as.character(count_tbl$cyl), title = list(text = "Cylinders")) |>
+  hc_yAxis(title = list(text = "Count")) |>
+  hc_title(text = "Cars by Cylinder Count")
+```
+
+Add custom tooltip formatting and a theme.
+
+```{r}
+highchart() |>
+  hc_add_series(data = c(5, 8, 6, 9), type = "line", name = "Example") |>
+  hc_xAxis(categories = c("Q1", "Q2", "Q3", "Q4")) |>
+  hc_tooltip(pointFormat = "Value: <b>{point.y}</b>") |>
+  hc_add_theme(hc_theme_flat())
+```
+
+### Grouped series
+
+Use groups to make one series per cylinder count. `hchart()` turns the grouped
+data into Highcharts series automatically.
+
+```{r}
+mtcars |>
+  arrange(wt) |>
+  hchart(
+    "scatter",
+    hcaes(x = wt, y = mpg, group = factor(cyl)),
+    name = "Cars"
+  ) |>
+  hc_title(text = "Fuel economy by cylinder count") |>
+  hc_xAxis(title = list(text = "Weight (1000 lb)")) |>
+  hc_yAxis(title = list(text = "Miles per gallon")) |>
+  hc_tooltip(
+    pointFormat = "Weight: <b>{point.x:.2f}</b><br>MPG: <b>{point.y:.1f}</b>"
+  )
+```
+
+### Time-series charts
+
+Create multiple line series explicitly. A shared tooltip makes it easier to
+compare the same date across both series, and x-axis zooming supports focused
+exploration of a longer sequence.
+
+```{r}
+highchart() |>
+  hc_add_series(
+    economics_small,
+    "line",
+    hcaes(x = datetime_to_timestamp(date), y = unemployment),
+    name = "Unemployed"
+  ) |>
+  hc_add_series(
+    economics_small,
+    "line",
+    hcaes(x = datetime_to_timestamp(date), y = population),
+    name = "Population"
+  ) |>
+  hc_xAxis(type = "datetime") |>
+  hc_yAxis(title = list(text = "People (millions)")) |>
+  hc_chart(zoomType = "x") |>
+  hc_tooltip(shared = TRUE, valueDecimals = 1) |>
+  hc_exporting(enabled = TRUE) |>
+  hc_title(text = "Two time series on a common scale")
+```
+
+### Reference lines
+
+Highlight a reference value with a plot line. This is useful when the reader
+needs to compare data to a target, threshold, or policy limit.
+
+```{r}
+mtcars |>
+  count(cyl) |>
+  hchart("column", hcaes(x = as.character(cyl), y = n)) |>
+  hc_yAxis(
+    title = list(text = "Number of cars"),
+    plotLines = list(list(
+      value = 10,
+      color = "#c0392b",
+      width = 2,
+      dashStyle = "ShortDash",
+      label = list(text = "Reference: 10 cars")
+    ))
+  ) |>
+  hc_title(text = "Cars by cylinder count")
+```
+
+### Data labels
+
+Show values directly on a chart with data labels. Labels are most helpful when
+there are only a few marks and reading an exact value is more important than
+comparing bar heights.
+
+```{r}
+mtcars |>
+  count(cyl) |>
+  hchart("column", hcaes(x = as.character(cyl), y = n)) |>
+  hc_title(text = "Cars by cylinder count") |>
+  hc_xAxis(title = list(text = "Cylinders")) |>
+  hc_yAxis(title = list(text = "Number of cars")) |>
+  hc_plotOptions(column = list(dataLabels = list(enabled = TRUE))) |>
+  hc_colors(c("#1565c0", "#ef6c00", "#2e7d32"))
+```
+
+### Challenge
+
+Create a line chart of the average `mpg` for each `cyl` group and customize the tooltip to show one decimal place.
+
+::: {.callout-tip collapse="true"}
+
+## Solution
+### Average fuel economy
+
+```{r}
+mtcars |>
+  group_by(cyl) |>
+  summarise(mean_mpg = mean(mpg), .groups = "drop") |>
+  hchart("line", hcaes(x = as.character(cyl), y = mean_mpg)) |>
+  hc_xAxis(title = list(text = "Cylinders")) |>
+  hc_yAxis(title = list(text = "Average miles per gallon")) |>
+  hc_tooltip(pointFormat = "Average MPG: <b>{point.y:.1f}</b>") |>
+  hc_title(text = "Average fuel economy by cylinder count")
+```
+
+:::
+
+## Comparison challenge
+
+Build the same chart in both libraries:
+
+- Data: `mtcars`
+- Chart: `mpg` vs `wt`
+- Color by: `cyl`
+- Tooltip includes model name
+
+::: {.callout-tip collapse="true"}
+
+## Solution
+
+### plotly
+
+```{r}
+plot_ly(
+  mtcars,
+  x = ~wt,
+  y = ~mpg,
+  color = ~factor(cyl),
+  customdata = ~model,
+  type = "scatter",
+  mode = "markers"
+) |>
+  layout(
+    title = "Fuel economy by vehicle weight",
+    xaxis = list(title = "Weight (1000 lb)"),
+    yaxis = list(title = "Miles per gallon"),
+    legend = list(title = list(text = "Cylinders"))
+  ) |>
+  style(
+    hovertemplate = paste0(
+      "<b>%{customdata}</b><br>",
+      "Weight: %{x:.2f}<br>",
+      "MPG: %{y:.1f}<extra></extra>"
+    )
+  )
+```
+
+### highcharter
+
+```{r}
+mtcars |>
+  hchart(
+    "scatter",
+    hcaes(x = wt, y = mpg, group = factor(cyl), name = model)
+  ) |>
+  hc_title(text = "Fuel economy by vehicle weight") |>
+  hc_xAxis(title = list(text = "Weight (1000 lb)")) |>
+  hc_yAxis(title = list(text = "Miles per gallon")) |>
+  hc_tooltip(
+    pointFormat = "<b>{point.name}</b><br>Weight: {point.x:.2f}<br>MPG: {point.y:.1f}"
+  )
+```
+
+The two implementations use similar data mappings. Plotly makes it especially
+easy to specify a custom hover template, while Highcharter closely follows the
+Highcharts configuration API.
+
+:::
+
+Questions to answer:
+
+1. Which code felt easier to write?
+2. Which default output looked better to you?
+3. Which package would you choose for your next report and why?
+
+## Session
+
+<details>
+  <summary>Click here</summary>
+
+```{r}
+#| label: session
+
+sessionInfo()
+```
+
+</details>
+

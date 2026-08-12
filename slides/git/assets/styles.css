@@ -1,0 +1,31 @@
+/* ------------------------------------------------------------------
+   Larger fonts for this deck only.
+
+   This file is loaded after the shared theme (assets/css/slides.scss),
+   so it can override it. The theme sizes text with two units, so both
+   need scaling to move everything together:
+
+     em   -> relative to --r-main-font-size (theme default 27px):
+             body text, headings, lists, tables, .large/.small etc.
+     rem  -> relative to the root font size (browser default 16px):
+             code blocks, callout titles and content.
+
+   Change --deck-scale to make the whole deck bigger or smaller.
+   ------------------------------------------------------------------ */
+
+:root {
+    --deck-scale: 1.3;
+    font-size: calc(16px * var(--deck-scale));
+    --r-main-font-size: calc(27px * var(--deck-scale));
+}
+
+.reveal pre {
+    font-size: 0.85em;
+}
+
+/* Extra breathing room between bullets.
+   `.reveal` prefix beats the theme's own list rules; em keeps the
+   spacing proportional to --deck-scale above. */
+.reveal li {
+    padding-bottom: 0.4em;
+}

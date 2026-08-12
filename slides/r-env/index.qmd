@@ -257,6 +257,8 @@ These are typical locations for the global cache:
 
 ## Tips & Tricks
 
+::: {.incremental}
+
 - Use `renv::dependencies()` to discover dependencies in your project
 - Create and maintain a `.renvignore` file to exclude files from dependency discovery
 - Snapshot all packages in the library regardless of whether they are used in the project
@@ -275,6 +277,8 @@ These are typical locations for the global cache:
   - Temporarily: `renv::deactivate()` or to activate again `renv::activate()`
   - Permanently: `renv::deactivate(clean=TRUE)` removes `renv/`, `.Rprofile` and `renv.lockfile`
   - Remove global cache completely: `unlink(renv::paths$root(), recursive=TRUE)`
+
+:::
 
 ## renv is only one piece of the reproducibility puzzle
 

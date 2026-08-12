@@ -1,0 +1,17 @@
+{
+  "hash": "6f9e00894c12bd8ecf6aa951f9e520d9",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Analysis\"\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(ggokabeito)   # color-blind-safe (Okabe-Ito) scale\ndata(penguins)\npenguins <- penguins |> filter(!is.na(bill_len), !is.na(bill_dep), !is.na(body_mass))\n```\n:::\n\n\n## Body mass by species\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(penguins, aes(species, body_mass, fill = species)) +\n  geom_boxplot(show.legend = FALSE) +\n  scale_fill_okabe_ito() +\n  labs(x = NULL, y = \"Body mass (g)\")\n```\n\n::: {.cell-output-display}\n![Body mass by species.](analysis_files/figure-html/fig-mass-1.png){#fig-mass fig-alt='Boxplot of penguin body mass in grams by species. Gentoo is the heaviest, Adelie and Chinstrap overlap.' width=672}\n:::\n:::\n\n\n@fig-mass shows that Gentoo penguins are clearly the heaviest of the three species.\n\n## Mean measurements\n\n\n::: {#tbl-means .cell tbl-cap='Mean measurements by species.'}\n\n```{.r .cell-code}\npenguins |>\n  summarise(\n    bill_len = mean(bill_len),\n    bill_dep = mean(bill_dep),\n    body_mass = mean(body_mass),\n    .by = species\n  ) |>\n  knitr::kable(digits = 1)\n```\n\n::: {.cell-output-display}\n\n\n|species   | bill_len| bill_dep| body_mass|\n|:---------|--------:|--------:|---------:|\n|Adelie    |     38.8|     18.3|    3700.7|\n|Gentoo    |     47.5|     15.0|    5076.0|\n|Chinstrap |     48.8|     18.4|    3733.1|\n\n\n:::\n:::\n\n",
+    "supporting": [
+      "analysis_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "hash": "4cf21c42f1ecfa02b0737a1221f7a40b",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"My report\"\ndescription: \"The Day-1 document, now a page on the site.\"\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(ggokabeito)   # color-blind-safe (Okabe-Ito) scale\ndata(penguins)\npenguins <- penguins |> filter(!is.na(bill_len), !is.na(bill_dep), !is.na(body_mass))\n```\n:::\n\n\nThis page stands in for the report you built on Day 1. Copy your own `my-report.qmd` over this file\nand re-render: the document you wrote as a standalone PDF becomes one page of a website, with no\nchange to its content.\n\nOnly the YAML header needs to change. A page inside a project inherits `format:` from `_quarto.yml`,\nso a `format: typst` left over from the Day-1 document would keep building a PDF instead of a page.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(penguins, aes(bill_len, bill_dep, color = species)) +\n  geom_point(alpha = 0.8) +\n  scale_color_okabe_ito() +\n  labs(x = \"Bill length (mm)\", y = \"Bill depth (mm)\", color = NULL)\n```\n\n::: {.cell-output-display}\n![Bill depth against bill length, by species.](my-report_files/figure-html/fig-bill-1.png){#fig-bill fig-alt='Scatter plot of bill depth versus bill length in millimeters, colored by species. The three species form separate clusters.' width=672}\n:::\n:::\n\n\n@fig-bill still resolves, because the reference and its figure share one page.\n",
+    "supporting": [
+      "my-report_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

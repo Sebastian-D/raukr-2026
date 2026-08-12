@@ -1,0 +1,15 @@
+{
+  "hash": "88faae7eb44639656f68f3f06b5ad92f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Methods\"\ndescription: \"How the penguins were measured, and what we drop before analyzing.\"\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\ndata(penguins)\n```\n:::\n\n\nMeasurements come from three species at Palmer Station, Antarctica. Each row is one bird: bill\nlength, bill depth, flipper length, and body mass.\n\nA few birds are missing one or more measurements. We drop those rows before analyzing, so every\nfigure and table on this site uses the same set of complete cases.\n\n\n::: {#tbl-complete .cell tbl-cap='Rows kept per species after dropping incomplete measurements.'}\n\n```{.r .cell-code}\npenguins |>\n  filter(!is.na(bill_len), !is.na(bill_dep), !is.na(body_mass)) |>\n  count(species, name = \"complete_rows\") |>\n  knitr::kable()\n```\n\n::: {.cell-output-display}\n\n\n|species   | complete_rows|\n|:---------|-------------:|\n|Adelie    |           151|\n|Chinstrap |            68|\n|Gentoo    |           123|\n\n\n:::\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
