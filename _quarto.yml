@@ -12,7 +12,6 @@ project:
     - "!labs/packages/*.qmd"
     - "!slides/scripting/*.qmd"
     - "!labs/scripting/*.qmd"
-    - "!labs/tidyverse/*.qmd"
     - "!slides/vectorization/*.qmd"
     - "!labs/vectorization/*.qmd"
 
