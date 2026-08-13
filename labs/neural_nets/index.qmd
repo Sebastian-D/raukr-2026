@@ -1,0 +1,166 @@
+---
+title: "Neural Networks"
+author: "Marcin Kierczak"
+description: "Materials accompanying live coding session on implementing autoencoders"
+image: "assets/featured.webp"
+format: html
+---
+
+In this live coding session we will implement a vanilla autoencoder -- a specific neural network architecture. We will be using `keras` interface to `tensorflow` which is a neural net engine.
+
+Autoencoders can be used in different contexts, from watermark removal to semantic segmentation of images. We will use our autoencoder to reduce dimensionality of the input data: 5000 SNPs per individual coming from the HapMap3 project. This is a toy dataset distilled from the original HapMap3 data for teaching purposes and computational tractability. 
+
+The goal is to visually compare autoencoder dimensionality reduction to classical PCA.
+
+#### Load packages
+
+```{r}
+#| 
+library(keras3)
+library(tidyverse)
+library(ggplot2)
+library(plotly)
+```
+
+#### Loading and re-shaping the data
+
+```{r}
+load("assets/genodata_5k.Rd")
+
+orig_pheno <- read_csv("assets/autosomal_5k_phenos.csv") |> 
+  select(-1) |> 
+  mutate(population = population |> replace_values('MEX' ~ 'MXL')) |>
+  rename(pop = population)
+pop_info <- read_delim("assets/pop_legend.csv", delim = ';')
+orig_pheno <- orig_pheno |>
+  left_join(
+    pop_info |> select(pop, name),
+    by = "pop"
+  ) |>
+  rename(Population = name)
+```
+
+#### Scaling SNP dosage
+```{r}
+x_train <- as.matrix(orig_geno) / 2
+```
+
+#### Traditional PCA
+
+```{r}
+pca_res <- prcomp(x_train, rank. = 2)
+pca_data <- as.data.frame(pca_res$x)
+pca_data <- cbind(pca_data, orig_pheno)
+
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Population)) +
+  geom_point(alpha = 0.7, size = 2) +
+  theme_minimal() +
+  labs(title = "PCA Embedding of Populations",
+       x = "PC1", y = "PC2")
+```
+
+### Autoencoder 
+
+First, we need to specify the input dimensions, in our case, the number of variables-SNPs and the desired dimensionality of the latent space. We choose 2 dimensions to easily plot them on screen.
+
+```{r}
+input_dim <- ncol(x_train)
+latent_dim <- 2
+```
+
+
+#### Encoder
+
+```{r}
+encoder <- keras_model_sequential(name = "encoder") |>
+  layer_dense(256, activation = "relu", input_shape = input_dim) |>
+  layer_dense(128, activation = "relu") |>
+  layer_dense(latent_dim)
+```
+
+
+#### Decoder
+
+```{r}
+decoder <- keras_model_sequential(name = "decoder") |>
+  layer_dense(128, activation = "relu", input_shape = latent_dim) |>
+  layer_dense(256, activation = "relu") |>
+  layer_dense(input_dim)
+```
+
+
+#### Autoencoder 
+We now combine the encoder and the decoder
+```{r}
+autoencoder <- keras_model_sequential(layers=list(encoder, decoder), name = "autoencoder")
+```
+And to make sure all is as expected, we visualise our architecture:
+```{r}
+plot(autoencoder, show_layer_names = TRUE, show_shapes = TRUE, expand_nested = TRUE)
+```
+
+If everything seems to be fine, we can compile the model.
+
+#### Compile model
+```{r}
+autoencoder |> compile(
+  optimizer = optimizer_adam(),
+  loss = loss_mean_squared_error
+)
+```
+
+
+#### Training
+
+```{r}
+history <- autoencoder |> fit(
+  x = x_train,
+  y = x_train,
+  epochs = 50,
+  batch_size = 32,
+  validation_split = 0.2,
+  shuffle = TRUE
+)
+```
+
+```{r}
+plot(history)
+```
+
+Finally, we are ready to visualise the latent space.
+
+#### Latent space visualization
+```{r}
+latent <- predict(encoder, x_train)
+
+scores <- as.data.frame(latent)
+colnames(scores) <- c("Z1", "Z2")
+
+scores$Population <- orig_pheno$Population
+
+ggplot(scores, aes(Z1, Z2, colour = Population)) +
+  geom_point(size = 2) +
+  theme_classic() +
+  ggsci::scale_color_d3("category20")
+```
+
+We can also compute the mean reconstruction MSE.
+
+```{r}
+x_recon <- predict(autoencoder, x_train)
+mean((x_train - x_recon)^2)
+```
+
+## Session
+
+<details>
+  <summary>Click here</summary>
+
+```{r}
+#| label: session
+
+sessionInfo()
+```
+
+</details>
+

@@ -6,10 +6,6 @@ image: "assets/featured.webp"
 format: html
 ---
 
-```{r}
-#| echo: false
-library(bsplus)
-```
 
 ::: {.callout-note}
 The objective of this lab is to improve your coding skills by focusing on code debugging, benchmarking and optimization. Below, you will find a number of tasks connected to the topics covered in the *Debugging, profiling and optimization* lecture. Some tasks extend lectures content and require you to find some more information online. Please, note that while we are providing example solutions to many tasks, these are only **examples**. If you solve a task in a different way it does not matter your solution is wrong. In fact, it may be better than our solution. If in doubt, ask TA for help. We are here for you!
@@ -296,261 +292,107 @@ autoplot(mb2)
 
 :::
 
-### Optional Task: More Advanced Profiling.
-
-Now, we will use a even more sophisticated approach to profiling.
-
-#### The `Rprof` way.
-
-* Write three functions that fill by row a $N \times N$ matrix $M$ with randomly generated numbers from a vector given as argument `bag`, allow for passing random seed value as function argument with the default value of 42. After filling the matrix with values, add to each and every element of $M$ the number of column the element is in and return such matrix from the function. Functions should: 
-
-- `fill_alloc` -- use memory allocation prior to loop in which the matrix is being filled and allocate memory using `init` value passed as argument and by default set to `NULL`
-- `fill_noalloc` -- not use memory allocation prior to the loop,
-- `fill_noloop` should not the loop for filling the matrix in. 
-
-::: {.callout-warning}
-Do not perform addition of column number in the same loop.
-:::
-
-Following this and using `rnorm(1000, mean = 0, sd = 1)`:
-
-- use `Rprof` to profile the functions using the same seed and N=100,
-- use `Rprof` to check whether there is a difference between initializing the matrix using `NULL` and 0 in `fill_alloc`,
-- what happens if $N = 10$ compared to $N = 20$ to $N = 100$? 
-
-::: {.callout-tip collapse="true"}
-
-## Example Solution
-
-```{r}
-#| eval: false
-fill_noloop <- function(N, bag, seed = 42) {
-  set.seed(seed)
-  values <- sample(bag, size = N^2, replace = T)
-  M <- matrix(data = values, nrow = N, byrow = T)
-  for (col_num in 1:N) {
-    M[, col_num] <- M[, col_num] + col_num
-  }
-  return(M)
-}
-
-fill_noalloc <- function(N, bag, seed = 42) {
-  set.seed(seed)
-  values <- sample(bag, size = N^2, replace = T)
-  M <- NULL
-  cnt = 1
-  for (row in 1:N) {
-    row_tmp <- c()
-    for (col in 1:N) {
-      row_tmp <- c(row_tmp, values[cnt])
-      cnt <- cnt + 1
-    }
-    M <- rbind(M, row_tmp)
-  }
-  for (col_num in 1:N) {
-    M[, col_num] <- M[, col_num] + col_num
-  }
-  return(M)
-}
-
-fill_alloc <- function(N, bag, seed = 42, init = NA) {
-  set.seed(seed)
-  values <- sample(bag, size = N^2, replace = T)
-  M <- matrix(rep(init, times=N^2), nrow = N, byrow = T)
-  cnt = 1
-  for (row in 1:N) {
-    for (col in 1:N) {
-      M[row, col] <- values[cnt]
-      cnt <- cnt + 1
-    }
-  }
-  for (col_num in 1:N) {
-    M[, col_num] <- M[, col_num] + col_num
-  }
-  return(M)
-}
-
-# Example of profiling one function: fill_noloop
-Rprof(memory.profiling = T)
-fill_noloop(10000, c(9:0), seed = 100)
-Rprof(NULL)
-summary <- summaryRprof('Rprof.out', memory='both')
-summary$by.self
-
-# answers to the remaining questions are not given here
-```
-
-:::
-
-### Optimization
-
-Have a look at our answers from the previous task .
-
-* How can you optimize the `fill_alloc` even further (call the optimized version `fill_alloc_opt`)?
-
-::: {.callout-tip collapse="true"}
-
-## Example Solution
-
-```{r}
-#| eval: false
-fill_alloc_opt <- function(N, bag, seed = 42, init = NA) {
-  set.seed(seed)
-  values <- sample(bag, size = N^2, replace = T)
-  M <- matrix(rep(init, times=N^2), nrow = N, byrow = T)
-  cnt = 1
-  for (row in 1:N) {
-    for (col in 1:N) {
-      M[row, col] <- values[cnt] + col
-      cnt <- cnt + 1
-    }
-  }
-  return(M)
-}
-```
-
-:::
-
-* Optimize the `fill_noloop` to `fill_noloops` that does not use any loops at all.
-
-::: {.callout-tip collapse="true"}
-
-## Example Solution
-
-```{r}
-#| eval: false
-fill_noloops <- function(N, bag, seed = 42) {
-  values <- sample(bag, size = N^2, replace = T)
-  inc <- rep(x = 1:N, times = N)
-  M <- matrix(data = values + inc, nrow = N, byrow = T)
-  return(M)
-}
-```
-
-:::
-
-### Optional task: Using the `profr` package.
-
-- Install and load the `profr` package.
-- Use `profr` to profile `fill_noloop`, `fill_noloops` and `fill_alloc_opt`.
-
-Please use the following function, if you were not able to run `profr::ggplot.profr`.
-
-```{r}
-#| eval: false
-ggplot.profr <- function(data, ..., minlabel = 0.1, angle=0) {
-  if (!requireNamespace("ggplot2", quietly = TRUE))
-    stop("Please install ggplot2 to use this plotting method")
-  data$range <- diff(range(data$time))
-
-  # quiet R CMD check note
-  start <- NULL
-  end <- NULL
-  time <- NULL
-
-  ggplot2::ggplot(as.data.frame(data)) +
-    ggplot2::geom_rect(
-      ggplot2::aes(xmin = start, xmax = end, ymin = level - 0.5, ymax = level + 0.5),
-      fill = "grey95", colour = "black", size = 0.5) +
-    ggplot2::geom_text(
-      ggplot2::aes(start + range / 60, level, label = f),
-      data = subset(data, time > max(time) * minlabel),
-      size = 4, angle = angle, hjust = 0) +
-    ggplot2::scale_y_continuous("time") +
-    ggplot2::scale_x_continuous("level")
-}
-```
-
-::: {.callout-tip collapse="true"}
-
-## Example Solution
-
-```{r}
-#| eval: false
-library(profr)
-
-Rprof("profr_noloop.out", interval = 0.01)
-fill_noloop(1000, rnorm(1000), seed = 42)
-Rprof(NULL)
-profile_noloop_df <- parse_rprof('profr_noloop.out')
-
-Rprof("profr_noloops.out", interval = 0.01)
-fill_noloops(100, rnorm(1000), seed = 42)
-Rprof(NULL)
-profile_noloops_df <- parse_rprof('profr_noloops.out')
-
-Rprof("profr_alloc_opt.out", interval = 0.01)
-fill_alloc_opt(10, rnorm(1000), seed = 42)
-Rprof(NULL)
-profile_alloc_opt_df <- parse_rprof('profr_alloc_opt.out')
-
-profr::ggplot.profr(profile_noloop_df)
-profr::ggplot.profr(profile_noloops_df)
-profr::ggplot.profr(profile_alloc_opt_df)
-```
-
-:::
-
-### Optional task: Using the `profvis` package.
-
-- Install and load the `profvis` package.
-- Use `profvis` to profile `fill_noloop`, and `fill_alloc` functions.
-
 ## Optimize Your Code
 
 In this section, we will deal with some selected ways to optimize your code.
 
-### Task: Fix and Optimize This!
+### Task: Optimize in different ways!
 
-Given is a function:
+You are given a function that performs a moderately expensive calculation for one input value at a time:
 
 ```{r}
-#| eval: false
-optimize_me <- function(N = 1000, values = c(1:1e4)) {
-  N = 10; values = c(1:1e4)
-  dat1 <- matrix(size = N^2)
-  for (i in 1:N) {
-    for (j in 1:N) {
-      dat1[i, j] <- sample(values, 1)
-    }
-  }
-  dat0 <- dat1
-  dat1[lower.tri(dat1)] <- t(dat1)[lower.tri(dat1)]
-  
-  dat2 <- NULL 
-  for (i in 1:N) {
-    i_tmp <- c()
-    for (j in 1:N) {
-      i_tmp <- c(i_tmp, sample(values, 1))
-    }
-    dat2 <- rbind(dat2, i_tmp)
-  }
-  dat2[lower.tri(dat2)] <- t(dat2)[lower.tri(dat2)]
- 
-  M <- dat2
-  for (i in 1:N) {
-    for (j in 1:N) {
-      M[i, j] <- dat1[i, j] * dat2[i, j]
-    }
-  }
-  for (i in 1:N) {
-    for (j in 1:N) {
-      M[i, j] <- M[i, j] + values[3]
-    }
-  }
-  N <- M %*% dat0
-  result <- apply(N, 2, mean)
+simulate_value <- function(x, n = 5000) {
+  set.seed(42)
+
+  values <- rnorm(n, mean = x, sd = 1)
+  result <- sum(sin(values)^2 + cos(values)^2)
+
   return(result)
 }
 ```
+Your goal is to make this calculation more convenient and faster when applied to many values.
 
-- What does it do, step-by-step?
-- Profile it.
-- Is `dat1 <- matrix(size = N^2)` better than `dat1 <- matrix(NA, nrow=N, ncol=N)`?
-- Can you optimize something using `BLAS`?
-- Can you optimize by using `apply` somewhere?
-- Can you optimize `apply` further?
-- What else can you optimize. Do it. Report speed gain and memory gain compared to the original version in the same spreadsheet (Debugging Lab sheet, Optimization gains).  
+- Create a vector of inputs `1:100` run the function for every value of `x` using a for loop and measure how long does it take using `microbenchmark` (use at least 10 repeats).
+
+::: {.callout-tip collapse="true"}
+## Example Solution
+```{r}
+x <- 1:1e2
+
+microbenchmark::microbenchmark(
+  loop = {
+    results <- numeric(length(x))
+    for (i in seq_along(x)) {
+      results[i] <- simulate_value(x[i])
+    }
+  },
+  times = 10
+)
+```
+:::
+
+- Use `base::Vectorize()` to create a vectorized version of `simulate_value()` so that you can write:
+`results <- simulate_vectorized(x)`.
+
+- Benchmark the vectorized version against the baseline.
+
+::: {.callout-tip collapse="true"}
+## Example Solution
+```{r}
+simulate_vectorized <- Vectorize(simulate_value, "x")
+microbenchmark::microbenchmark(
+  loop = {
+    results <- numeric(length(x))
+    for (i in seq_along(x)) {
+      results[i] <- simulate_value(x[i])
+    }
+  },
+
+  vectorized = {
+    results <- simulate_vectorized(x)
+  },
+
+  times = 10
+)
+```
+
+:::
+
+- Try to distribute the calculations across multiple CPU cores using the `future` package and `future.apply::future_lapply()` function.
+
+::: {.callout-tip collapse="true"}
+
+## Example Solution
+```{r}
+future::plan('multisession', workers=4)
+
+microbenchmark::microbenchmark(
+  loop = {
+    results <- numeric(length(x))
+    for (i in seq_along(x)) {
+      results[i] <- simulate_value(x[i])
+    }
+  },
+
+  vectorized = {
+    results <- simulate_vectorized(x)
+  },
+
+  parallel = {
+    results <- unlist(
+      future.apply::future_lapply(x, simulate_value, future.seed = TRUE)
+    )
+  },
+
+  times = 10
+)
+```
+
+:::
+
+- Experiment with different size of `x` and different plans: 'sequential', 'multicore' and 'multisession'. 
+- Why do you thing vectorization had little effect here?
+- Is the paralellization always strictly better (faster)? 
 
 ## Session
 
