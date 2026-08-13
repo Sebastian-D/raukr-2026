@@ -150,3 +150,17 @@ We can also compute the mean reconstruction MSE.
 x_recon <- predict(autoencoder, x_train)
 mean((x_train - x_recon)^2)
 ```
+
+## Session
+
+<details>
+  <summary>Click here</summary>
+
+```{r}
+#| label: session
+
+sessionInfo()
+```
+
+</details>
+
