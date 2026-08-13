@@ -1,7 +1,8 @@
 ---
-title: "Interactive Visualization in R"
+title: "Interactive visualization in R"
 author: "Roy Francis"
 description: "Hands-on exercises with plotly and highcharter."
+image: "assets/featured.webp"
 format: html
 ---
 

@@ -1,6 +1,7 @@
 ---
-title: "Interactive Visualization in R"
+title: "Interactive visualization in R"
 author: "Roy Francis"
+image: "assets/featured.webp"
 format:
   revealjs:
     slide-number: true
