@@ -313,7 +313,7 @@ Good example: Specific, unambiguous, includes an example structure, scoped task,
 ::::
 :::::
 
-::: {.callout-tip}
+::: {.small}
 Lots of other LLM adjacent packages, a pretty updated list: [https://luisdva.github.io/llmsr-book/r-pkgs.html](https://luisdva.github.io/llmsr-book/r-pkgs.html)
 :::
 
@@ -348,6 +348,9 @@ Storing tests as code so they can be re-run at any time. If you change a functio
 
 ## Automated testing
 
+::::: {.columns}
+:::: {.column width="50%"}
+
 ### Setup
 
 ```r
@@ -357,9 +360,10 @@ usethis::use_testthat()
 1. Creates `tests/testthat/`
 2. Adds `testthat` to `Suggests` in `DESCRIPTION`
 3. Creates `tests/testthat.R`.
-<br><br>
 
-::: {.fragment}
+::::
+
+:::: {.column width="50%" .fragment}
 
 ### Create a test
 
@@ -368,9 +372,9 @@ usethis::use_test("foobar")
 ```
 
 Creates and opens `tests/testthat/test-foobar.R`.
-<br><br>
 
-:::
+::::
+:::::
 
 :::: {.fragment}
 
@@ -410,15 +414,10 @@ test_that("numeric values work", {
   expect_equal(foobar(2), 3)
   expect_equal(foobar(-2), -1)
 })
-
 test_that("non-numeric input throws an error", {
   expect_error(foobar("a"), "must be numeric")
 })
 ```
-
-- A test file holds one or more `test_that()` tests.
-- Each test describes what it’s testing: e.g. "multiplication works".
-- Each test has one or more expectations: e.g. `expect_equal(2 * 2, 4)`.
 :::
 
 ::: {.column width="50%"}
@@ -439,6 +438,10 @@ test_that("non-numeric input throws an error", {
 
 ::::
 
+- A test file holds one or more `test_that()` tests.
+- Each test describes what it’s testing: e.g. "multiplication works".
+- Each test has one or more expectations: e.g. `expect_equal(2 * 2, 4)`.
+
 ::: {.notes}
 **Live Coding Example:**
 1. **Short function & test file**:
@@ -457,7 +460,7 @@ test_that("non-numeric input throws an error", {
 ## Lab exercises
 
 Start from the libminer package you created yesterday. If you need you can fork and use [Jennys](https://github.com/jennybc/libminer).
-<br><br><br>
+<br><br>
 
 Use Posit Assistant, PA, to:
 
