@@ -234,6 +234,8 @@ Auto mode is appropriate when you want hands-off assistance for routine tasks (r
 
 ::: {.notes}
 report and notebook can be handy for example when you have used plan mode and implemented a large change or feature and want to generate a report detailing what has been done.
+
+/savememory Explore the codebase and answer: Understand overall project structure, purpose, key files/scripts, data files/schemas, and how components relate, in order to write a memory file (AGENTS.md) for future sessions.
 :::
 
 ## Prompt engineering 101
@@ -254,18 +256,6 @@ report and notebook can be handy for example when you have used plan mode and im
 ::::
 :::::
 
-::: {.fragment}
-**Bad prompt** ❌
-
-> *"Fix my RNA-seq code"*
-:::
-
-::: {.fragment}
-**Good prompt** ✅
-
-> *"I have a data frame `counts` with genes as rows and samples as columns. Write an R function using DESeq2 to run differential expression between two groups defined by a `condition` column in `coldata`. Return a results table sorted by adjusted p-value. Follow tidyverse style conventions."*
-:::
-
 ::: {.notes}
 https://docs.github.com/en/copilot/using-github-copilot/copilot-chat/prompt-engineering-for-copilot-chat
 
@@ -279,6 +269,20 @@ Bad example: Vague, no context, unclear goal
 
 Good example: Specific, unambiguous, includes an example structure, scoped task, requests best practices
 :::
+
+## Prompt engineering 101
+
+<br><br>
+
+**Bad prompt** ❌
+
+> *"Fix my RNA-seq code"*
+
+<br><br>
+
+**Good prompt** ✅
+
+> *"I have a data frame `counts` with genes as rows and samples as columns. Write an R function using DESeq2 to run differential expression between two groups defined by a `condition` column in `coldata`. Return a results table sorted by adjusted p-value. Follow tidyverse style conventions."*
 
 ## Some LLM specific packages in R
 
@@ -309,9 +313,12 @@ Good example: Specific, unambiguous, includes an example structure, scoped task,
 ::::
 :::::
 
-
 ::: {.callout-tip}
-There are many other R packages for RAG's, skills, MCP, custom assistants, speech and audio processing etc.
+Lots of other LLM adjacent packages, a pretty updated list: [https://luisdva.github.io/llmsr-book/r-pkgs.html](https://luisdva.github.io/llmsr-book/r-pkgs.html)
+:::
+
+::: {.notes}
+You are not stuck using whatever is built into your IDE, you can use LLM functions directly from within R with some smart package usage!
 :::
 
 ## Testing
@@ -344,7 +351,7 @@ Storing tests as code so they can be re-run at any time. If you change a functio
 ### Setup
 
 ```r
-usethis::use_testthat(3)
+usethis::use_testthat()
 ```
 
 1. Creates `tests/testthat/`
@@ -365,7 +372,7 @@ Creates and opens `tests/testthat/test-foobar.R`.
 
 :::
 
-::: {.fragment}
+:::: {.fragment}
 
 ### Run tests
 
@@ -375,7 +382,11 @@ Creates and opens `tests/testthat/test-foobar.R`.
 | `devtools::test()` | Run all tests in `tests/testthat/` |
 | `devtools::check()` | Run all tests + full package check |
 
+::: {.callout-tip}
+Best is to use the **Testing** activity bar!
 :::
+
+::::
 
 ## Parts of a test
 
@@ -443,9 +454,25 @@ test_that("non-numeric input throws an error", {
    - Run the tests using the interactive UI and discuss.
 :::
 
-## Some "do this" exercises suggestions
+## Lab exercises
 
-<br><br><br><br><br><br>
+Start from the libminer package you created yesterday. If you need you can fork and use [Jennys](https://github.com/jennybc/libminer).
+<br><br><br>
+
+Use Posit Assistant, PA, to:
+
+1. Ask which tests PA thinks are appropriate for your function. Don't make edits.
+   - Which mode did you use?
+   - Do you agree with its suggestions?
+2. Make and execute a `/plan` to add tests for your function. Try to prompt engineer the tests you want.
+   - Did you get the output you expected or did you need to make some edits?
+3. Save your progress so far in a `/report`. Afterwards `/clear` the conversation. Rule of thumb; `/clear` whenever you think it is a new conversation.
+4. Pick an appropriate mode and create a new function for your package.
+   - Then add all the other necessary pieces such as documentation, tests, new dependencies etc for your function.
+   -  At this point, do your tests pass? Does `devtools::check()` pass?
+5. BONUS: Open a new workspace and create a quarto presentation. You can pick the subject to populate the slides with.
+   - Can you add appropriate images to the slides? Did it work like you expected?
+6. BONUS: Find a messy dataset and import it into R. Try to use `/clean`ing mode to clean it.
 
 ## {background-image="/assets/images/network.svg"}
 
